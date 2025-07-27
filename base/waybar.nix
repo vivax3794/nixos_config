@@ -1,3 +1,4 @@
+{ host, lib }:
 [
   {
     height = 30;
@@ -7,7 +8,11 @@
     ];
     modules-right = [
       "tray"
+    ]
+    ++ lib.optionals (host == "laptop") [
       "battery"
+    ]
+    ++ [
       "pulseaudio/slider"
       "clock"
     ];

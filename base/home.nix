@@ -2,6 +2,8 @@
   config,
   pkgs,
   inputs,
+  host,
+  lib,
   ...
 }:
 
@@ -15,7 +17,7 @@
   home.homeDirectory = "/home/viv";
 
   home.packages = with pkgs; [
-    fastfetch
+    hyfetch
     nixfmt-tree
   ];
 
@@ -60,15 +62,13 @@
   programs.fastfetch.enable = true;
 
   services.mako.enable = true;
-  programs.swaylock.enable = true;
   programs.waybar = {
     enable = true;
-    settings = import ./waybar.nix;
-    style = ./dotfiles/waybar.css;
+    settings = import ./waybar.nix { host = host; lib = pkgs.lib; };
+    style = ../dotfiles/waybar.css;
   };
-  services.swww.enable = true; # Wallpaper
 
-  home.file.".config/niri/config.kdl".source = ./dotfiles/niri.kdl;
+  home.file.".config/niri/config.kdl".source = ../dotfiles/niri.kdl;
 
   home.stateVersion = "25.05";
 }
