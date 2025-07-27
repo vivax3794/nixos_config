@@ -34,11 +34,19 @@
     enable = true;
     defaultEditor = true;
   };
-  
+
   programs.git = {
     enable = true;
   };
-  programs.jujutsu.enable = true;
+  programs.jujutsu = {
+    enable = true;
+    settings = {
+      user = {
+        email = "vivax3794@protonmail.com";
+        name = "Viv";
+      };
+    };
+  };
   programs.gh.enable = true;
 
   programs.btop = {
