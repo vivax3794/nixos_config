@@ -3,7 +3,7 @@
 {
   imports = [
     ./hardware-configuration.nix
-    ../base/configuration.nix
+    ../visual/configuration.nix
   ];
 
   security.pam.services.swaylock = { };

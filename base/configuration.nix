@@ -6,6 +6,8 @@
 }:
 
 {
+  imports = [ ../cachix.nix ];
+
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
@@ -31,9 +33,5 @@
     "flakes"
   ];
 
-  environment.systemPackages = with pkgs; [ xdg-desktop-portal-gtk ];
-  programs.niri.enable = true;
-
   system.stateVersion = "25.05";
-
 }

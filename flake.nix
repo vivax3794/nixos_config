@@ -31,6 +31,7 @@
             inherit inputs;
             host = hostname;
           };
+
           modules = [
             ./${hostname}/configuration.nix
             home-manager.nixosModules.home-manager

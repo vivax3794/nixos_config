@@ -13,13 +13,6 @@ input {
     warp-mouse-to-focus
 }
 
-output "eDP-1" {
-    mode "1920x1080@60"
-    scale 1.25
-    transform "normal"
-    position x=0 y=0
-}
-
 layout {
     gaps 8
     center-focused-column "on-overflow"
@@ -38,7 +31,6 @@ layout {
 }
 
 spawn-at-startup "waybar"
-spawn-at-startup "swww" "img" "/etc/nixos/wallpaper/laptop.jpeg"
 prefer-no-csd
 screenshot-path "~/Pictures/Screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png"
 
