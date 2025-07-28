@@ -24,8 +24,10 @@
       "networkmanager"
       "wheel" # Sudo
     ];
+    shell = pkgs.fish;
     packages = with pkgs; [ ];
   };
+  programs.fish.enable = true;
 
   nixpkgs.config.allowUnfree = true;
   nix.settings.experimental-features = [

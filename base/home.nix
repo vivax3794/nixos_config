@@ -21,11 +21,19 @@
     nixfmt-tree
   ];
 
-  programs.nixvim = {
+  programs.fish = {
     enable = true;
-    defaultEditor = true;
+    preferAbbrs = true;
+    shellInit = ''
+      set fish_greeting
+    '';
   };
-
+  home.shell.enableFishIntegration = true;
+  programs.starship = {
+    enable = true;
+    enableFishIntegration = true;
+  };
+  programs.nixvim = import ./nvim.nix;
   programs.git = {
     enable = true;
   };
@@ -44,6 +52,7 @@
     enable = true;
     settings = {
       color_theme = "tokyo-night";
+      theme_background = false;
       update_ms = 100;
       swap_disk = false;
     };

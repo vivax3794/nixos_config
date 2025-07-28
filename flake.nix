@@ -12,7 +12,6 @@
     };
     nixvim = {
       url = "github:nix-community/nixvim";
-      inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 
@@ -51,5 +50,6 @@
     in
     {
       nixosConfigurations.laptop = mkSystem "laptop";
+      nixosConfigurations.desktop = mkSystem "desktop";
     };
 }
