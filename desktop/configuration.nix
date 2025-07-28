@@ -6,13 +6,12 @@
     ../visual/configuration.nix
   ];
 
-  boot.initrd.luks.devices."luks-f02fa872-7976-4f55-85ce-4ce94c98f43d".device =
-    "/dev/disk/by-uuid/f02fa872-7976-4f55-85ce-4ce94c98f43d";
-
   services.xserver.xkb = {
-    layout = "en";
+    layout = "us";
     variant = "";
   };
-  console.keyMap = "en";
+  console.keyMap = "us";
+
+services.getty.autologinUser = "viv";
 
 }
