@@ -13,6 +13,16 @@
     inputs.zen-browser.homeModules.twilight-official
   ];
 
+  programs.niri.settings = import ./niri.nix {
+    host = host;
+    lib = lib;
+  };
+
+  home.packages = with pkgs; [
+    nur.repos.dagger.dagger
+    graphite-cursors
+  ];
+
   programs.kitty = {
     enable = true;
     shellIntegration.enableFishIntegration = true;
@@ -20,6 +30,7 @@
     font.package = pkgs.nerd-fonts.fira-code;
     font.name = "Fira Code Nerdfont";
     settings = {
+      font_size = 14;
       background_opacity = 0.8;
       background_blur = 0;
       placement_strategy = "top-left";
@@ -60,8 +71,12 @@
     };
   };
 
-  home.file.".config/niri/config.kdl".text = import ./niri.nix {
-    host = host;
-    lib = lib;
+  programs.vesktop = {
+    enable = true;
+
+    settings = {
+      transperencyOption = "acrylic";
+      onlySpeakers = true;
+    };
   };
 }

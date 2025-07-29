@@ -25,6 +25,9 @@
 
     cmdheight = 0;
     laststatus = 0;
+
+    scrolloff = if (host == "desktop") then 15 else 2;
+    expandtab = true;
   };
 
   keymaps = [
@@ -66,12 +69,30 @@
       ];
       options.silent = true;
     }
-    # {
-    #   action = "<Cmd>BufferNext<CR>";
-    #   key = "<C-J>";
-    #   mode = "n";
-    #   options.silent = true;
-    # }
+    {
+      action = "<Cmd>BufferMoveNext<CR>";
+      key = "<leader>j";
+      mode = "n";
+      options.silent = true;
+    }
+    {
+      action = "<Cmd>BufferMovePrevious<CR>";
+      key = "<leader>k";
+      mode = "n";
+      options.silent = true;
+    }
+    {
+      action = "<Cmd>BufferClose<CR>";
+      key = "<leader>c";
+      mode = "n";
+      options.silent = true;
+    }
+    {
+      action = "<Cmd>BufferCloseAllButCurrent<CR>";
+      key = "<leader>C";
+      mode = "n";
+      options.silent = true;
+    }
   ];
 
   # LOOKS

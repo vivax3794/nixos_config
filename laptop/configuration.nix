@@ -16,5 +16,4 @@
     variant = "";
   };
   console.keyMap = "no";
-
 }

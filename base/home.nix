@@ -19,6 +19,8 @@
     cachix
     hyfetch
     nixfmt-tree
+    killall
+    just
   ];
 
   programs.fish = {
