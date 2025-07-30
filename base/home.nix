@@ -35,7 +35,7 @@
     enable = true;
     enableFishIntegration = true;
   };
-  programs.nixvim = import ./nvim.nix;
+  programs.nixvim = import ./nvim.nix { host = host; };
   programs.git = {
     enable = true;
   };

@@ -28,8 +28,21 @@
     ];
     shell = pkgs.fish;
     packages = with pkgs; [ ];
+    openssh.authorizedKeys.keys = [
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIE8SpcFB+oGN5v5EuDdkJqE6SQp/BmUYUyn9bTnPL1/p viv"
+    ];
   };
   programs.fish.enable = true;
+  programs.ssh = {
+    extraConfig = "
+	Host desktop
+	    Hostname 10.0.0.10
+	    Port 3794
+	    User viv
+	    IdentitiesOnly yes
+	    IdentifiyFile ~/.ssh/desktop
+";
+  };
 
   nixpkgs.config.allowUnfree = true;
   nix.settings.experimental-features = [
@@ -44,11 +57,12 @@
     enable = true;
     ports = [ 3794 ];
     settings = {
-      passwordAuthentication = false;
+      # passwordAuthentication = false;
       KbdInteractiveAuthentication = false;
       PermitRootLogin = "no";
       AllowUsers = [ "viv" ];
     };
   };
   services.fail2ban.enable = true;
+
 }
