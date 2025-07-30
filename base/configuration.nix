@@ -25,6 +25,7 @@
     extraGroups = [
       "networkmanager"
       "wheel" # Sudo
+      "remotebuilder"
     ];
     shell = pkgs.fish;
     packages = with pkgs; [ ];
