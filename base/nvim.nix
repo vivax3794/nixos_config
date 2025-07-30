@@ -114,4 +114,8 @@
       icons.button = "";
     };
   };
+
+  users.users.viv.openssh.authroizedKeys.keys = [
+    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIE8SpcFB+oGN5v5EuDdkJqE6SQp/BmUYUyn9bTnPL1/p viv"
+  ];
 }
