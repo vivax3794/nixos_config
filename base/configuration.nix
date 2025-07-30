@@ -2,6 +2,7 @@
   config,
   pkgs,
   host,
+  lib,
   ...
 }:
 
@@ -37,4 +38,17 @@
   ];
 
   system.stateVersion = "25.05";
+}
+// lib.optionalAttrs (host != "laptop") {
+  services.openssh = {
+    enable = true;
+    ports = [ 3794 ];
+    settings = {
+      passwordAuthentication = false;
+      KbdInteractiveAuthentication = false;
+      PermitRootLogin = "no";
+      AllowUsers = [ "viv" ];
+    };
+  };
+  services.fail2ban.enable = true;
 }
