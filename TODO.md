@@ -1,14 +1,15 @@
 # De
 - [X] Cursor is kinda big
-- [ ] Move to monitor
+- [X] Move to monitor
 - [ ] Open terminal in same folder
 - [X] mpvpaper memory leak
 
 # Shell
-- [ ] Exa
-- [ ] Ripgrep
-- [ ] Zoxide
+- [X] Exa
+- [X] Ripgrep
+- [X] Zoxide
 - [ ] Claude code
+- [X] Colors
 
 # Neovim
 - [X] Barbar keybinds
@@ -16,7 +17,8 @@
 - [ ] oil
 - [ ] rust analyzer
 - [ ] diangostics
-- [ ] Disable copy on `d` and `c`
+- [X] Disable copy on `d` and `c`
+- [ ] Spider
 
 # Nix-y stuff
 - [X] Use niri flake
@@ -28,7 +30,7 @@
 - [X] Discord
 
 # Laptop
-- [ ] Wrapped VPN
+- [ ] Warp VPN
 
 # Rpi
 - [ ] Octo print

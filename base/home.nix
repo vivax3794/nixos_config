@@ -20,6 +20,8 @@
     hyfetch
     nixfmt-tree
     killall
+    eza
+    ripgrep
   ];
 
   programs.fastfetch = {
@@ -32,10 +34,21 @@
     preferAbbrs = true;
     shellInit = ''
       set fish_greeting
-    '';
+    ''
+    + lib.readFile ../dotfiles/colors.fish;
+
+    shellAbbrs = {
+      cd = "z";
+      ls = "eza -lh --total-size";
+      grep = "rg";
+    };
   };
   home.shell.enableFishIntegration = true;
   programs.starship = {
+    enable = true;
+    enableFishIntegration = true;
+  };
+  programs.zoxide = {
     enable = true;
     enableFishIntegration = true;
   };

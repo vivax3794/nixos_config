@@ -33,10 +33,6 @@
     tabstop = 4;
     softtabstop = 4;
     shiftwidth = 4;
-
-    foldmethod = "expr";
-    foldexpr = "nvim_treesitter#foldexpr()";
-    foldenable = true;
   };
 
   keymaps = [
@@ -115,7 +111,18 @@
       mode = "n";
       options.silent = true;
     }
-
+    {
+      action = "<Cmd>Oil --float<CR>";
+      key = "<leader>o";
+      mode = "n";
+      options.silent = true;
+    }
+    {
+      action = "<Cmd>Oil --float .<CR>";
+      key = "<leader>O";
+      mode = "n";
+      options.silent = true;
+    }
   ]
   # Disable copy on delete/change
   ++ lib.flatten (
@@ -147,11 +154,24 @@
         "c"
         "d"
       ]
-  )
+  );
 
-  ;
+  autoCmd = [
+    {
+      event = "User";
+      pattern = "OilActionsPost";
+      callback = {
+        __raw = ''
+          function(event)
+            if event.data.actions.type == "move" then
+              Snacks.rename.on_rename_file(event.data.actions.src_url, event.data.actions.dest_url)
+            end
+          end
+        '';
+      };
+    }
+  ];
 
-  # LOOKS
   plugins.treesitter = {
     enable = true;
     settings = {
@@ -163,11 +183,27 @@
     enable = true;
   };
   plugins.web-devicons.enable = true;
+  plugins.mini-icons.enable = true;
   plugins.barbar = {
     enable = true;
     settings = {
       auto_hide = 1;
       icons.button = "";
+    };
+  };
+  plugins.nvim-autopairs.enable = true;
+  plugins.hardtime.enable = true;
+  plugins.oil.enable = true;
+  plugins.spider = {
+    enable = true;
+    keymaps = {
+      silent = true;
+      motions = {
+        w = "w";
+        e = "e";
+        b = "b";
+      };
+
     };
   };
 }

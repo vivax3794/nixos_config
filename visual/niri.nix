@@ -129,6 +129,8 @@
     "Mod+Ctrl+J".action.move-window-down-or-to-workspace-down = { };
     "Mod+Ctrl+K".action.move-window-up-or-to-workspace-up = { };
     "Mod+Ctrl+L".action.move-column-right-or-to-monitor-right = { };
+    "Mod+Ctrl+Shift+H".action.move-column-to-monitor-left = { };
+    "Mod+Ctrl+Shift+L".action.move-column-to-monitor-right = { };
 
     # Column navigation
     "Mod+Home".action.focus-column-first = { };
