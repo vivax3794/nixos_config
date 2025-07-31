@@ -1,4 +1,4 @@
-{ host }:
+{ host, lib }:
 
 {
   enable = true;
@@ -30,6 +30,13 @@
 
     scrolloff = if (host == "desktop") then 15 else 2;
     expandtab = true;
+    tabstop = 4;
+    softtabstop = 4;
+    shiftwidth = 4;
+
+    foldmethod = "expr";
+    foldexpr = "nvim_treesitter#foldexpr()";
+    foldenable = true;
   };
 
   keymaps = [
@@ -52,6 +59,19 @@
       mode = "i";
       options.silent = true;
     }
+    {
+      action = ":noh<CR>";
+      key = "<leader>h";
+      mode = "n";
+      options.silent = true;
+    }
+    {
+      action = "zt";
+      key = "zz";
+      mode = "n";
+      options.silent = true;
+    }
+
     # Tabs
     {
       action = "<Cmd>BufferPrevious<CR>";
@@ -95,7 +115,41 @@
       mode = "n";
       options.silent = true;
     }
-  ];
+
+  ]
+  # Disable copy on delete/change
+  ++ lib.flatten (
+    map
+      (letter: [
+        {
+          mode = [
+            "n"
+            "v"
+          ];
+          key = letter;
+          action = ''"_${letter}'';
+          options.noremap = true;
+        }
+        {
+          mode = "n";
+          key = lib.toUpper letter;
+          action = ''"_${lib.toUpper letter}'';
+          options.noremap = true;
+        }
+        {
+          mode = "n";
+          key = "${letter}${letter}";
+          action = ''"_${letter}${letter}'';
+          options.noremap = true;
+        }
+      ])
+      [
+        "c"
+        "d"
+      ]
+  )
+
+  ;
 
   # LOOKS
   plugins.treesitter = {

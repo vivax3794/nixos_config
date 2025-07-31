@@ -2,7 +2,7 @@
 - [X] Cursor is kinda big
 - [ ] Move to monitor
 - [ ] Open terminal in same folder
-- [ ] mpvpaper memory leak
+- [X] mpvpaper memory leak
 
 # Shell
 - [ ] Exa
@@ -20,7 +20,7 @@
 
 # Nix-y stuff
 - [X] Use niri flake
-- [ ] Laptop uses desktop build host
+- [?] Laptop uses desktop build host
 - [X] Dont globally install rust
 - [ ] direnv 
 

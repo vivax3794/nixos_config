@@ -20,8 +20,12 @@
     hyfetch
     nixfmt-tree
     killall
-    just
   ];
+
+  programs.fastfetch = {
+    enable = true;
+    settings = import ./fastfetch.nix;
+  };
 
   programs.fish = {
     enable = true;
@@ -35,7 +39,11 @@
     enable = true;
     enableFishIntegration = true;
   };
-  programs.nixvim = import ./nvim.nix { host = host; };
+
+  programs.nixvim = import ./nvim.nix {
+    host = host;
+    lib = lib;
+  };
   programs.git = {
     enable = true;
   };
