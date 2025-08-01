@@ -16,10 +16,10 @@
   programs.niri.settings = import ./niri.nix {
     host = host;
     lib = lib;
+    pkgs = pkgs;
   };
 
   home.packages = with pkgs; [
-    nur.repos.dagger.dagger
     graphite-cursors
   ];
 
@@ -36,6 +36,9 @@
       placement_strategy = "top-left";
     };
     themeFile = "tokyo_night_night";
+    keybindings = {
+      "ctrl+t" = "launch --cwd=current --type=os-window";
+    };
   };
   programs.zen-browser.enable = true;
 

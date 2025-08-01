@@ -52,6 +52,10 @@
     enable = true;
     enableFishIntegration = true;
   };
+  programs.direnv = {
+    enable = true;
+    nix-direnv.enable = true;
+  };
 
   programs.nixvim = import ./nvim.nix {
     host = host;
@@ -66,6 +70,10 @@
       user = {
         email = "vivax3794@protonmail.com";
         name = "Viv";
+      };
+      ui = {
+        defualt-command = "log";
+        paginate = "never";
       };
     };
   };

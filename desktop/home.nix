@@ -13,6 +13,5 @@
     mkchromecast
   ];
 
-  programs.mpvpaper.enable = true;
   programs.chromium.enable = true;
 }

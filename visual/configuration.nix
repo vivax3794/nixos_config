@@ -14,7 +14,6 @@
 
   environment.systemPackages = with pkgs; [
     xdg-desktop-portal-gtk
-    xwayland-satellite
     pavucontrol
   ];
 

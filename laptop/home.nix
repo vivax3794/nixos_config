@@ -9,5 +9,5 @@
   imports = [ ../visual/home.nix ];
 
   programs.swaylock.enable = true;
-  services.swww.enable = true; # Wallpaper
+  services.swww.enable = true;
 }
