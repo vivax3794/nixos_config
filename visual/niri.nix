@@ -53,10 +53,10 @@
 
     tab-indicator = {
       position = "top";
-    place-within-column =true;
-            width = 8;
-            gap = 8;
-            corner-radius = 20;
+      place-within-column = true;
+      width = 8;
+      gap = 8;
+      corner-radius = 20;
     };
   };
 
@@ -263,7 +263,7 @@
     "Mod+S".action.switch-preset-column-width = { };
     "Mod+F".action.maximize-column = { };
     "Mod+Shift+F".action.fullscreen-window = { };
-    "Mod+Ctrl+F".action.expand-column-to-available-width = { };
+    "Mod+Ctrl+F".action.toggle-windowed-fullscreen = { };
 
     "Mod+C".action.center-column = { };
     "Mod+Ctrl+C".action.center-visible-columns = { };

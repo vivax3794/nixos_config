@@ -21,6 +21,7 @@
 
   home.packages = with pkgs; [
     graphite-cursors
+    mission-center
   ];
 
   programs.kitty = {

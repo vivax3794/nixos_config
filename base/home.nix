@@ -72,7 +72,7 @@
         name = "Viv";
       };
       ui = {
-        defualt-command = "log";
+        default-command = "log";
         paginate = "never";
       };
     };

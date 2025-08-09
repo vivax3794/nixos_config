@@ -66,4 +66,5 @@
   };
   services.fail2ban.enable = true;
 
+  nix.settings.auto-optimise-store = true;
 }
