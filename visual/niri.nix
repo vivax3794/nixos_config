@@ -43,6 +43,21 @@
       top = 0;
       bottom = 4;
     };
+
+    preset-column-widths = [
+      { proportion = 0.25; }
+      { proportion = 0.33333; }
+      { proportion = 0.5; }
+      { proportion = 0.66666; }
+    ];
+
+    tab-indicator = {
+      position = "top";
+    place-within-column =true;
+            width = 8;
+            gap = 8;
+            corner-radius = 20;
+    };
   };
 
   environment = {
