@@ -32,6 +32,7 @@
         "big-parallel"
         "kvm"
       ];
+      port = 3794;
     }
   ];
 }
