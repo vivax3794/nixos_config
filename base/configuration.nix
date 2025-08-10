@@ -62,7 +62,7 @@
 // lib.optionalAttrs (host != "laptop") {
   services.openssh = {
     enable = true;
-    ports = [ 3794 ];
+    ports = [ 22 ];
     settings = {
       # passwordAuthentication = false;
       KbdInteractiveAuthentication = false;
