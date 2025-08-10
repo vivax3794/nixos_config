@@ -25,7 +25,8 @@
       hostName = "10.0.0.10";
       sshUser = "viv";
       sshKey = "/home/viv/.ssh/desktop";
-      system = pkgs.stdenv.hostPlatform.system;
+      sshPort = 3794;
+      systems = ["x86_64-linux" "aarch64-linux"];
       supportedFeatures = [
         "nixos-test"
         "big-parallel"
