@@ -29,7 +29,7 @@
     openssh.authorizedKeys.keys = [
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIE8SpcFB+oGN5v5EuDdkJqE6SQp/BmUYUyn9bTnPL1/p viv" # laptop
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHEpHoI3fLFk1GUuOduAt+bmH6FKTokFKmWmA9DQRiPa viv" # desktop
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIB7cFETPGBUPwKdsv/klwUObatmfzzQ6NJWfotytK/ul viv" # Pi
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDpKtOZ2uCMPhbg8v0Mt9CySZWCYeJ/AdspqFmfrfaEK viv" # Pi
     ];
   };
   programs.fish.enable = true;
@@ -63,7 +63,7 @@
     enable = true;
     ports = [ 22 ];
     settings = {
-      passwordAuthentication = false;
+      PasswordAuthentication = false;
       KbdInteractiveAuthentication = false;
       PermitRootLogin = "no";
       AllowUsers = [ "viv" ];
