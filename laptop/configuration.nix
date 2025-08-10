@@ -26,7 +26,10 @@
       sshUser = "viv";
       sshKey = "/home/viv/.ssh/desktop";
       sshPort = 3794;
-      systems = ["x86_64-linux" "aarch64-linux"];
+      systems = [
+        "x86_64-linux"
+        "aarch64-linux"
+      ];
       supportedFeatures = [
         "nixos-test"
         "big-parallel"
