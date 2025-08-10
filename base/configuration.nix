@@ -30,7 +30,8 @@
     shell = pkgs.fish;
     packages = with pkgs; [ ];
     openssh.authorizedKeys.keys = [
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIE8SpcFB+oGN5v5EuDdkJqE6SQp/BmUYUyn9bTnPL1/p viv"
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIE8SpcFB+oGN5v5EuDdkJqE6SQp/BmUYUyn9bTnPL1/p viv" # laptop
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHEpHoI3fLFk1GUuOduAt+bmH6FKTokFKmWmA9DQRiPa viv" # desktop
     ];
   };
   programs.fish.enable = true;
@@ -42,6 +43,12 @@
 	    User viv
 	    IdentitiesOnly yes
 	    IdentifiyFile ~/.ssh/desktop
+	Host pi
+	    Hostname 10.0.0.11
+	    Port 3794
+	    User viv
+	    IdentitiesOnly yes
+	    IdentifiyFile ~/.ssh/pi
 ";
   };
 

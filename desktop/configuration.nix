@@ -75,4 +75,5 @@ in
   nixpkgs.config.permittedInsecurePackages = [
     "python3.13-youtube-dl-2021.12.17"
   ];
+  boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
 }
