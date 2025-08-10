@@ -32,25 +32,26 @@
     openssh.authorizedKeys.keys = [
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIE8SpcFB+oGN5v5EuDdkJqE6SQp/BmUYUyn9bTnPL1/p viv" # laptop
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHEpHoI3fLFk1GUuOduAt+bmH6FKTokFKmWmA9DQRiPa viv" # desktop
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIB7cFETPGBUPwKdsv/klwUObatmfzzQ6NJWfotytK/ul viv" # Pi
     ];
   };
   programs.fish.enable = true;
-  programs.ssh = {
-    extraConfig = "
-	Host desktop
-	    Hostname 10.0.0.10
-	    Port 3794
-	    User viv
-	    IdentitiesOnly yes
-	    IdentifiyFile /home/viv/.ssh/desktop
-	Host pi
-	    Hostname 10.0.0.11
-	    Port 3794
-	    User viv
-	    IdentitiesOnly yes
-	    IdentifiyFile /home/viv/.ssh/pi
-";
-  };
+#   programs.ssh = {
+#     extraConfig = "
+# 	Host desktop
+# 	    Hostname 10.0.0.10
+# 	    Port 3794
+# 	    User viv
+# 	    IdentitiesOnly yes
+# 	    IdentifiyFile /home/viv/.ssh/desktop
+# 	Host pi
+# 	    Hostname 10.0.0.11
+# 	    Port 3794
+# 	    User viv
+# 	    IdentitiesOnly yes
+# 	    IdentifiyFile /home/viv/.ssh/pi
+# ";
+#   };
 
   nixpkgs.config.allowUnfree = true;
   nix.settings.experimental-features = [
