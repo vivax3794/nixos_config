@@ -22,6 +22,8 @@
     eval-cache = true;
   };
 
+  security.sudo.wheelNeedsPassword = false;
+
   nix.buildMachines = [
     {
       hostName = "10.0.0.10";
