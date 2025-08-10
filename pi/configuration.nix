@@ -12,12 +12,13 @@
   nix.distributedBuilds = true;
   nix.settings.builders-use-substitutes = true;
 
+  nix.settings.max-jobs = 0;
   nix.buildMachines = [
     {
       hostName = "10.0.0.10";
       sshUser = "viv";
       sshKey = "/home/viv/.ssh/desktop";
-      system = pkgs.stdenv.hostPlatform.system;
+      systems = ["x86_64-linux" "aarch64-linux"];
       supportedFeatures = [
         "nixos-test"
         "big-parallel"
