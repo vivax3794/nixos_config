@@ -42,13 +42,13 @@
 	    Port 3794
 	    User viv
 	    IdentitiesOnly yes
-	    IdentifiyFile ~/.ssh/desktop
+	    IdentifiyFile /home/viv/.ssh/desktop
 	Host pi
 	    Hostname 10.0.0.11
 	    Port 3794
 	    User viv
 	    IdentitiesOnly yes
-	    IdentifiyFile ~/.ssh/pi
+	    IdentifiyFile /home/viv/.ssh/pi
 ";
   };
 

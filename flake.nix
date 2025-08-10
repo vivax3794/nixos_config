@@ -58,4 +58,5 @@
       nixosConfigurations.laptop = mkSystem "laptop";
       nixosConfigurations.desktop = mkSystem "desktop";
       nixosConfigurations.pi = mkSystem "pi";
+    };
 }
