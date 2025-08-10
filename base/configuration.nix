@@ -12,7 +12,6 @@
   boot.kernelPackages = pkgs.linuxPackages_latest;
 
   networking.hostName = host;
-  networking.networkmanager.enable = true;
 
   time.timeZone = "Europe/Oslo";
   i18n.defaultLocale = "en_US.UTF-8";
@@ -64,7 +63,7 @@
     enable = true;
     ports = [ 22 ];
     settings = {
-      # passwordAuthentication = false;
+      passwordAuthentication = false;
       KbdInteractiveAuthentication = false;
       PermitRootLogin = "no";
       AllowUsers = [ "viv" ];

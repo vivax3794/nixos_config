@@ -11,6 +11,8 @@
   boot.loader.grub.enable = false;
   boot.loader.generic-extlinux-compatible.enable = true;
 
+  networking.useDHCP = true;
+
   nix.distributedBuilds = true;
   nix.settings = {
     substituters = [ "https://cache.nixos.org" ];
