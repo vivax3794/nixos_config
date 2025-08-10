@@ -12,6 +12,9 @@
     inputs.niri.nixosModules.niri
   ];
 
+  boot.loader.systemd-boot.enable = true;
+  boot.loader.efi.canTouchEfiVariables = true;
+
   environment.systemPackages = with pkgs; [
     xdg-desktop-portal-gtk
     pavucontrol
