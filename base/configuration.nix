@@ -36,22 +36,22 @@
     ];
   };
   programs.fish.enable = true;
-#   programs.ssh = {
-#     extraConfig = "
-# 	Host desktop
-# 	    Hostname 10.0.0.10
-# 	    Port 3794
-# 	    User viv
-# 	    IdentitiesOnly yes
-# 	    IdentifiyFile /home/viv/.ssh/desktop
-# 	Host pi
-# 	    Hostname 10.0.0.11
-# 	    Port 3794
-# 	    User viv
-# 	    IdentitiesOnly yes
-# 	    IdentifiyFile /home/viv/.ssh/pi
-# ";
-#   };
+  #   programs.ssh = {
+  #     extraConfig = "
+  # 	Host desktop
+  # 	    Hostname 10.0.0.10
+  # 	    Port 3794
+  # 	    User viv
+  # 	    IdentitiesOnly yes
+  # 	    IdentifiyFile /home/viv/.ssh/desktop
+  # 	Host pi
+  # 	    Hostname 10.0.0.11
+  # 	    Port 3794
+  # 	    User viv
+  # 	    IdentitiesOnly yes
+  # 	    IdentifiyFile /home/viv/.ssh/pi
+  # ";
+  #   };
 
   nixpkgs.config.allowUnfree = true;
   nix.settings.experimental-features = [

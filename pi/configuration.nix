@@ -2,13 +2,12 @@
 
 {
   imports = [
-    "${pkgs.path}/nixos/modules/installer/sd-card/sd-image-aarch64.nix"
     ./hardware-configuration.nix
     ../base/configuration.nix
   ];
 
-    boot.loader.grub.enable = false;
-boot.loader.generic-extlinux-compatible.enable = true;
+  boot.loader.grub.enable = false;
+  boot.loader.generic-extlinux-compatible.enable = true;
 
   nix.distributedBuilds = true;
   nix.settings.builders-use-substitutes = true;
