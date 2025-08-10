@@ -29,7 +29,7 @@
     openssh.authorizedKeys.keys = [
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIE8SpcFB+oGN5v5EuDdkJqE6SQp/BmUYUyn9bTnPL1/p viv" # laptop
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHEpHoI3fLFk1GUuOduAt+bmH6FKTokFKmWmA9DQRiPa viv" # desktop
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDpKtOZ2uCMPhbg8v0Mt9CySZWCYeJ/AdspqFmfrfaEK viv" # Pi
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIO1QO1FzBV/jCGvPJOzbNs5jjGeQSWTfPXOP5VL8s7QN viv" # Pi
     ];
   };
   programs.fish.enable = true;
