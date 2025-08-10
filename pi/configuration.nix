@@ -36,19 +36,4 @@
       ];
     }
   ];
-
-  nixpkgs.overlays = [
-    (final: prev: {
-      stdenv = prev.stdenv // {
-        mkDerivation =
-          args:
-          prev.stdenv.mkDerivation (
-            args
-            // {
-              preferLocalBuild = false;
-            }
-          );
-      };
-    })
-  ];
 }
