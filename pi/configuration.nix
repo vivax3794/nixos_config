@@ -10,8 +10,6 @@
   boot.loader.generic-extlinux-compatible.enable = true;
 
   nix.distributedBuilds = true;
-  nix.settings.builders-use-substitutes = true;
-
   nix.settings = {
     substituters = [ "https://cache.nixos.org" ];
     trusted-substituters = [ "https://cache.nixos.org" ];
