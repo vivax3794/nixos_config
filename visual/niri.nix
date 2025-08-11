@@ -80,7 +80,7 @@
       command = [
         "swww"
         "img"
-        ../wallpapers/laptop.jpeg
+        "/etc/nixos/wallpapers/laptop.jpeg"
       ];
     }
   ]

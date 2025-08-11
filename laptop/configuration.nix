@@ -25,7 +25,6 @@
       hostName = "10.0.0.10";
       sshUser = "viv";
       sshKey = "/home/viv/.ssh/desktop";
-      sshPort = 3794;
       systems = [
         "x86_64-linux"
         "aarch64-linux"
