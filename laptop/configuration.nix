@@ -17,6 +17,10 @@
   };
   console.keyMap = "no";
 
+  services.cloudflare-warp = {
+    enable = true;
+  };
+
   nix.distributedBuilds = true;
   nix.settings.builders-use-substitutes = true;
 
