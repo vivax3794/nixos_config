@@ -72,13 +72,13 @@
   };
 
   spawn-at-startup = [
-    { command = [ "waybar" ]; }
+    { command = [ (lib.getExe pkgs.waybar) ]; }
     { command = [ (lib.getExe pkgs.xwayland-satellite) ]; }
   ]
   ++ lib.optionals (host == "laptop") [
     {
       command = [
-        "swww"
+        (lib.getExe pkgs.swww)
         "img"
         "/etc/nixos/wallpapers/laptop.jpeg"
       ];
