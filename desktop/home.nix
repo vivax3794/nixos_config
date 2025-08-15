@@ -15,5 +15,4 @@
     lm_sensors
   ];
 
-  programs.chromium.enable = true;
 }

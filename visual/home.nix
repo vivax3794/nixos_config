@@ -22,6 +22,7 @@
   home.packages = with pkgs; [
     graphite-cursors
     mission-center
+    remmina
   ];
 
   programs.kitty = {
@@ -83,4 +84,6 @@
       onlySpeakers = true;
     };
   };
+
+  programs.chromium.enable = true;
 }

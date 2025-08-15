@@ -80,7 +80,7 @@
       command = [
         "swww"
         "img"
-        ../wallpapers/laptop.jpeg
+        "/etc/nixos/wallpapers/laptop.jpeg"
       ];
     }
   ]
@@ -291,7 +291,7 @@
     "Mod+Shift+P".action.power-off-monitors = { };
   }
   // lib.optionalAttrs (host == "laptop") {
-    "Mod+Shift+L".action.spawn = [
+    "Mod+Ctrl+W".action.spawn = [
       "swaylock"
       "--color"
       "000000"
