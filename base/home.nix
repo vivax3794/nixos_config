@@ -89,5 +89,7 @@
     };
   };
 
+  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+
   home.stateVersion = "25.05";
 }

@@ -1,3 +1,3 @@
 echo "=== System ==="
 nix flake update
-nixos-rebuild boot --upgrade-all
+sudo nixos-rebuild boot --upgrade-all
