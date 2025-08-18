@@ -10,9 +10,8 @@
 
   home.packages = with pkgs; [
     nvtopPackages.nvidia
-    mkchromecast
-    liquidctl
     lm_sensors
   ];
 
+  programs.obs-studio.enable = true;
 }

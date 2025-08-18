@@ -22,6 +22,8 @@
     killall
     eza
     ripgrep
+
+    claude-code
   ];
 
   programs.fastfetch = {
@@ -89,7 +91,10 @@
     };
   };
 
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nix.settings.experimental-features = [
+    "nix-command"
+    "flakes"
+  ];
 
   home.stateVersion = "25.05";
 }

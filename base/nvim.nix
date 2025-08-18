@@ -234,7 +234,6 @@
             enable = "always";
             useParameterNames = true;
           };
-          implicitDrops.enable = true;
         };
         formatOnSave.enable = true;
         cargo = {
@@ -347,6 +346,12 @@
     {
       action = "<Cmd>Oil --float<CR>";
       key = "<leader>o";
+      mode = "n";
+      options.silent = true;
+    }
+    {
+      action = "<Cmd>Oil --float .<CR>";
+      key = "<leader>O";
       mode = "n";
       options.silent = true;
     }
