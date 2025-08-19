@@ -143,6 +143,14 @@
       open-floating = true;
     }
     {
+      matches = [
+        {
+          title = "^$";
+        }
+      ];
+      open-floating = true;
+    }
+    {
       geometry-corner-radius =
         let
           radius = 12.0;

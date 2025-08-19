@@ -24,6 +24,7 @@
     ripgrep
 
     claude-code
+    unzip
   ];
 
   programs.fastfetch = {

@@ -249,6 +249,7 @@
     autoEnableSources = true;
     settings = {
       sources = [
+        { name = "copilote"; }
         { name = "nvim_lsp"; }
         { name = "luasnip"; }
         { name = "path"; }
@@ -267,6 +268,16 @@
       '';
     };
   };
+  plugins.copilot-lua = {
+    enable = true;
+    settings = {
+      suggestions = {
+        auto_trigger = true;
+        enable = true;
+      };
+    };
+  };
+  plugins.copilot-cmp.enable = true;
 
   plugins.luasnip.enable = true;
 
@@ -417,4 +428,5 @@
         "d"
       ]
   );
+
 }
