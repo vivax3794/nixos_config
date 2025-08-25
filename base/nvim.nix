@@ -249,7 +249,7 @@
     autoEnableSources = true;
     settings = {
       sources = [
-        { name = "copilote"; }
+        # { name = "copilot"; }
         { name = "nvim_lsp"; }
         { name = "luasnip"; }
         { name = "path"; }
@@ -272,12 +272,17 @@
     enable = true;
     settings = {
       suggestions = {
-        auto_trigger = true;
         enable = true;
+        auto_trigger = true;
+        keymap = {
+          accept = "<enter>";
+          accept_line = "shift+<enter>";
+          accept_word = "ctrl+<enter>";
+        };
       };
     };
   };
-  plugins.copilot-cmp.enable = true;
+  # plugins.copilot-cmp.enable = true;
 
   plugins.luasnip.enable = true;
 
