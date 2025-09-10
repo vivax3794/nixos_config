@@ -286,6 +286,15 @@
 
   plugins.luasnip.enable = true;
 
+  plugins.firenvim = {
+    enable = true;
+    settings.localSettings = {
+      "https://inga1002.apps.stack.it.ntnu.no/.*" = {
+        content = "python";
+      };
+    };
+  };
+
   keymaps = [
     {
       action = ":wqa<CR>";

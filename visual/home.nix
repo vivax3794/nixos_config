@@ -23,7 +23,6 @@
     graphite-cursors
     mission-center
     remmina
-    bluej
     obsidian
     nautilus
     keymapp

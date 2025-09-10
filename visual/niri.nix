@@ -8,13 +8,14 @@
   input = {
     keyboard = {
       xkb = lib.mkIf (host == "laptop") {
-        layout = "no";
-        options = "caps:escape,ctrl:swap_rwin_rctl";
+        # layout = "no";
+        # options = "caps:escape,ctrl:swap_rwin_rctl";
       };
       numlock = true;
     };
 
     touchpad = {
+      dwt = true;
       tap = true;
       natural-scroll = true;
     };
@@ -330,7 +331,7 @@
           height = 1080;
           refresh = 60.0;
         };
-        scale = 1.25;
+        scale = 1;
         position = {
           x = 0;
           y = 0;

@@ -30,7 +30,7 @@
     openFirewall = true;
   };
   # networking.firewall.enable = false;
-  networking.firewall.allowedTCPPorts = [5000];
+  networking.firewall.allowedTCPPorts = [ 5000 ];
   networking.firewall.allowedUDPPorts = [
     5353
     1900
