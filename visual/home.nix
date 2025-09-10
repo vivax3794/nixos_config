@@ -26,6 +26,7 @@
     bluej
     obsidian
     nautilus
+    keymapp
   ];
 
   programs.kitty = {

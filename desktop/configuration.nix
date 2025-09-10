@@ -39,6 +39,8 @@ in
   };
   nixpkgs.config.cudaSupport = true;
 
+    services.actual.enable = true;
+
   # https://github.com/YaLTeR/niri/discussions/2062
   environment.etc."nvidia/nvidia-application-profiles-rc.d/50-limit-free-buffer-pool-in-wayland-compositors.json".text =
     ''
@@ -70,7 +72,7 @@ in
   '';
   boot.kernelModules = [ "it87" ];
 
-  programs.coolercontrol.enable = true;
+  # programs.coolercontrol.enable = true;
 
   nixpkgs.config.permittedInsecurePackages = [
     "python3.13-youtube-dl-2021.12.17"

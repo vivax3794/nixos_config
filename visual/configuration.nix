@@ -20,6 +20,8 @@
     pavucontrol
   ];
 
+  hardware.keyboard.zsa.enable = true;
+
   networking.networkmanager.enable = true;
 
   programs.steam = {
