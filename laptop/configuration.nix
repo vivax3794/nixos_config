@@ -8,7 +8,8 @@
 
   security.pam.services.swaylock = { };
 
-  boot.initrd.luks.devices."luks-25fa8b36-82c5-45bf-84b1-6dfc46042013".device = "/dev/disk/by-uuid/25fa8b36-82c5-45bf-84b1-6dfc46042013";
+  boot.initrd.luks.devices."luks-25fa8b36-82c5-45bf-84b1-6dfc46042013".device =
+    "/dev/disk/by-uuid/25fa8b36-82c5-45bf-84b1-6dfc46042013";
 
   services.xserver.xkb = {
     layout = "no";

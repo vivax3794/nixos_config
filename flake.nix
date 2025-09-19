@@ -18,6 +18,7 @@
       url = "github:sodiboo/niri-flake";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    oldpkgs.url = "github:NixOS/nixpkgs/nixos-23.11";
   };
 
   outputs =
@@ -29,6 +30,9 @@
       ...
     }@inputs:
     let
+      overlays = [
+        inputs.niri.overlays.niri
+      ];
       mkSystem =
         hostname:
         nixpkgs.lib.nixosSystem {
@@ -38,6 +42,7 @@
           };
 
           modules = [
+            { nixpkgs.overlays = overlays; }
             ./${hostname}/configuration.nix
             home-manager.nixosModules.home-manager
             {

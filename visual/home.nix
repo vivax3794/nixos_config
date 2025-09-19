@@ -27,6 +27,13 @@
     obsidian
     nautilus
     keymapp
+
+    (import inputs.oldpkgs {
+      inherit system;
+      config = {
+        permittedInsecurePackages = [ "python3.12-youtube-dl-2021.12.17" ];
+      };
+    }).mkchromecast
   ];
 
   programs.kitty = {
@@ -47,6 +54,7 @@
     };
   };
   programs.zen-browser.enable = true;
+  programs.zen-browser.nativeMessagingHosts = [ pkgs.fx-cast-bridge ];
 
   services.mako.enable = true;
   programs.waybar = {

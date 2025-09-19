@@ -23,6 +23,18 @@
   hardware.keyboard.zsa.enable = true;
 
   networking.networkmanager.enable = true;
+  services.avahi = {
+    enable = true;
+    nssmdns4 = true;
+    nssmdns6 = true;
+    openFirewall = true;
+  };
+  # networking.firewall.enable = false;
+  networking.firewall.allowedTCPPorts = [5000];
+  networking.firewall.allowedUDPPorts = [
+    5353
+    1900
+  ];
 
   programs.steam = {
     enable = true;
@@ -52,7 +64,6 @@
     dockerSocket.enable = true;
   };
 
-  nixpkgs.overlays = [ inputs.niri.overlays.niri ];
   programs.niri = {
     enable = true;
     package = pkgs.niri-unstable;
