@@ -27,6 +27,7 @@
     obsidian
     nautilus
     keymapp
+    inkscape
 
     (import inputs.oldpkgs {
       inherit system;
