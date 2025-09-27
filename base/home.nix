@@ -44,6 +44,7 @@
       cd = "z";
       ls = "eza -lh --total-size";
       grep = "rg";
+      co = "nix-shell -p nodejs --run 'npx @github/copilot'";
     };
   };
   home.shell.enableFishIntegration = true;
