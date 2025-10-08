@@ -51,6 +51,11 @@
   programs.starship = {
     enable = true;
     enableFishIntegration = true;
+    settings = {
+      format = "$directory$cmd_duration
+$character";
+      direnv.disabled = false;
+    };
   };
   programs.zoxide = {
     enable = true;

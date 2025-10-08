@@ -99,7 +99,7 @@
               MPVPAPER_PID1=$!
               
               ${pkgs.mpvpaper}/bin/mpvpaper \
-                  -o "no-audio loop hwdec=auto vf=crop=w=1920:h=1080 gpu-api=vulkan" \
+                  -o "no-audio loop hwdec=auto gpu-api=vulkan" \
                   --auto-pause HDMI-A-3 ${../wallpapers/vertical.mp4} &
               MPVPAPER_PID2=$!
           }

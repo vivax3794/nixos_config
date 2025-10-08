@@ -10,7 +10,7 @@
 {
   imports = [
     ../base/home.nix
-    inputs.zen-browser.homeModules.twilight-official
+    inputs.zen-browser.homeModules.twilight
   ];
 
   programs.niri.settings = import ./niri.nix {

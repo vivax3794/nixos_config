@@ -248,8 +248,9 @@
     enable = true;
     autoEnableSources = true;
     settings = {
+      experimental.ghost_text = true;
       sources = [
-        # { name = "copilot"; }
+        { name = "copilot"; }
         { name = "nvim_lsp"; }
         { name = "luasnip"; }
         { name = "path"; }
@@ -282,7 +283,7 @@
       };
     };
   };
-  # plugins.copilot-cmp.enable = true;
+  plugins.copilot-cmp.enable = true;
 
   plugins.luasnip.enable = true;
 
