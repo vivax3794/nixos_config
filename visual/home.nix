@@ -27,6 +27,7 @@
     nautilus
     keymapp
     inkscape
+    kdePackages.kdenlive
 
     (import inputs.oldpkgs {
       inherit system;
