@@ -69,5 +69,19 @@
     package = pkgs.niri-unstable;
   };
 
+  services.greetd = {
+    enable = true;
+    settings = {
+      default_session = {
+        command = "${pkgs.greetd.tuigreet}/bin/tuigreet --time --cmd niri-session";
+        user = "greeter";
+      };
+      initial_session = {
+        command = "niri-session";
+        user = "viv";
+      };
+    };
+  };
+
   system.stateVersion = "25.05";
 }

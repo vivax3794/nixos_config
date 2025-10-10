@@ -79,9 +79,11 @@
   ++ lib.optionals (host == "laptop") [
     {
       command = [
-        (lib.getExe pkgs.swww)
-        "img"
-        "/etc/nixos/wallpapers/laptop.jpeg"
+        "sh"
+        "-c"
+        ''
+          sleep 1 && "${lib.getExe pkgs.swww}" img /etc/nixos/wallpapers/laptop.jpeg
+        ''
       ];
     }
   ]

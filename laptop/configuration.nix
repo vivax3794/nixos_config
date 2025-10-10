@@ -12,10 +12,10 @@
     "/dev/disk/by-uuid/25fa8b36-82c5-45bf-84b1-6dfc46042013";
 
   services.xserver.xkb = {
-    layout = "no";
+    layout = "en";
     variant = "";
   };
-  console.keyMap = "no";
+  console.keyMap = "en";
 
   services.cloudflare-warp = {
     enable = true;
