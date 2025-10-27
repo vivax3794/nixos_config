@@ -16,6 +16,9 @@
   time.timeZone = "Europe/Oslo";
   i18n.defaultLocale = "en_US.UTF-8";
 
+    security.doas.enable = true;
+    security.sudo.enable = false;
+
   users.users.viv = {
     isNormalUser = true;
     description = "vivax";
