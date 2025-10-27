@@ -45,7 +45,7 @@
       ls = "eza -lh --total-size";
       grep = "rg";
       co = "nix-shell -p nodejs --run 'npx @github/copilot'";
-            sudo = "doas";
+      sudo = "doas";
     };
   };
   home.shell.enableFishIntegration = true;
