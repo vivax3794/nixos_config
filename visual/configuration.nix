@@ -46,6 +46,12 @@
   programs.appimage.binfmt = true;
 
   hardware.bluetooth.enable = true;
+  services.blueman.enable = true;
+  hardware.enableRedistributableFirmware = true;
+  boot.extraModprobeConfig = ''
+    options btusb enable_autosuspend=n
+  '';
+
   security.rtkit.enable = true;
   services.pipewire = {
     enable = true;

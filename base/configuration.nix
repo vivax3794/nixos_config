@@ -9,7 +9,7 @@
 {
   imports = [ ../cachix.nix ];
 
-  boot.kernelPackages = pkgs.linuxPackages_latest;
+  boot.kernelPackages = pkgs.pkgs.linuxPackages_latest;
 
   networking.hostName = host;
 
