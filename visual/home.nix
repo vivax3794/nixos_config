@@ -28,6 +28,7 @@
     keymapp
     inkscape
     kdePackages.kdenlive
+    claude-code
 
     (import inputs.oldpkgs {
       inherit system;

@@ -23,7 +23,6 @@
     eza
     ripgrep
 
-    claude-code
     unzip
   ];
 
