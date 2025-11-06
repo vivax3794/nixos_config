@@ -19,6 +19,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     oldpkgs.url = "github:NixOS/nixpkgs/nixos-23.11";
+    rpipkgs.url = "github:doronbehar/nixpkgs/pkg/rpi-imager";
   };
 
   outputs =

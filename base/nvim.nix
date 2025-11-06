@@ -250,7 +250,7 @@
     settings = {
       experimental.ghost_text = true;
       sources = [
-        { name = "copilot"; }
+        # { name = "copilot"; }
         { name = "nvim_lsp"; }
         { name = "luasnip"; }
         { name = "path"; }
@@ -269,21 +269,21 @@
       '';
     };
   };
-  plugins.copilot-lua = {
-    enable = true;
-    settings = {
-      suggestions = {
-        enable = true;
-        auto_trigger = true;
-        keymap = {
-          accept = "<enter>";
-          accept_line = "shift+<enter>";
-          accept_word = "ctrl+<enter>";
-        };
-      };
-    };
-  };
-  plugins.copilot-cmp.enable = true;
+  # plugins.copilot-lua = {
+  #   enable = true;
+  #   settings = {
+  #     suggestions = {
+  #       enable = true;
+  #       auto_trigger = true;
+  #       keymap = {
+  #         accept = "<enter>";
+  #         accept_line = "shift+<enter>";
+  #         accept_word = "ctrl+<enter>";
+  #       };
+  #     };
+  #   };
+  # };
+  # plugins.copilot-cmp.enable = true;
 
   plugins.luasnip.enable = true;
 

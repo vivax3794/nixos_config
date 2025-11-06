@@ -29,6 +29,7 @@
     inkscape
     kdePackages.kdenlive
     claude-code
+    cura-appimage
 
     (import inputs.oldpkgs {
       inherit system;

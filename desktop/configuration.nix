@@ -34,7 +34,7 @@ in
       nvidia-vaapi-driver
       egl-wayland
       libvdpau-va-gl
-      vaapiVdpau
+      libva-vdpau-driver
     ];
   };
   nixpkgs.config.cudaSupport = true;
