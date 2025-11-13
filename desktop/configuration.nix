@@ -9,6 +9,8 @@ in
     ../visual/configuration.nix
   ];
 
+  virtualisation.vmware.host.enable = true;
+
   services.xserver = {
     xkb = {
       layout = "us";

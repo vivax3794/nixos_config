@@ -27,6 +27,10 @@
     shell = pkgs.fish;
     packages = with pkgs; [ ];
   };
+  nix.settings.trusted-users = [
+    "viv"
+    "@wheel"
+  ];
   programs.fish.enable = true;
 
   nixpkgs.config.allowUnfree = true;

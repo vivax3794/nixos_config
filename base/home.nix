@@ -97,6 +97,10 @@ $character";
     };
   };
 
+  nix.settings.trusted-users = [
+    "viv"
+    "@wheel"
+  ];
   nix.settings.experimental-features = [
     "nix-command"
     "flakes"

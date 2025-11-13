@@ -31,6 +31,9 @@
     claude-code
     cura-appimage
 
+    wineWowPackages.stable
+    winetricks
+
     (import inputs.oldpkgs {
       inherit system;
       config = {
