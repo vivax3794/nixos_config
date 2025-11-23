@@ -108,10 +108,14 @@
 
           kill_mpvpaper() {
               if [[ -n "$MPVPAPER_PID1" ]] && kill -0 "$MPVPAPER_PID1" 2>/dev/null; then
+                  kill "$MPVPAPER_PID1"
+                  sleep 4
                   kill -9 "$MPVPAPER_PID1"
               fi
               
               if [[ -n "$MPVPAPER_PID2" ]] && kill -0 "$MPVPAPER_PID2" 2>/dev/null; then
+                  kill "$MPVPAPER_PID2"
+                  sleep 4
                   kill -9 "$MPVPAPER_PID2"
               fi
           }
@@ -341,31 +345,31 @@
       };
     })
     (lib.mkIf (host == "desktop") {
-      "DP-3" = {
-        mode = {
-          width = 3440;
-          height = 1440;
-          refresh = 100.0;
-        };
-        scale = 1.0;
-        position = {
-          x = 1080;
-          y = 500;
-        };
-      };
-      "HDMI-A-3" = {
-        mode = {
-          width = 1920;
-          height = 1080;
-          refresh = 60.0;
-        };
-        scale = 1.0;
-        # transform.rotation = 90;
-        position = {
-          x = 0;
-          y = 0;
-        };
-      };
+      # "DP-3" = {
+      #   mode = {
+      #     width = 3440;
+      #     height = 1440;
+      #     refresh = 100.0;
+      #   };
+      #   scale = 1.0;
+      #   position = {
+      #     x = 1080;
+      #     y = 500;
+      #   };
+      # };
+      # "HDMI-A-3" = {
+      #   mode = {
+      #     width = 1920;
+      #     height = 1080;
+      #     refresh = 60.0;
+      #   };
+      #   scale = 1.0;
+      #   # transform.rotation = 90;
+      #   position = {
+      #     x = 0;
+      #     y = 0;
+      #   };
+      # };
     })
   ];
 }

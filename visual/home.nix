@@ -28,18 +28,11 @@
     keymapp
     inkscape
     kdePackages.kdenlive
-    claude-code
     cura-appimage
+    github-copilot-cli
 
     wineWowPackages.stable
     winetricks
-
-    (import inputs.oldpkgs {
-      inherit system;
-      config = {
-        permittedInsecurePackages = [ "python3.12-youtube-dl-2021.12.17" ];
-      };
-    }).mkchromecast
   ];
 
   programs.kitty = {

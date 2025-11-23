@@ -43,7 +43,6 @@
       cd = "z";
       ls = "eza -lh --total-size";
       grep = "rg";
-      co = "nix-shell -p nodejs --run 'npx @github/copilot'";
     };
   };
   home.shell.enableFishIntegration = true;
@@ -68,6 +67,7 @@ $character";
   programs.nixvim = import ./nvim.nix {
     host = host;
     lib = lib;
+    inputs = inputs;
   };
   programs.git = {
     enable = true;

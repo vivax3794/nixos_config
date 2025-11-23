@@ -18,8 +18,10 @@
       url = "github:sodiboo/niri-flake";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    oldpkgs.url = "github:NixOS/nixpkgs/nixos-23.11";
-    # rpipkgs.url = "github:doronbehar/nixpkgs/pkg/rpi-imager";
+    fenix = {
+      url = "github:nix-community/fenix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =

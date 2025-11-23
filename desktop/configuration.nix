@@ -1,4 +1,9 @@
-{ config, pkgs, ... }:
+{
+  config,
+  pkgs,
+  inputs,
+  ...
+}:
 
 let
   it87-patch = config.boot.kernelPackages.callPackage ./it87-patch.nix { };
@@ -28,7 +33,7 @@ in
     nvidiaSettings = true;
     package = config.boot.kernelPackages.nvidiaPackages.latest;
   };
-  hardware.nvidia-container-toolkit.enable = true;
+  # hardware.nvidia-container-toolkit.enable = true;
   hardware.graphics = {
     enable = true;
     enable32Bit = true;
@@ -37,11 +42,10 @@ in
       egl-wayland
       libvdpau-va-gl
       libva-vdpau-driver
+      mesa
     ];
   };
   nixpkgs.config.cudaSupport = true;
-
-  services.actual.enable = true;
 
   # https://github.com/YaLTeR/niri/discussions/2062
   environment.etc."nvidia/nvidia-application-profiles-rc.d/50-limit-free-buffer-pool-in-wayland-compositors.json".text =

@@ -5,8 +5,8 @@ echo "--- optimizing store ---"
 sudo nix-store --optimize
 
 echo "=== DOCKER ==="
-docker stop $(docker ps -a -q -f 'name=dagger-engine') || true
-docker rm $(docker ps -a -q -f 'name=dagger-engine') || true
+docker stop --all
+docker rm --all
 docker system prune --all --volumes --force
 
 echo "=== LOGS ==="

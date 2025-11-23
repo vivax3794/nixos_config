@@ -17,6 +17,7 @@
 
   environment.systemPackages = with pkgs; [
     xdg-desktop-portal-gtk
+    xwayland-satellite
     pavucontrol
   ];
 
@@ -45,7 +46,19 @@
   programs.appimage.enable = true;
   programs.appimage.binfmt = true;
 
-  hardware.bluetooth.enable = true;
+  hardware.bluetooth = {
+    enable = true;
+    powerOnBoot = true;
+    settings = {
+      General = {
+        Experimental = true;
+        FastConnectable = true;
+      };
+      Policy = {
+        AutoEnable = true;
+      };
+    };
+  };
   services.blueman.enable = true;
   hardware.enableRedistributableFirmware = true;
   boot.extraModprobeConfig = ''
@@ -75,19 +88,15 @@
     package = pkgs.niri-unstable;
   };
 
-  services.greetd = {
-    enable = true;
-    settings = {
-      default_session = {
-        command = "${pkgs.tuigreet}/bin/tuigreet --time --cmd niri-session";
-        user = "greeter";
-      };
-      initial_session = {
-        command = "niri-session";
-        user = "viv";
-      };
-    };
-  };
+  # services.greetd = {
+  #   enable = true;
+  #   settings = {
+  #     initial_session = {
+  #       command = "niri-session";
+  #       user = "viv";
+  #     };
+  #   };
+  # };
 
   system.stateVersion = "25.05";
 }

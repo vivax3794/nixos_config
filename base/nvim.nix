@@ -1,4 +1,8 @@
-{ host, lib }:
+{
+  host,
+  lib,
+  inputs,
+}:
 
 {
   enable = true;
@@ -175,6 +179,10 @@
         experimental.snippetTextEdit = false;
       };
 
+      cmd = [
+        "${inputs.fenix.packages.x86_64-linux.rust-analyzer}/bin/rust-analyzer"
+      ];
+
       on_attach = (
         let
           rustKeymaps = [
@@ -250,11 +258,22 @@
     settings = {
       experimental.ghost_text = true;
       sources = [
-        # { name = "copilot"; }
-        { name = "nvim_lsp"; }
-        { name = "luasnip"; }
-        { name = "path"; }
-        { name = "buffer"; }
+        {
+          name = "nvim_lsp";
+          priority = 100;
+        }
+        {
+          name = "luasnip";
+          priority = 50;
+        }
+        {
+          name = "path";
+          priority = 40;
+        }
+        {
+          name = "buffer";
+          priority = 10;
+        }
       ];
 
       mapping = {
@@ -269,32 +288,7 @@
       '';
     };
   };
-  # plugins.copilot-lua = {
-  #   enable = true;
-  #   settings = {
-  #     suggestions = {
-  #       enable = true;
-  #       auto_trigger = true;
-  #       keymap = {
-  #         accept = "<enter>";
-  #         accept_line = "shift+<enter>";
-  #         accept_word = "ctrl+<enter>";
-  #       };
-  #     };
-  #   };
-  # };
-  # plugins.copilot-cmp.enable = true;
-
   plugins.luasnip.enable = true;
-
-  plugins.firenvim = {
-    enable = true;
-    settings.localSettings = {
-      "https://inga1002.apps.stack.it.ntnu.no/.*" = {
-        content = "python";
-      };
-    };
-  };
 
   keymaps = [
     {
