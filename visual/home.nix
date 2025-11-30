@@ -53,7 +53,6 @@
     };
   };
   programs.zen-browser.enable = true;
-  programs.zen-browser.nativeMessagingHosts = [ pkgs.fx-cast-bridge ];
 
   services.mako.enable = true;
   programs.waybar = {
