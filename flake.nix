@@ -22,6 +22,10 @@
       url = "github:nix-community/fenix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    serpentine = {
+      url = "github:Serpent-Tools/serpentine";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =

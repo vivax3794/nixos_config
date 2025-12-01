@@ -33,6 +33,8 @@
 
     wineWowPackages.stable
     winetricks
+
+    inputs.serpentine.packages.${system}.default
   ];
 
   programs.kitty = {
