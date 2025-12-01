@@ -9,7 +9,7 @@ let
     language = "snek";
     version = "0.1.0";
     src = inputs.tree-sitter-serpentine;
-    };
+  };
 in
 {
   enable = true;

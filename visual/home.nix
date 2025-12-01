@@ -37,7 +37,7 @@
 
     jetbrains.idea-community
 
-    inputs.serpentine.packages.${system}.default
+    # inputs.serpentine.packages.${system}.default
   ];
 
   programs.kitty = {
@@ -96,7 +96,24 @@
 
     settings = {
       transperencyOption = "acrylic";
-      onlySpeakers = true;
+      audio.onlySpeakers = true;
+    };
+
+    vencord.settings = {
+      autoUpdate = false;
+      autoUpdateNotification = false;
+      plugins = {
+        petpet.enabled = true;
+        SilentTyping = {
+          enabled = true;
+          showIcon = true;
+          contextMenu = false;
+        };
+        AnonymiseFileNames.enabled = true;
+        BetterGifPicker.enabled = true;
+        ClearURLs.enabled = true;
+        MentionAvatars.enabled = true;
+      };
     };
   };
 
