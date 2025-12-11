@@ -26,6 +26,7 @@
       url = "github:Serpent-Tools/serpentine";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    tree-sitter-serpentine.url = "github:Serpent-Tools/tree-sitter-serpentine";
   };
 
   outputs =

@@ -2,8 +2,15 @@
   host,
   lib,
   inputs,
+  pkgs,
 }:
-
+let
+  tree-sitter-serpentine = pkgs.tree-sitter.buildGrammar {
+    language = "snek";
+    version = "0.1.0";
+    src = inputs.tree-sitter-serpentine;
+    };
+in
 {
   enable = true;
   defaultEditor = true;
@@ -84,6 +91,24 @@
       highlight.enable = true;
       indent.enable = true;
     };
+    grammarPackages = pkgs.vimPlugins.nvim-treesitter.passthru.allGrammars ++ [
+      tree-sitter-serpentine
+    ];
+    luaConfig.post = ''
+      do
+        local parser_config = require("nvim-treesitter.parsers").get_parser_configs()
+        parser_config.snek = {
+          install_info = {
+            url = "https://github.com/Serpent-Tools/tree-sitter-serpentine",
+            files = {"src/parser.c"}
+          },
+          filetype = "snek"
+        }
+      end
+    '';
+  };
+  filetype.extension = {
+    snek = "snek";
   };
   plugins.noice = {
     enable = true;

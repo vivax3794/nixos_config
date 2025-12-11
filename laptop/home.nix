@@ -10,9 +10,7 @@
 
   home.packages = with pkgs; [
     geteduroam
-    jetbrains.idea-community
   ];
 
   programs.swaylock.enable = true;
-  services.swww.enable = true;
 }

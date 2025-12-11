@@ -88,50 +88,24 @@
     }
   ]
   ++ lib.optionals (host == "desktop") [
-    (
-      let
-        wallpaperScript = pkgs.writeShellScript "wallpaper-cycle" ''
-          MPVPAPER_PID1=""
-          MPVPAPER_PID2=""
-
-          start_mpvpaper() {
-              ${pkgs.mpvpaper}/bin/mpvpaper \
-                  -o "no-audio loop hwdec=auto vf=crop=w=3440:h=1440 gpu-api=vulkan" \
-                  --auto-pause DP-3 ${../wallpapers/wide.mp4} &
-              MPVPAPER_PID1=$!
-              
-              ${pkgs.mpvpaper}/bin/mpvpaper \
-                  -o "no-audio loop hwdec=auto gpu-api=vulkan" \
-                  --auto-pause HDMI-A-3 ${../wallpapers/vertical.mp4} &
-              MPVPAPER_PID2=$!
-          }
-
-          kill_mpvpaper() {
-              if [[ -n "$MPVPAPER_PID1" ]] && kill -0 "$MPVPAPER_PID1" 2>/dev/null; then
-                  kill "$MPVPAPER_PID1"
-                  sleep 4
-                  kill -9 "$MPVPAPER_PID1"
-              fi
-              
-              if [[ -n "$MPVPAPER_PID2" ]] && kill -0 "$MPVPAPER_PID2" 2>/dev/null; then
-                  kill "$MPVPAPER_PID2"
-                  sleep 4
-                  kill -9 "$MPVPAPER_PID2"
-              fi
-          }
-
-          while true; do
-              start_mpvpaper
-              sleep 1800
-              kill_mpvpaper
-              sleep 1
-          done
-        '';
-      in
-      {
-        command = [ "${wallpaperScript}" ];
-      }
-    )
+    {
+      command = [
+        "sh"
+        "-c"
+        ''
+          sleep 1 && "${lib.getExe pkgs.swww}" img -o HDMI-A-3 /etc/nixos/wallpapers/laptop.jpeg
+        ''
+      ];
+    }
+    {
+      command = [
+        "sh"
+        "-c"
+        ''
+          sleep 1 && "${lib.getExe pkgs.swww}" img -o DP-3 /etc/nixos/wallpapers/wide.jpeg
+        ''
+      ];
+    }
   ];
 
   prefer-no-csd = true;

@@ -31,7 +31,7 @@ in
     open = true;
     modesetting.enable = true;
     nvidiaSettings = true;
-    package = config.boot.kernelPackages.nvidiaPackages.latest;
+    package = config.boot.kernelPackages.nvidiaPackages.beta;
   };
   # hardware.nvidia-container-toolkit.enable = true;
   hardware.graphics = {

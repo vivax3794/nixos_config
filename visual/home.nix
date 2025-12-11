@@ -18,6 +18,7 @@
     lib = lib;
     pkgs = pkgs;
   };
+  services.swww.enable = true;
 
   home.packages = with pkgs; [
     graphite-cursors
@@ -33,6 +34,8 @@
 
     wineWowPackages.stable
     winetricks
+
+    jetbrains.idea-community
 
     inputs.serpentine.packages.${system}.default
   ];

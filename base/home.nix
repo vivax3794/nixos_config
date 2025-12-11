@@ -68,6 +68,7 @@ $character";
     host = host;
     lib = lib;
     inputs = inputs;
+    pkgs = pkgs;
   };
   programs.git = {
     enable = true;
