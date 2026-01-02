@@ -14,7 +14,7 @@ in
     ../visual/configuration.nix
   ];
 
-  virtualisation.vmware.host.enable = true;
+  # virtualisation.vmware.host.enable = true;
 
   services.xserver = {
     xkb = {

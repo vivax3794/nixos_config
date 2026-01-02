@@ -30,7 +30,7 @@
     inkscape
     kdePackages.kdenlive
     cura-appimage
-    github-copilot-cli
+    claude-code
 
     wineWowPackages.stable
     winetricks
@@ -113,6 +113,7 @@
         BetterGifPicker.enabled = true;
         ClearURLs.enabled = true;
         MentionAvatars.enabled = true;
+        BetterFolders.enabled = true;
       };
     };
   };
