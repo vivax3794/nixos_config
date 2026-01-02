@@ -8,7 +8,6 @@
 - [X] Exa
 - [X] Ripgrep
 - [X] Zoxide
-- [ ] Claude code 
 - [X] Colors
 
 # Neovim
@@ -17,17 +16,16 @@
 
 # Nix-y stuff
 - [X] Use niri flake
-- [X] Laptop uses desktop build host
 - [X] Dont globally install rust
-- [ ] direnv 
+- [X] direnv 
 
 # Other
 - [X] Discord
 
 # Laptop
-- [ ] Warp VPN
+- [X] Warp VPN
 
 # Rpi
-- [ ] Octo print
+- [S] Octo print
 - [ ] Cloudflare tunnels
 
