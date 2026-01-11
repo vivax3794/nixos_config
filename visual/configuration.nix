@@ -42,6 +42,8 @@
     remotePlay.openFirewall = true;
     localNetworkGameTransfers.openFirewall = true;
     protontricks.enable = true;
+    gamescopeSession.enable = true;
+    extraCompatPackages = [pkgs.proton-ge-bin];
   };
   programs.appimage.enable = true;
   programs.appimage.binfmt = true;
@@ -86,6 +88,10 @@
   programs.niri = {
     enable = true;
     package = pkgs.niri-unstable;
+  };
+
+  services.cloudflare-warp = {
+    enable = true;
   };
 
   # services.greetd = {

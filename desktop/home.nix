@@ -11,7 +11,8 @@
   home.packages = with pkgs; [
     nvtopPackages.nvidia
     lm_sensors
-    # (import inputs.rpipkgs { inherit system; }).rpi-imager
+    rpi-imager
+    openscad
   ];
 
   programs.obs-studio.enable = true;

@@ -79,15 +79,4 @@ in
   boot.kernelModules = [ "it87" ];
 
   boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
-
-  services.cloudflared = {
-    enable = true;
-    certificateFile = "/home/viv/.cloudflared/cert.pem";
-    tunnels.desktop = {
-      certificateFile = "/home/viv/.cloudflared/cert.pem";
-      credentialsFile = "/home/viv/.cloudflared/2ce3e382-c822-439a-94a5-19204e050bb4.json";
-      default = "http_status:404";
-      warp-routing.enabled = true;
-    };
-  };
 }

@@ -17,9 +17,6 @@
   };
   console.keyMap = "en";
 
-  services.cloudflare-warp = {
-    enable = true;
-  };
 
   services.udev.extraRules = ''
     # Rules for LEGO programmable bricks
