@@ -94,18 +94,7 @@ in
     grammarPackages = pkgs.vimPlugins.nvim-treesitter.passthru.allGrammars ++ [
       tree-sitter-serpentine
     ];
-    luaConfig.post = ''
-      do
-        local parser_config = require("nvim-treesitter.parsers").get_parser_configs()
-        parser_config.snek = {
-          install_info = {
-            url = "https://github.com/Serpent-Tools/tree-sitter-serpentine",
-            files = {"src/parser.c"}
-          },
-          filetype = "snek"
-        }
-      end
-    '';
+    languageRegister.snek = "snek";
   };
   filetype.extension = {
     snek = "snek";
