@@ -22,6 +22,7 @@
   ];
 
   hardware.keyboard.zsa.enable = true;
+  services.flatpak.enable = true;
 
   networking.networkmanager.enable = true;
   services.avahi = {

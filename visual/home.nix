@@ -11,6 +11,7 @@
   imports = [
     ../base/home.nix
     inputs.zen-browser.homeModules.twilight
+    inputs.nix-flatpak.homeManagerModules.nix-flatpak
   ];
 
   programs.niri.settings = import ./niri.nix {
@@ -37,9 +38,18 @@
     winetricks
 
     # jetbrains.idea-community
+    openscad
 
     # inputs.serpentine.packages.${system}.default
   ];
+
+  services.flatpak = {
+    enable = true;
+    packages = [
+      "net.waterfox.waterfox"
+    ];
+    update.onActivation = true;
+  };
 
   programs.kitty = {
     enable = true;
@@ -121,6 +131,9 @@
 
   programs.chromium.enable = true;
 
+  home.sessionVariables = {
+    XDG_DATA_DIRS = "$XDG_DATA_DIRS:$HOME/.local/share/flatpak/exports/share";
+  };
   home.activation = {
     # https://github.com/philj56/tofi/issues/115#issuecomment-1701748297
     regenerateTofiCache = lib.hm.dag.entryAfter [ "writeBoundary" ] ''

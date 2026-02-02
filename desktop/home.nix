@@ -12,7 +12,6 @@
     nvtopPackages.nvidia
     lm_sensors
     rpi-imager
-    openscad
   ];
 
   programs.obs-studio.enable = true;
