@@ -28,14 +28,15 @@
     nautilus
     keymapp
     inkscape
-    kdePackages.kdenlive
+    # kdePackages.kdenlive
     cura-appimage
     claude-code
+    libresprite
 
     wineWowPackages.stable
     winetricks
 
-    jetbrains.idea-community
+    # jetbrains.idea-community
 
     # inputs.serpentine.packages.${system}.default
   ];

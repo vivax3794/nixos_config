@@ -218,12 +218,12 @@ in
             {
               mode = "n";
               key = "<leader>md";
-              action = '':RustLsp moveItem down<CR>'';
+              action = ":RustLsp moveItem down<CR>";
             }
             {
               mode = "n";
               key = "<leader>mu";
-              action = '':RustLsp moveItem up<CR>'';
+              action = ":RustLsp moveItem up<CR>";
             }
           ];
 

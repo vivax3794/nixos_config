@@ -13,7 +13,7 @@ stdenv.mkDerivation rec {
     owner = "frankcrawford";
     repo = "it87";
     rev = "master";
-    sha256 = "sha256-xlUyq1DQFBCvAs9DP6i1ose+6e+nmmXFRyuzRXCg+Ko=";
+    sha256 = "sha256-iWyOctK+TFhVCOw2LiV4NiNFEAqNXOpSdGY//VwO8Ko=";
   };
 
   hardeningDisable = [ "pic" ];

@@ -33,7 +33,6 @@ in
     nvidiaSettings = true;
     package = config.boot.kernelPackages.nvidiaPackages.beta;
   };
-  # hardware.nvidia-container-toolkit.enable = true;
   hardware.graphics = {
     enable = true;
     enable32Bit = true;
@@ -45,7 +44,12 @@ in
       mesa
     ];
   };
-  nixpkgs.config.cudaSupport = true;
+  services.wivrn = {
+    enable = true;
+    openFirewall = true;
+    defaultRuntime = true;
+    highPriority = true;
+  };
 
   # https://github.com/YaLTeR/niri/discussions/2062
   environment.etc."nvidia/nvidia-application-profiles-rc.d/50-limit-free-buffer-pool-in-wayland-compositors.json".text =

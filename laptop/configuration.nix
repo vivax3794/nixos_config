@@ -17,7 +17,6 @@
   };
   console.keyMap = "en";
 
-
   services.udev.extraRules = ''
     # Rules for LEGO programmable bricks
 
