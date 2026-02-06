@@ -36,6 +36,7 @@
 
     wineWowPackages.stable
     winetricks
+    protonvpn-gui
 
     # jetbrains.idea-community
     openscad
