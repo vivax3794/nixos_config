@@ -4,6 +4,18 @@
   pkgs,
 }:
 
+let
+  theme = import ./theme.nix;
+
+  setWallpaper = args: {
+    command = [
+      (toString (pkgs.writeShellScript "set-wallpaper" ''
+        sleep 1
+        ${lib.getExe pkgs.swww} img ${args}
+      ''))
+    ];
+  };
+in
 {
   input = {
     keyboard = {
@@ -35,8 +47,8 @@
     };
     focus-ring = {
       width = 4;
-      active.color = "#7aa2f7";
-      inactive.color = "#505050";
+      active.color = theme.colors.blue;
+      inactive.color = theme.colors.inactive;
     };
     struts = {
       left = 16;
@@ -77,35 +89,11 @@
     { command = [ (lib.getExe pkgs.xwayland-satellite) ]; }
   ]
   ++ lib.optionals (host == "laptop") [
-    {
-      command = [
-        "sh"
-        "-c"
-        ''
-          sleep 1 && "${lib.getExe pkgs.swww}" img /etc/nixos/wallpapers/laptop.jpeg
-        ''
-      ];
-    }
+    (setWallpaper "${./wallpapers/laptop.jpeg}")
   ]
   ++ lib.optionals (host == "desktop") [
-    {
-      command = [
-        "sh"
-        "-c"
-        ''
-          sleep 1 && "${lib.getExe pkgs.swww}" img -o HDMI-A-3 /etc/nixos/wallpapers/laptop.jpeg
-        ''
-      ];
-    }
-    {
-      command = [
-        "sh"
-        "-c"
-        ''
-          sleep 1 && "${lib.getExe pkgs.swww}" img -o DP-3 /etc/nixos/wallpapers/wide.jpeg
-        ''
-      ];
-    }
+    (setWallpaper "-o HDMI-A-3 ${./wallpapers/laptop.jpeg}")
+    (setWallpaper "-o DP-3 ${./wallpapers/wide.jpeg}")
   ];
 
   prefer-no-csd = true;
@@ -149,8 +137,7 @@
 
   binds = {
     "Mod+Shift+W".action.show-hotkey-overlay = { };
-    "Mod+T".action.spawn = "kitty";
-    "Mod+R".action.spawn = "tofi-drun";
+    "Mod+R".action.spawn = [ "${pkgs.tofi}/bin/tofi-drun" ];
 
     "Mod+O" = {
       action.toggle-overview = { };
@@ -281,27 +268,11 @@
   }
   // lib.optionalAttrs (host == "laptop") {
     "Mod+Ctrl+W".action.spawn = [
-      "swaylock"
+      (lib.getExe pkgs.swaylock)
       "--color"
       "000000"
     ];
-  }
-  // (
-    let
-      smartTerminal = pkgs.writeShellScript "smart-terminal" ''
-        if ${pkgs.niri}/bin/niri msg focused-window | ${pkgs.ripgrep}/bin/rg ".*kitty.*" >/dev/null; then
-          ${pkgs.wtype}/bin/wtype -M ctrl t -m ctrl
-        else
-          exec ${pkgs.kitty}/bin/kitty
-        fi
-      '';
-    in
-    {
-      "Mod+T".action.spawn = [ "${smartTerminal}" ];
-    }
-  )
-
-  ;
+  };
 
   outputs = lib.mkMerge [
     (lib.mkIf (host == "laptop") {

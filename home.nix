@@ -10,12 +10,14 @@
 let
   isDesktop = host == "desktop";
   isLaptop = host == "laptop";
+  theme = import ./theme.nix;
 in
 {
   imports = [
     inputs.nixvim.homeModules.nixvim
     inputs.zen-browser.homeModules.twilight
     inputs.nix-flatpak.homeManagerModules.nix-flatpak
+    ./features/smart-terminal.nix
   ];
 
   home.username = "viv";
@@ -69,7 +71,10 @@ in
     preferAbbrs = true;
     shellInit = ''
       set fish_greeting
-    '' + lib.readFile ./dotfiles/colors.fish;
+    '' + builtins.readFile (builtins.fetchurl {
+      url = "https://raw.githubusercontent.com/folke/tokyonight.nvim/main/extras/fish/tokyonight_night.fish";
+      sha256 = "030zs3fvznn83128ply1wk739p8ywfndnyx45jxnlmmqvm9s6r6r";
+    });
     shellAbbrs = {
       cd = "z";
       ls = "eza -lh --total-size";
@@ -145,7 +150,7 @@ in
     enable = true;
     shellIntegration.enableFishIntegration = true;
     font.package = pkgs.nerd-fonts.fira-code;
-    font.name = "Fira Code Nerdfont";
+    font.name = theme.font;
     settings = {
       font_size = 14;
       background_opacity = 0.8;
@@ -153,9 +158,6 @@ in
       placement_strategy = "top-left";
     };
     themeFile = "tokyo_night_night";
-    keybindings = {
-      "ctrl+t" = "launch --cwd=current --type=os-window";
-    };
   };
 
   # Browsers
@@ -177,7 +179,7 @@ in
     enable = true;
     settings = {
       text-cursor = true;
-      font = "Fira Code Nerdfont";
+      font = theme.font;
       font-size = 24;
       prompt-color = "#FF00FF";
       num-results = 5;

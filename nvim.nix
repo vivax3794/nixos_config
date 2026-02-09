@@ -187,7 +187,7 @@ in
   };
 
   plugins.rustaceanvim = {
-    enable = host != "pi";
+    enable = true;
     settings.server = {
       capabilities = {
         experimental.snippetTextEdit = false;
