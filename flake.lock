@@ -378,11 +378,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1770333156,
-        "narHash": "sha256-2ht9rO3uJkuGWMlWDj3Mpe3N5pX9cOIgxDB/KNHgJUY=",
+        "lastModified": 1770371251,
+        "narHash": "sha256-DVaTzK/xhM2XZHVlmjFy/fPaIhBzRVLQdedos0C8ANs=",
         "owner": "Serpent-Tools",
         "repo": "serpentine",
-        "rev": "fd7c6564bbb2d0584ffea8099bd12723147efecf",
+        "rev": "585bfbff68a71b83b473edde296a8086759a65e5",
         "type": "github"
       },
       "original": {
@@ -537,11 +537,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1770353257,
-        "narHash": "sha256-on4vg7ctpMPzKWcvXPtV095aal6KUPDSKV9+I8HhQtY=",
+        "lastModified": 1770377620,
+        "narHash": "sha256-5RKEsCM0aSoEJj/yTMni936FkRW9ebPLe+X9vX7OVx0=",
         "owner": "0xc000022070",
         "repo": "zen-browser-flake",
-        "rev": "6242228ddf448e775b3dd8f2b7a78c3856e70d52",
+        "rev": "5814e1b4a0f4d2dea684aac3608db19e600e4447",
         "type": "github"
       },
       "original": {
