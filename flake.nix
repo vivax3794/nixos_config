@@ -52,14 +52,14 @@
 
           modules = [
             { nixpkgs.overlays = overlays; }
-            ./${hostname}/configuration.nix
+            ./configuration.nix
             home-manager.nixosModules.home-manager
             {
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
               home-manager.backupFileExtension = "HMBackup";
 
-              home-manager.users.viv = import ./${hostname}/home.nix;
+              home-manager.users.viv = import ./home.nix;
               home-manager.extraSpecialArgs = {
                 inherit inputs;
                 host = hostname;
@@ -71,6 +71,5 @@
     {
       nixosConfigurations.laptop = mkSystem "laptop";
       nixosConfigurations.desktop = mkSystem "desktop";
-      nixosConfigurations.pi = mkSystem "pi";
     };
 }
