@@ -9,10 +9,12 @@ let
 
   setWallpaper = args: {
     command = [
-      (toString (pkgs.writeShellScript "set-wallpaper" ''
-        sleep 1
-        ${lib.getExe pkgs.swww} img ${args}
-      ''))
+      (toString (
+        pkgs.writeShellScript "set-wallpaper" ''
+          sleep 1
+          ${lib.getExe pkgs.swww} img ${args}
+        ''
+      ))
     ];
   };
 in
@@ -20,7 +22,7 @@ in
   input = {
     keyboard = {
       xkb = lib.mkIf (host == "laptop") {
-        # layout = "no";
+        # nirilayout = "no";
         # options = "caps:escape,ctrl:swap_rwin_rctl";
       };
       numlock = true;
@@ -39,9 +41,16 @@ in
     theme = "graphite-dark-nord";
   };
 
+  overview = {
+    workspace-shadow = {
+      enable = false;
+    };
+  };
+
   layout = {
     gaps = 8;
     center-focused-column = "on-overflow";
+    background-color = "transparent";
     default-column-width = {
       proportion = 0.5;
     };
@@ -132,6 +141,12 @@ in
         };
       clip-to-geometry = true;
       draw-border-with-background = false;
+    }
+  ];
+  layer-rules = [
+    {
+      matches = [ { namespace = "^swww-daemon$"; } ];
+      place-within-backdrop = true;
     }
   ];
 

@@ -24,7 +24,8 @@ in
   boot.loader.efi.canTouchEfiVariables = true;
   boot.extraModprobeConfig = ''
     options btusb enable_autosuspend=n
-  '' + lib.optionalString isDesktop ''
+  ''
+  + lib.optionalString isDesktop ''
     options it87 force_id=0x8696 ignore_resource_conflict=1
   '';
   boot.extraModulePackages = lib.mkIf isDesktop [ it87-patch ];
@@ -38,12 +39,15 @@ in
   networking.hostName = host;
   networking.networkmanager.enable = true;
   networking.firewall.allowedTCPPorts = [ 5000 ];
-  networking.firewall.allowedUDPPorts = [ 5353 1900 ];
+  networking.firewall.allowedUDPPorts = [
+    5353
+    1900
+  ];
 
   time.timeZone = "Europe/Oslo";
   i18n.defaultLocale = "en_US.UTF-8";
 
-  console.keyMap = if isLaptop then "en" else "us";
+  console.keyMap = "en";
 
   users.users.viv = {
     isNormalUser = true;
@@ -56,12 +60,18 @@ in
     ];
     shell = pkgs.fish;
   };
-  nix.settings.trusted-users = [ "viv" "@wheel" ];
+  nix.settings.trusted-users = [
+    "viv"
+    "@wheel"
+  ];
   nix.settings.auto-optimise-store = true;
   programs.fish.enable = true;
 
   nixpkgs.config.allowUnfree = true;
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nix.settings.experimental-features = [
+    "nix-command"
+    "flakes"
+  ];
 
   environment.systemPackages = with pkgs; [
     xdg-desktop-portal-gtk
@@ -69,25 +79,26 @@ in
     pavucontrol
   ];
   environment.etc = lib.mkIf isDesktop {
-    "nvidia/nvidia-application-profiles-rc.d/50-limit-free-buffer-pool-in-wayland-compositors.json".text = ''
-      {
-      	"rules": [{
-      		"pattern": {
-      			"feature": "procname",
-      			"matches": "niri"
-      		},
-      		"profile": "Limit Free Buffer Pool On Wayland Compositors"
-      	}],
-      	"profiles": [{
-      		"name": "Limit Free Buffer Pool On Wayland Compositors",
-      		"settings": [{
-      			"key": "GLVidHeapReuseRatio",
-      			"value": 0
-      		}]
-      	}]
-      }
-      }
-    '';
+    "nvidia/nvidia-application-profiles-rc.d/50-limit-free-buffer-pool-in-wayland-compositors.json".text =
+      ''
+        {
+        	"rules": [{
+        		"pattern": {
+        			"feature": "procname",
+        			"matches": "niri"
+        		},
+        		"profile": "Limit Free Buffer Pool On Wayland Compositors"
+        	}],
+        	"profiles": [{
+        		"name": "Limit Free Buffer Pool On Wayland Compositors",
+        		"settings": [{
+        			"key": "GLVidHeapReuseRatio",
+        			"value": 0
+        		}]
+        	}]
+        }
+        }
+      '';
   };
 
   hardware.keyboard.zsa.enable = true;
@@ -162,6 +173,33 @@ in
     jack.enable = true;
   };
 
+  services.jupyter = lib.mkIf isLaptop {
+    enable = true;
+    password = "argon2:$argon2id$v=19$m=10240,t=10,p=8$rBuNjcP4ENi1sCPxjQYkXA$3x4Kv+KsLfTxaLldNs/olUtEt+nlDU6zhPML4BHGvI4";
+    kernels.python3 =
+      let
+        env = pkgs.python313.withPackages (
+          p: with p; [
+            ipykernel
+            ipython-sql
+            psycopg2
+          ]
+        );
+      in
+      {
+        displayName = "Python 3 (SQL)";
+        language = "python";
+        argv = [
+          "${env.interpreter}"
+          "-m"
+          "ipykernel_launcher"
+          "-f"
+          "{connection_file}"
+        ];
+      };
+
+  };
+
   security.rtkit.enable = true;
   security.pam.services.swaylock = lib.mkIf isLaptop { };
 
@@ -179,7 +217,13 @@ in
   programs.appimage.binfmt = true;
   programs.niri = {
     enable = true;
-    package = pkgs.niri-unstable;
+    package = pkgs.niri-unstable.overrideAttrs (old: {
+      postPatch = (old.postPatch or "") + ''
+        substituteInPlace src/layout/monitor.rs \
+          --replace-fail 'self.view_size.h * 0.1 * zoom' \
+                          'self.view_size.h * 0.0 * zoom'
+      '';
+    });
   };
 
   virtualisation.podman = {

@@ -1,6 +1,7 @@
 { host, lib }:
 [
   {
+    layer = "top";
     height = 30;
     spacing = 4;
     modules-left = [

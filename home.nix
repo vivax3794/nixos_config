@@ -23,41 +23,43 @@ in
   home.username = "viv";
   home.homeDirectory = "/home/viv";
 
-  home.packages = with pkgs; [
-    # Base packages
-    cachix
-    hyfetch
-    nixfmt-tree
-    killall
-    eza
-    ripgrep
-    unzip
+  home.packages =
+    with pkgs;
+    [
+      # Base packages
+      cachix
+      hyfetch
+      nixfmt-tree
+      killall
+      eza
+      ripgrep
+      unzip
 
-    # Visual/GUI packages
-    graphite-cursors
-    mission-center
-    obsidian
-    nautilus
-    keymapp
-    inkscape
-    cura-appimage
-    claude-code
-    libresprite
-    wineWowPackages.stable
-    winetricks
-    protonvpn-gui
-    openscad
-  ]
-  ++ lib.optionals isLaptop [
-    geteduroam
-  ]
-  ++ lib.optionals isDesktop [
-    nvtopPackages.nvidia
-    lm_sensors
-    rpi-imager
-    dolphin-emu
-    qbittorrent
-  ];
+      # Visual/GUI packages
+      graphite-cursors
+      mission-center
+      obsidian
+      nautilus
+      keymapp
+      inkscape
+      cura-appimage
+      claude-code
+      libresprite
+      wineWow64Packages.stable
+      winetricks
+      protonvpn-gui
+      openscad
+    ]
+    ++ lib.optionals isLaptop [
+      geteduroam
+    ]
+    ++ lib.optionals isDesktop [
+      nvtopPackages.nvidia
+      lm_sensors
+      rpi-imager
+      dolphin-emu
+      qbittorrent
+    ];
 
   # Fastfetch
   programs.fastfetch = {
@@ -71,10 +73,13 @@ in
     preferAbbrs = true;
     shellInit = ''
       set fish_greeting
-    '' + builtins.readFile (builtins.fetchurl {
-      url = "https://raw.githubusercontent.com/folke/tokyonight.nvim/main/extras/fish/tokyonight_night.fish";
-      sha256 = "030zs3fvznn83128ply1wk739p8ywfndnyx45jxnlmmqvm9s6r6r";
-    });
+    ''
+    + builtins.readFile (
+      builtins.fetchurl {
+        url = "https://raw.githubusercontent.com/folke/tokyonight.nvim/main/extras/fish/tokyonight_night.fish";
+        sha256 = "030zs3fvznn83128ply1wk739p8ywfndnyx45jxnlmmqvm9s6r6r";
+      }
+    );
     shellAbbrs = {
       cd = "z";
       ls = "eza -lh --total-size";
@@ -102,7 +107,12 @@ in
 
   # Neovim
   programs.nixvim = import ./nvim.nix {
-    inherit host lib inputs pkgs;
+    inherit
+      host
+      lib
+      inputs
+      pkgs
+      ;
   };
 
   # Git
@@ -239,8 +249,14 @@ in
     '';
   };
 
-  nix.settings.trusted-users = [ "viv" "@wheel" ];
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nix.settings.trusted-users = [
+    "viv"
+    "@wheel"
+  ];
+  nix.settings.experimental-features = [
+    "nix-command"
+    "flakes"
+  ];
 
   home.stateVersion = "25.05";
 }
