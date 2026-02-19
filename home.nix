@@ -52,6 +52,10 @@ in
     ]
     ++ lib.optionals isLaptop [
       geteduroam
+
+      # JAVA BS
+      maven
+      openjdk25
     ]
     ++ lib.optionals isDesktop [
       nvtopPackages.nvidia

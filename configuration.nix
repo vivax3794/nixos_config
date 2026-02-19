@@ -217,13 +217,14 @@ in
   programs.appimage.binfmt = true;
   programs.niri = {
     enable = true;
-    package = pkgs.niri-unstable.overrideAttrs (old: {
-      postPatch = (old.postPatch or "") + ''
-        substituteInPlace src/layout/monitor.rs \
-          --replace-fail 'self.view_size.h * 0.1 * zoom' \
-                          'self.view_size.h * 0.0 * zoom'
-      '';
-    });
+    package = pkgs.niri-unstable;
+    # package = pkgs.niri-unstable.overrideAttrs (old: {
+    #   postPatch = (old.postPatch or "") + ''
+    #     substituteInPlace src/layout/monitor.rs \
+    #       --replace-fail 'self.view_size.h * 0.1 * zoom' \
+    #                       'self.view_size.h * 0.0 * zoom'
+    #   '';
+    # });
   };
 
   virtualisation.podman = {

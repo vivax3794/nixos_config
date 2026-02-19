@@ -73,6 +73,32 @@ in
       };
     }
     {
+      event = "FileType";
+      pattern = "java";
+      callback = {
+        __raw = ''
+          function()
+            local jdtls = require('jdtls')
+            local workspace_dir = vim.fn.stdpath('cache') .. '/jdtls/' .. vim.fn.fnamemodify(vim.fn.getcwd(), ':t')
+            
+            vim.env.JAVA_HOME = '${pkgs.jdk25}'
+            
+            local config = {
+              cmd = {
+                '${pkgs.jdt-language-server}/bin/jdtls',
+                '-data', workspace_dir,
+              },
+              root_dir = jdtls.setup.find_root({'.git', 'mvnw', 'gradlew', 'pom.xml', 'build.gradle'}),
+              settings = { java = {} },
+              init_options = { bundles = {} },
+            }
+            
+            jdtls.start_or_attach(config)
+          end
+        '';
+      };
+    }
+    {
       event = "BufWritePre";
       pattern = "*";
       callback = {
@@ -303,6 +329,9 @@ in
     };
   };
   plugins.luasnip.enable = true;
+
+  # plugins.jdtls.enable = true;
+  extraPlugins = [ pkgs.vimPlugins.nvim-jdtls ];
 
   keymaps = [
     {
