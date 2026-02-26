@@ -240,8 +240,14 @@ in
   # Laptop-specific
   programs.swaylock.enable = lib.mkIf isLaptop true;
 
-  # Desktop-specific
   programs.obs-studio.enable = true;
+
+  programs.aider-chat = {
+        enable = true;
+        settings = {
+            model = "openrouter/openai/gpt-5.1-codex";
+        };
+    };
 
   home.sessionVariables = {
     XDG_DATA_DIRS = "$XDG_DATA_DIRS:$HOME/.local/share/flatpak/exports/share";
