@@ -19,8 +19,12 @@ in
     inputs.niri.nixosModules.niri
   ];
 
-  # boot.kernelPackages = pkgs.linuxPackages_latest;
-  boot.kernelPackages = pkgs.linuxPackages_6_18; # Nvidia derivers out of date
+  boot.kernelPackages = pkgs.linuxPackages_latest;
+  # boot.kernelPackages = pkgs.linuxPackages_6_18; # Nvidia derivers out of date
+  boot.kernelParams = [
+    "nowatchdog"
+    "modprobe.blacklist=sp5100_tco"
+  ];
 
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
@@ -31,7 +35,10 @@ in
     options it87 force_id=0x8696 ignore_resource_conflict=1
   '';
   boot.extraModulePackages = lib.mkIf isDesktop [ it87-patch ];
-  boot.kernelModules = lib.mkIf isDesktop [ "it87" ];
+  boot.kernelModules = lib.mkIf isDesktop [
+    "it87"
+    "nvidia_uvm"
+  ];
   boot.binfmt.emulatedSystems = lib.mkIf isDesktop [ "aarch64-linux" ];
   boot.initrd.luks.devices = lib.mkIf isLaptop {
     "luks-25fa8b36-82c5-45bf-84b1-6dfc46042013".device =
@@ -121,7 +128,7 @@ in
     open = true;
     modesetting.enable = true;
     nvidiaSettings = true;
-    package = config.boot.kernelPackages.nvidiaPackages.beta;
+    package = config.boot.kernelPackages.nvidiaPackages.stable;
   };
   hardware.graphics = lib.mkIf isDesktop {
     enable = true;
@@ -133,6 +140,16 @@ in
       libva-vdpau-driver
       mesa
     ];
+  };
+  systemd.services."nvidia-shutdown" = lib.mkIf isDesktop {
+    description = "Unload NVIDIA modules before shutdown";
+    wantedBy = [ "shutdown.target" ];
+    before = [ "shutdown.target" ];
+    serviceConfig = {
+      Type = "oneshot";
+      RemainAfterExit = true;
+      ExecStop = "${pkgs.kmod}/bin/modprobe -r nvidia_drm nvidia_modeset nvidia_uvm nvidia";
+    };
   };
 
   services.flatpak.enable = true;
@@ -234,6 +251,18 @@ in
     autoPrune.enable = true;
     dockerCompat = true;
     dockerSocket.enable = true;
+  };
+
+  services.open-webui = lib.mkIf isDesktop {
+    enable = true;
+    openFirewall = true;
+    host = "0.0.0.0";
+    environment = {
+      MODELS_CACHE_TTL = "300";
+      UVICORN_WORKERS = "1";
+      THREAD_POOL_SIZE = "1000";
+      CHAT_STREAM_RESPONSE_CHUNK_MAX_BUFFER_SIZE = "";
+    };
   };
 
   system.stateVersion = "25.05";

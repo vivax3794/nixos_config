@@ -243,11 +243,11 @@ in
   programs.obs-studio.enable = true;
 
   programs.aider-chat = {
-        enable = true;
-        settings = {
-            model = "openrouter/openai/gpt-5.1-codex";
-        };
+    enable = true;
+    settings = {
+      model = "openrouter/openai/gpt-5.1-codex";
     };
+  };
 
   home.sessionVariables = {
     XDG_DATA_DIRS = "$XDG_DATA_DIRS:$HOME/.local/share/flatpak/exports/share";
