@@ -31,7 +31,6 @@ in
     gtk.enable = true;
   };
 
-
   home.packages =
     with pkgs;
     [
@@ -109,8 +108,12 @@ in
       format = "$directory$custom$cmd_duration\n$character";
       direnv.disabled = false;
       custom.jj = {
-        when = "${inputs.jj-starship.packages.${pkgs.stdenv.hostPlatform.system}.default}/bin/jj-starship detect";
-        shell = [ "${inputs.jj-starship.packages.${pkgs.stdenv.hostPlatform.system}.default}/bin/jj-starship" ];
+        when = "${
+          inputs.jj-starship.packages.${pkgs.stdenv.hostPlatform.system}.default
+        }/bin/jj-starship detect";
+        shell = [
+          "${inputs.jj-starship.packages.${pkgs.stdenv.hostPlatform.system}.default}/bin/jj-starship"
+        ];
         format = "$output ";
       };
     };
@@ -214,9 +217,12 @@ in
   services.batsignal = lib.mkIf isLaptop {
     enable = true;
     extraArgs = [
-      "-w" "30"
-      "-c" "15"
-      "-d" "5"
+      "-w"
+      "30"
+      "-c"
+      "15"
+      "-d"
+      "5"
     ];
   };
 
@@ -389,9 +395,11 @@ in
       font = theme.font;
       font-size = 24;
 
-      image = "${./wallpapers/laptop.jpeg}";
-      effect-blur = "10x3";
-      effect-vignette = "0.5:0.5";
+      #image = "${./wallpapers/laptop.jpeg}";
+      screenshot = true;
+      effect-blur = "20x3";
+      effect-vignette = "0.8:0.8";
+      effect-greyscale = true;
 
       clock = true;
       timestr = "%H:%M";
