@@ -156,6 +156,48 @@ in
   plugins.snacks = {
     enable = true;
     settings = {
+      dashboard = {
+        enable = true;
+        preset.keys = [
+          {
+            icon = " ";
+            key = "f";
+            desc = "Find File";
+            action = ":lua Snacks.picker.files()";
+          }
+          {
+            icon = " ";
+            key = "g";
+            desc = "Grep";
+            action = ":lua Snacks.picker.grep()";
+          }
+          {
+            icon = " ";
+            key = "r";
+            desc = "Recent Files";
+            action = ":lua Snacks.picker.recent()";
+          }
+          {
+            icon = " ";
+            key = "q";
+            desc = "Quit";
+            action = ":qa";
+          }
+        ];
+        sections = [
+          { section = "header"; }
+          {
+            section = "keys";
+            gap = 1;
+            padding = 1;
+          }
+          {
+            section = "recent_files";
+            limit = 8;
+            padding = 1;
+          }
+        ];
+      };
       picker.enable = true;
       scroll.enable = true;
       scope.enable = true;
@@ -179,6 +221,10 @@ in
         chunk.enabled = true;
       };
     };
+  };
+  plugins.flash = {
+    enable = true;
+    settings.modes.char.enabled = false;
   };
   plugins.which-key = {
     enable = true;
@@ -358,7 +404,54 @@ in
   # plugins.jdtls.enable = true;
   extraPlugins = [ pkgs.vimPlugins.nvim-jdtls ];
 
+  # plugins.nui.enable = true;
+  plugins.hunk = {
+    enable = true;
+    settings.hooks = {
+      on_diff_mount.__raw = ''
+        function(context)
+          vim.api.nvim_set_option_value("signcolumn", "yes", { win = context.winid })
+        end
+      '';
+    };
+  };
+
   keymaps = [
+    {
+      action.__raw = "function() require('flash').jump() end";
+      key = "s";
+      mode = [
+        "n"
+        "x"
+        "o"
+      ];
+      options = {
+        silent = true;
+        desc = "Flash";
+      };
+    }
+    {
+      action.__raw = "function() require('flash').treesitter() end";
+      key = "S";
+      mode = [
+        "n"
+        "x"
+        "o"
+      ];
+      options = {
+        silent = true;
+        desc = "Flash Treesitter";
+      };
+    }
+    {
+      action.__raw = "function() require('flash').remote() end";
+      key = "r";
+      mode = "o";
+      options = {
+        silent = true;
+        desc = "Remote Flash";
+      };
+    }
     {
       action = ":wqa<CR>";
       key = "<leader>q";

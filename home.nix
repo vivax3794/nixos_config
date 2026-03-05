@@ -86,6 +86,7 @@ in
     preferAbbrs = true;
     shellInit = ''
       set fish_greeting
+      abbr --add nsp --set-cursor 'nix-shell -p % --run fish'
     ''
     + builtins.readFile (
       builtins.fetchurl {
@@ -94,10 +95,12 @@ in
       }
     );
     shellAbbrs = {
+      cat = "bat";
       cd = "z";
       ls = "eza -lh --total-size";
       grep = "rg";
     };
+    functions.nsr = "nix-shell -p $argv[1] --run $argv[1]";
   };
   home.shell.enableFishIntegration = true;
 
@@ -116,6 +119,18 @@ in
         ];
         format = "$output ";
       };
+    };
+  };
+  programs.bat = {
+    enable = true;
+    config.theme = "tokyonight_night";
+  };
+  programs.atuin = {
+    enable = true;
+    enableFishIntegration = true;
+    settings = {
+      style = "compact";
+      inline_height = 20;
     };
   };
   programs.zoxide = {
@@ -139,6 +154,13 @@ in
 
   # Git
   programs.git.enable = true;
+  programs.delta = {
+    enable = true;
+    enableGitIntegration = true;
+    options = {
+      line-numbers = true;
+    };
+  };
   programs.jujutsu = {
     enable = true;
     settings = {
@@ -148,7 +170,10 @@ in
       };
       ui = {
         default-command = "log";
-        paginate = "never";
+        paginate = "auto";
+        pager = "delta";
+        diff-formatter = ":git";
+        diff-editor = ["nvim" "-c" "DiffEditor $left $right $output"];
       };
     };
   };
