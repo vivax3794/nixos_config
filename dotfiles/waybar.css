@@ -3,6 +3,10 @@
 @define-color selected-background #16161e;
 @define-color selected-foreground #7aa2f7;
 
+* {
+    font-family: "Fira Code Nerdfont";
+}
+
 window#waybar {
     background: transparent;
     border: none;
@@ -62,4 +66,21 @@ window#waybar {
   border-radius: 8px;
   background-color: @selected-foreground;
   border: none;
+}
+
+#battery {
+    padding: 0 10px;
+}
+
+#battery.warning {
+    color: #ff9e64;
+}
+
+#battery.critical {
+    color: #f7768e;
+    animation: blink 1s steps(2) infinite;
+}
+
+@keyframes blink {
+    to { color: #1a1b26; }
 }

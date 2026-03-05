@@ -37,10 +37,6 @@ in
     warp-mouse-to-focus.enable = true;
   };
 
-  cursor = {
-    theme = "graphite-dark-nord";
-  };
-
   overview = {
     workspace-shadow = {
       enable = false;
@@ -96,6 +92,16 @@ in
   spawn-at-startup = [
     { command = [ (lib.getExe pkgs.waybar) ]; }
     { command = [ (lib.getExe pkgs.xwayland-satellite) ]; }
+    {
+      command = [
+        (toString (
+          pkgs.writeShellScript "cliphist-watch" ''
+            ${pkgs.wl-clipboard}/bin/wl-paste --type text --watch ${lib.getExe pkgs.cliphist} store &
+            ${pkgs.wl-clipboard}/bin/wl-paste --type image --watch ${lib.getExe pkgs.cliphist} store
+          ''
+        ))
+      ];
+    }
   ]
   ++ lib.optionals (host == "laptop") [
     (setWallpaper "${./wallpapers/laptop.jpeg}")
@@ -148,11 +154,15 @@ in
       matches = [ { namespace = "^swww-daemon$"; } ];
       place-within-backdrop = true;
     }
+    {
+      matches = [ { namespace = "^anyrun$"; } ];
+      block-out-from = "screencast";
+    }
   ];
 
   binds = {
     "Mod+Shift+W".action.show-hotkey-overlay = { };
-    "Mod+R".action.spawn = [ "${pkgs.tofi}/bin/tofi-drun" ];
+    "Mod+R".action.spawn = [ "${lib.getExe pkgs.anyrun}" ];
 
     "Mod+O" = {
       action.toggle-overview = { };
@@ -269,7 +279,13 @@ in
     "Mod+Shift+V".action.switch-focus-between-floating-and-tiling = { };
 
     "Mod+W".action.toggle-column-tabbed-display = { };
-    "Mod+Shift+S".action.screenshot = { };
+    "Mod+Shift+S".action.spawn = [
+      (toString (
+        pkgs.writeShellScript "screenshot-satty" ''
+          ${lib.getExe pkgs.grim} -g "$(${lib.getExe pkgs.slurp})" - | ${lib.getExe pkgs.satty} --filename - --output-filename ~/Pictures/Screenshots/satty-$(date +%Y%m%d-%H%M%S).png
+        ''
+      ))
+    ];
     "Ctrl+Print".action.screenshot-screen = { };
     "Alt+Print".action.screenshot-window = { };
 
@@ -280,12 +296,25 @@ in
     "Mod+Shift+E".action.quit = { };
     "Ctrl+Alt+Delete".action.quit = { };
     "Mod+Shift+P".action.power-off-monitors = { };
+    "Mod+Shift+C".action.spawn = [
+      (toString (
+        pkgs.writeShellScript "cliphist-pick" ''
+          ${lib.getExe pkgs.cliphist} list | ${lib.getExe pkgs.anyrun} --plugins ${pkgs.anyrun}/lib/libstdin.so | ${lib.getExe pkgs.cliphist} decode | ${pkgs.wl-clipboard}/bin/wl-copy
+        ''
+      ))
+    ];
   }
   // lib.optionalAttrs (host == "laptop") {
-    "Mod+Ctrl+W".action.spawn = [
-      (lib.getExe pkgs.swaylock)
-      "--color"
-      "000000"
+    "Mod+Ctrl+W".action.spawn = [ (lib.getExe pkgs.swaylock-effects) ];
+    "XF86MonBrightnessUp".action.spawn = [
+      "${lib.getExe pkgs.brightnessctl}"
+      "set"
+      "+5%"
+    ];
+    "XF86MonBrightnessDown".action.spawn = [
+      "${lib.getExe pkgs.brightnessctl}"
+      "set"
+      "5%-"
     ];
   };
 

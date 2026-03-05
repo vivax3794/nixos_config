@@ -28,6 +28,10 @@
     };
     tree-sitter-serpentine.url = "github:Serpent-Tools/tree-sitter-serpentine";
     nix-flatpak.url = "github:gmodena/nix-flatpak/?ref=latest";
+    jj-starship = {
+      url = "github:dmmulroy/jj-starship";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =

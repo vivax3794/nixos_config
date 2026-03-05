@@ -180,6 +180,16 @@ in
       };
     };
   };
+  plugins.which-key = {
+    enable = true;
+    settings.spec = [
+      {
+        __unkeyed-1 = "<leader>m";
+        group = "Move item";
+      }
+    ];
+  };
+
   plugins.todo-comments = {
     enable = true;
     settings.keywords = {
@@ -205,10 +215,20 @@ in
     inlayHints = true;
     keymaps.silent = true;
     keymaps.lspBuf = {
-      "<leader>r" = "rename";
+      "<leader>r" = {
+        action = "rename";
+        desc = "Rename symbol";
+      };
     };
     keymaps.diagnostic = {
-      "<leader>e" = "open_float";
+      "<leader>e" = {
+        action = "open_float";
+        desc = "Diagnostic float";
+      };
+    };
+    servers.nil_ls = {
+      enable = true;
+      settings.formatting.command = [ "${pkgs.nixfmt}/bin/nixfmt" ];
     };
   };
 
@@ -230,26 +250,31 @@ in
               mode = "n";
               key = "<leader>a";
               action = ''function() vim.cmd.RustLsp("codeAction") end'';
+              desc = "Code action";
             }
             {
               mode = "v";
               key = "<leader>a";
               action = "vim.lsp.buf.code_action";
+              desc = "Code action";
             }
             {
               mode = "n";
               key = "K";
               action = ''function() vim.cmd.RustLsp({"hover", "actions"}) end'';
+              desc = "Hover actions";
             }
             {
               mode = "n";
               key = "<leader>md";
               action = ":RustLsp moveItem down<CR>";
+              desc = "Move item down";
             }
             {
               mode = "n";
               key = "<leader>mu";
               action = ":RustLsp moveItem up<CR>";
+              desc = "Move item up";
             }
           ];
 
@@ -257,9 +282,9 @@ in
           mkKeymapLua =
             keymap:
             if lib.hasPrefix ":" keymap.action then
-              ''vim.keymap.set("${keymap.mode}", "${keymap.key}", "${keymap.action}", {silent = true, buffer = bufnr})''
+              ''vim.keymap.set("${keymap.mode}", "${keymap.key}", "${keymap.action}", {silent = true, buffer = bufnr, desc = "${keymap.desc}"})''
             else
-              ''vim.keymap.set("${keymap.mode}", "${keymap.key}", ${keymap.action}, {silent = true, buffer = bufnr})'';
+              ''vim.keymap.set("${keymap.mode}", "${keymap.key}", ${keymap.action}, {silent = true, buffer = bufnr, desc = "${keymap.desc}"})'';
         in
         {
           __raw = ''
@@ -338,31 +363,46 @@ in
       action = ":wqa<CR>";
       key = "<leader>q";
       mode = "n";
-      options.silent = true;
+      options = {
+        silent = true;
+        desc = "Save all and quit";
+      };
     }
     {
       action = ":wa<CR>";
       key = "<C-s>";
       mode = "n";
-      options.silent = true;
+      options = {
+        silent = true;
+        desc = "Save all";
+      };
     }
     {
       action = "<ESC>:wa<CR>a";
       key = "<C-s>";
       mode = "i";
-      options.silent = true;
+      options = {
+        silent = true;
+        desc = "Save all";
+      };
     }
     {
       action = ":noh<CR>";
       key = "<leader>h";
       mode = "n";
-      options.silent = true;
+      options = {
+        silent = true;
+        desc = "Clear highlights";
+      };
     }
     {
       action = "zt";
       key = "zz";
       mode = "n";
-      options.silent = true;
+      options = {
+        silent = true;
+        desc = "Scroll to top";
+      };
     }
     {
       action = "<Cmd>BufferPrevious<CR>";
@@ -371,7 +411,10 @@ in
         "n"
         "i"
       ];
-      options.silent = true;
+      options = {
+        silent = true;
+        desc = "Previous buffer";
+      };
     }
     {
       action = "<Cmd>BufferNext<CR>";
@@ -380,73 +423,109 @@ in
         "n"
         "i"
       ];
-      options.silent = true;
+      options = {
+        silent = true;
+        desc = "Next buffer";
+      };
     }
     {
       action = "<Cmd>BufferMoveNext<CR>";
       key = "<leader>j";
       mode = "n";
-      options.silent = true;
+      options = {
+        silent = true;
+        desc = "Move buffer right";
+      };
     }
     {
       action = "<Cmd>BufferMovePrevious<CR>";
       key = "<leader>k";
       mode = "n";
-      options.silent = true;
+      options = {
+        silent = true;
+        desc = "Move buffer left";
+      };
     }
     {
       action = "<Cmd>BufferClose<CR>";
       key = "<leader>c";
       mode = "n";
-      options.silent = true;
+      options = {
+        silent = true;
+        desc = "Close buffer";
+      };
     }
     {
       action = "<Cmd>BufferCloseAllButCurrent<CR>";
       key = "<leader>C";
       mode = "n";
-      options.silent = true;
+      options = {
+        silent = true;
+        desc = "Close other buffers";
+      };
     }
     {
       action = "<Cmd>Oil --float<CR>";
       key = "<leader>o";
       mode = "n";
-      options.silent = true;
+      options = {
+        silent = true;
+        desc = "Oil (current dir)";
+      };
     }
     {
       action = "<Cmd>Oil --float .<CR>";
       key = "<leader>O";
       mode = "n";
-      options.silent = true;
+      options = {
+        silent = true;
+        desc = "Oil (root)";
+      };
     }
     {
       action = "<Cmd>lua Snacks.picker.files()<CR>";
       key = "<leader><space>";
       mode = "n";
-      options.silent = true;
+      options = {
+        silent = true;
+        desc = "Find files";
+      };
     }
     {
       action = "<Cmd>lua Snacks.picker.grep()<CR>";
       key = "<leader>g";
       mode = "n";
-      options.silent = true;
+      options = {
+        silent = true;
+        desc = "Grep";
+      };
     }
     {
       action = "<Cmd>lua Snacks.picker.lsp_workspace_symbols()<CR>";
       key = "<leader>s";
       mode = "n";
-      options.silent = true;
+      options = {
+        silent = true;
+        desc = "Workspace symbols";
+      };
     }
     {
       action = "<Cmd>lua Snacks.picker.diagnostics()<CR>";
       key = "<leader>d";
       mode = "n";
-      options.silent = true;
+      options = {
+        silent = true;
+        desc = "Diagnostics";
+      };
     }
     {
       action = "<Cmd>lua Snacks.picker.todo_comments()<CR>";
       key = "<leader>t";
       mode = "n";
-      options.silent = true;
+      options = {
+        silent = true;
+        desc = "Todo comments";
+      };
     }
   ]
   # Disable copy on delete/change
