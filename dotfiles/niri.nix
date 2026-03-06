@@ -5,7 +5,7 @@
 }:
 
 let
-  theme = import ./theme.nix;
+  theme = import ../theme.nix;
 
   setWallpaper = args: {
     command = [
@@ -104,11 +104,11 @@ in
     }
   ]
   ++ lib.optionals (host == "laptop") [
-    (setWallpaper "${./wallpapers/laptop.jpeg}")
+    (setWallpaper "${../wallpapers/laptop.jpeg}")
   ]
   ++ lib.optionals (host == "desktop") [
-    (setWallpaper "-o HDMI-A-3 ${./wallpapers/laptop.jpeg}")
-    (setWallpaper "-o DP-3 ${./wallpapers/wide.jpeg}")
+    (setWallpaper "-o HDMI-A-3 ${../wallpapers/laptop.jpeg}")
+    (setWallpaper "-o DP-3 ${../wallpapers/wide.jpeg}")
   ];
 
   prefer-no-csd = true;
@@ -293,7 +293,19 @@ in
       action.toggle-keyboard-shortcuts-inhibit = { };
       allow-inhibiting = false;
     };
-    "Mod+Shift+E".action.quit = { };
+    "Mod+Shift+E".action.spawn = [
+      (toString (
+        pkgs.writeShellScript "power-menu" ''
+          selected=$(printf "${lib.optionalString (host == "laptop") "Lock\\n"}Logout\nReboot\nShutdown" | ${lib.getExe pkgs.anyrun} --plugins ${pkgs.anyrun}/lib/libstdin.so)
+          case "$selected" in
+            ${lib.optionalString (host == "laptop") "\"Lock\") ${lib.getExe pkgs.swaylock-effects} ;;"}
+            "Logout") ${pkgs.niri}/bin/niri msg action quit ;;
+            "Reboot") ${pkgs.systemd}/bin/systemctl reboot ;;
+            "Shutdown") ${pkgs.systemd}/bin/systemctl poweroff ;;
+          esac
+        ''
+      ))
+    ];
     "Ctrl+Alt+Delete".action.quit = { };
     "Mod+Shift+P".action.power-off-monitors = { };
     "Mod+Shift+C".action.spawn = [
@@ -305,7 +317,6 @@ in
     ];
   }
   // lib.optionalAttrs (host == "laptop") {
-    "Mod+Ctrl+W".action.spawn = [ (lib.getExe pkgs.swaylock-effects) ];
     "XF86MonBrightnessUp".action.spawn = [
       "${lib.getExe pkgs.brightnessctl}"
       "set"
@@ -334,31 +345,30 @@ in
       };
     })
     (lib.mkIf (host == "desktop") {
-      # "DP-3" = {
-      #   mode = {
-      #     width = 3440;
-      #     height = 1440;
-      #     refresh = 100.0;
-      #   };
-      #   scale = 1.0;
-      #   position = {
-      #     x = 1080;
-      #     y = 500;
-      #   };
-      # };
-      # "HDMI-A-3" = {
-      #   mode = {
-      #     width = 1920;
-      #     height = 1080;
-      #     refresh = 60.0;
-      #   };
-      #   scale = 1.0;
-      #   # transform.rotation = 90;
-      #   position = {
-      #     x = 0;
-      #     y = 0;
-      #   };
-      # };
+      "HDMI-A-3" = {
+        mode = {
+          width = 1920;
+          height = 1080;
+          refresh = 60.0;
+        };
+        scale = 1.0;
+        position = {
+          x = 0;
+          y = 180;
+        };
+      };
+      "DP-3" = {
+        mode = {
+          width = 3440;
+          height = 1440;
+          refresh = 100.0;
+        };
+        scale = 1.0;
+        position = {
+          x = 1920;
+          y = 0;
+        };
+      };
     })
   ];
 }

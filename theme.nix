@@ -20,6 +20,7 @@
     pink = "#bb9af7";
 
     # UI
+    backgroundDark = "#16161e";
     inactive = "#505050";
   };
 }
