@@ -166,7 +166,19 @@ in
     variant = "";
   };
   services.xserver.videoDrivers = lib.mkIf isDesktop [ "nvidia" ];
-  services.getty.autologinUser = lib.mkIf isDesktop "viv";
+  services.greetd = lib.mkIf isDesktop {
+    enable = true;
+    settings = {
+      default_session = {
+        command = "${pkgs.tuigreet}/bin/tuigreet --time --cmd niri-session";
+        user = "greeter";
+      };
+      initial_session = {
+        command = "niri-session";
+        user = "viv";
+      };
+    };
+  };
   services.wivrn = lib.mkIf isDesktop {
     enable = true;
     openFirewall = true;

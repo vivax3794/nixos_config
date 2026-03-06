@@ -111,6 +111,15 @@ in
     }
   ];
 
+  plugins.copilot-lua = {
+    enable = true;
+    settings = {
+      panel.eanbled = false;
+      suggestion = {
+        auto_trigger = true;
+      };
+    };
+  };
   plugins.treesitter = {
     enable = true;
     settings = {
@@ -404,7 +413,6 @@ in
   # plugins.jdtls.enable = true;
   extraPlugins = [ pkgs.vimPlugins.nvim-jdtls ];
 
-  # plugins.nui.enable = true;
   plugins.hunk = {
     enable = true;
     settings.hooks = {

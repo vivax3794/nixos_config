@@ -200,11 +200,11 @@ in
   services.swww.enable = true;
 
   # Flatpak
-  services.flatpak = {
-    enable = true;
-    packages = [ "net.waterfox.waterfox" ];
-    update.onActivation = true;
-  };
+  # services.flatpak = {
+  #   enable = true;
+  #   packages = [ "net.waterfox.waterfox" ];
+  #   update.onActivation = true;
+  # };
 
   # Terminal
   programs.kitty = {
