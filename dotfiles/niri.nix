@@ -298,10 +298,10 @@ in
         pkgs.writeShellScript "power-menu" ''
           selected=$(printf "${lib.optionalString (host == "laptop") "Lock\\n"}Logout\nReboot\nShutdown" | ${lib.getExe pkgs.anyrun} --plugins ${pkgs.anyrun}/lib/libstdin.so)
           case "$selected" in
-            ${lib.optionalString (host == "laptop") "\"Lock\") ${lib.getExe pkgs.swaylock-effects} ;;"}
-            "Logout") ${pkgs.niri}/bin/niri msg action quit ;;
-            "Reboot") ${pkgs.systemd}/bin/systemctl reboot ;;
-            "Shutdown") ${pkgs.systemd}/bin/systemctl poweroff ;;
+            ${lib.optionalString (host == "laptop") "*Lock*) ${lib.getExe pkgs.swaylock-effects} ;;"}
+            *Logout*) ${pkgs.niri}/bin/niri msg action quit ;;
+            *Reboot*) ${pkgs.systemd}/bin/systemctl reboot ;;
+            *Shutdown*) ${pkgs.systemd}/bin/systemctl poweroff ;;
           esac
         ''
       ))
