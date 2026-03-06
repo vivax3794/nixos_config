@@ -173,7 +173,11 @@ in
         paginate = "auto";
         pager = "delta";
         diff-formatter = ":git";
-        diff-editor = ["nvim" "-c" "DiffEditor $left $right $output"];
+        diff-editor = [
+          "nvim"
+          "-c"
+          "DiffEditor $left $right $output"
+        ];
       };
     };
   };
@@ -278,10 +282,14 @@ in
         BetterGifPicker.enabled = true;
         ClearURLs.enabled = true;
         MentionAvatars.enabled = true;
-        BetterFolders.enabled = true;
+        # BetterFolders.enabled = true;
       };
     };
   };
+
+  warnings = [
+    "[REMINDER] Vesktop BetterFolders plugin broken - check if fixed in newer version (home.nix)"
+  ];
 
   # Laptop-specific
   programs.swaylock = lib.mkIf isLaptop {

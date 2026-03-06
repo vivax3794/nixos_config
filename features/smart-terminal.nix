@@ -17,4 +17,8 @@ in
   programs.kitty.keybindings."ctrl+t" = "launch --cwd=current --type=os-window";
 
   # programs.ydotool.enable = true;
+
+  warnings = [
+    "[REMINDER] smart-terminal: ydotool integration disabled - check if niri msg + ydotool works (features/smart-terminal.nix)"
+  ];
 }

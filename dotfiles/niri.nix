@@ -296,7 +296,9 @@ in
     "Mod+Shift+E".action.spawn = [
       (toString (
         pkgs.writeShellScript "power-menu" ''
-          selected=$(printf "${lib.optionalString (host == "laptop") "Lock\\n"}Logout\nReboot\nShutdown" | ${lib.getExe pkgs.anyrun} --plugins ${pkgs.anyrun}/lib/libstdin.so)
+          selected=$(printf "${
+            lib.optionalString (host == "laptop") "🔒  Lock\\n"
+          }🚪  Logout\n🔄  Reboot\n⏻  Shutdown" | ${lib.getExe pkgs.anyrun} --plugins ${pkgs.anyrun}/lib/libstdin.so)
           case "$selected" in
             ${lib.optionalString (host == "laptop") "*Lock*) ${lib.getExe pkgs.swaylock-effects} ;;"}
             *Logout*) ${pkgs.niri}/bin/niri msg action quit ;;

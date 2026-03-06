@@ -13,13 +13,14 @@ in
       height = 30;
       spacing = 4;
       modules-left = [ "niri/workspaces" ];
-      modules-right =
-        [ "tray" ]
-        ++ lib.optionals (host == "laptop") [ "battery" ]
-        ++ [
-          "pulseaudio/slider"
-          "clock"
-        ];
+      modules-right = [
+        "tray"
+      ]
+      ++ lib.optionals (host == "laptop") [ "battery" ]
+      ++ [
+        "pulseaudio/slider"
+        "clock"
+      ];
       tray.spacing = 10;
       battery = {
         states = {

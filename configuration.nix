@@ -202,21 +202,31 @@ in
             ipykernel
             ipython-sql
             psycopg2
+            numpy
+            matplotlib
           ]
         );
+        wrappedPython =
+          pkgs.runCommand "jupyter-python"
+            {
+              nativeBuildInputs = [ pkgs.makeWrapper ];
+            }
+            ''
+              mkdir -p $out/bin
+              makeWrapper ${env.interpreter} $out/bin/python \
+                --prefix PATH : ${pkgs.lib.makeBinPath [ pkgs.ffmpeg ]}
+            '';
       in
       {
-        displayName = "Python 3 (SQL)";
-        language = "python";
+        language = "python3";
         argv = [
-          "${env.interpreter}"
+          "${wrappedPython}/bin/python"
           "-m"
           "ipykernel_launcher"
           "-f"
           "{connection_file}"
         ];
       };
-
   };
 
   security.rtkit.enable = true;
