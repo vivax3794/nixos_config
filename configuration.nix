@@ -47,11 +47,13 @@ in
 
   networking.hostName = host;
   networking.networkmanager.enable = true;
+  networking.firewall.checkReversePath = "loose";
   networking.firewall.allowedTCPPorts = [ 5000 ];
   networking.firewall.allowedUDPPorts = [
     5353
     1900
   ];
+  networking.firewall.trustedInterfaces = [ "CloudflareWARP" ];
 
   time.timeZone = "Europe/Oslo";
   i18n.defaultLocale = "en_US.UTF-8";
@@ -161,6 +163,31 @@ in
   };
   services.blueman.enable = true;
   services.cloudflare-warp.enable = true;
+  # Upstream NixOS module is missing capabilities and tools in PATH.
+  # nftables: tunnel firewall rules; iproute2: TUN device routing.
+  systemd.services.cloudflare-warp = {
+    path = with pkgs; [ nftables iproute2 ];
+    serviceConfig = {
+      CapabilityBoundingSet = lib.mkForce [
+        "CAP_NET_ADMIN"
+        "CAP_NET_BIND_SERVICE"
+        "CAP_SYS_PTRACE"
+        "CAP_DAC_READ_SEARCH"
+        "CAP_NET_RAW"
+        "CAP_SETUID"
+        "CAP_SETGID"
+      ];
+      AmbientCapabilities = lib.mkForce [
+        "CAP_NET_ADMIN"
+        "CAP_NET_BIND_SERVICE"
+        "CAP_SYS_PTRACE"
+        "CAP_DAC_READ_SEARCH"
+        "CAP_NET_RAW"
+        "CAP_SETUID"
+        "CAP_SETGID"
+      ];
+    };
+  };
   services.xserver.xkb = {
     layout = if isLaptop then "en" else "us";
     variant = "";

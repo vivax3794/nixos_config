@@ -224,7 +224,6 @@ in
   # Browsers
   programs.zen-browser = {
     enable = true;
-    suppressXdgMigrationWarning = true;
   };
   programs.chromium.enable = true;
 
