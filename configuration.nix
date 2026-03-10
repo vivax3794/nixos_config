@@ -47,7 +47,10 @@ in
   networking.hostName = host;
   networking.networkmanager.enable = true;
   networking.firewall.checkReversePath = "loose";
-  networking.firewall.allowedTCPPorts = [ 5000 ];
+  networking.firewall.allowedTCPPorts = [
+    5000
+    8888
+  ];
   networking.firewall.allowedUDPPorts = [
     5353
     1900
@@ -165,7 +168,10 @@ in
   # Upstream NixOS module is missing capabilities and tools in PATH.
   # nftables: tunnel firewall rules; iproute2: TUN device routing.
   systemd.services.cloudflare-warp = {
-    path = with pkgs; [ nftables iproute2 ];
+    path = with pkgs; [
+      nftables
+      iproute2
+    ];
     serviceConfig = {
       CapabilityBoundingSet = lib.mkForce [
         "CAP_NET_ADMIN"
@@ -192,7 +198,7 @@ in
     variant = "";
   };
   services.xserver.videoDrivers = lib.mkIf isDesktop [ "nvidia" ];
-  services.greetd = lib.mkIf isDesktop {
+  services.greetd = {
     enable = true;
     settings = {
       default_session = {
@@ -230,9 +236,13 @@ in
     jack.enable = true;
   };
 
-  services.jupyter = lib.mkIf isLaptop {
+  services.jupyter = {
     enable = true;
+    ip = if isDesktop then "0.0.0.0" else "localhost";
     password = "argon2:$argon2id$v=19$m=10240,t=10,p=8$rBuNjcP4ENi1sCPxjQYkXA$3x4Kv+KsLfTxaLldNs/olUtEt+nlDU6zhPML4BHGvI4";
+    extraPackages = with pkgs; [
+      pandoc
+    ];
     kernels.python3 =
       let
         env = pkgs.python313.withPackages (
@@ -252,7 +262,12 @@ in
             ''
               mkdir -p $out/bin
               makeWrapper ${env.interpreter} $out/bin/python \
-                --prefix PATH : ${pkgs.lib.makeBinPath [ pkgs.ffmpeg ]}
+                --prefix PATH : ${
+                  pkgs.lib.makeBinPath [
+                    pkgs.ffmpeg
+                    pkgs.pandoc
+                  ]
+                }
             '';
       in
       {

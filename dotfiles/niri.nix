@@ -364,7 +364,7 @@ in
           height = 1440;
           refresh = 100.0;
         };
-        scale = 1.0;
+        scale = 1.25;
         position = {
           x = 1920;
           y = 0;

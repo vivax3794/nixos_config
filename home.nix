@@ -213,7 +213,7 @@ in
     font.package = pkgs.nerd-fonts.fira-code;
     font.name = theme.font;
     settings = {
-      font_size = 14;
+      font_size = 12;
       background_opacity = 0.8;
       background_blur = 0;
       placement_strategy = "top-left";
@@ -347,6 +347,9 @@ in
     "nix-command"
     "flakes"
   ];
+
+  # Claude Code user-level config
+  home.file.".claude/CLAUDE.md".source = ./dotfiles/CLAUDE.md;
 
   fonts.fontconfig.enable = true;
 
