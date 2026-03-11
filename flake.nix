@@ -32,6 +32,10 @@
       url = "github:dmmulroy/jj-starship";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    matrix-wallpaper = {
+      url = "github:vivax3794/matrix_reactive_wallpaper";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =

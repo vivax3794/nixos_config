@@ -195,7 +195,7 @@ in
 
   # Niri window manager
   programs.niri.settings = import ./dotfiles/niri.nix {
-    inherit host lib pkgs;
+    inherit host inputs lib pkgs;
   };
   services.swww.enable = true;
 

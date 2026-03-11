@@ -1,11 +1,13 @@
 {
   host,
+  inputs,
   lib,
   pkgs,
 }:
 
 let
   theme = import ../theme.nix;
+  isLaptop = host == "laptop";
 
   setWallpaper = args: {
     command = [
@@ -22,8 +24,7 @@ in
   input = {
     keyboard = {
       xkb = lib.mkIf (host == "laptop") {
-        # nirilayout = "no";
-        # options = "caps:escape,ctrl:swap_rwin_rctl";
+        options = "caps:escape";
       };
       numlock = true;
     };
@@ -92,6 +93,7 @@ in
   spawn-at-startup = [
     { command = [ (lib.getExe pkgs.waybar) ]; }
     { command = [ (lib.getExe pkgs.xwayland-satellite) ]; }
+    { command = [ (lib.getExe inputs.matrix-wallpaper.packages.${pkgs.stdenv.hostPlatform.system}.default) ]; }
     {
       command = [
         (toString (
@@ -155,6 +157,10 @@ in
       place-within-backdrop = true;
     }
     {
+      matches = [ { namespace = "^vitals-rain$"; } ];
+      place-within-backdrop = true;
+    }
+    {
       matches = [ { namespace = "^anyrun$"; } ];
       block-out-from = "screencast";
     }
@@ -175,16 +181,20 @@ in
     "Mod+J".action.focus-window-or-workspace-down = { };
     "Mod+K".action.focus-window-or-workspace-up = { };
     "Mod+L".action.focus-column-or-monitor-right = { };
-    "Mod+Shift+H".action.focus-monitor-left = { };
-    "Mod+Shift+L".action.focus-monitor-right = { };
+    "Mod+Shift+H".action =
+      if isLaptop then { focus-monitor-down = { }; } else { focus-monitor-left = { }; };
+    "Mod+Shift+L".action =
+      if isLaptop then { focus-monitor-up = { }; } else { focus-monitor-right = { }; };
 
     # Move bindings
     "Mod+Ctrl+H".action.move-column-left-or-to-monitor-left = { };
     "Mod+Ctrl+J".action.move-window-down-or-to-workspace-down = { };
     "Mod+Ctrl+K".action.move-window-up-or-to-workspace-up = { };
     "Mod+Ctrl+L".action.move-column-right-or-to-monitor-right = { };
-    "Mod+Ctrl+Shift+H".action.move-column-to-monitor-left = { };
-    "Mod+Ctrl+Shift+L".action.move-column-to-monitor-right = { };
+    "Mod+Ctrl+Shift+H".action =
+      if isLaptop then { move-column-to-monitor-down = { }; } else { move-column-to-monitor-left = { }; };
+    "Mod+Ctrl+Shift+L".action =
+      if isLaptop then { move-column-to-monitor-up = { }; } else { move-column-to-monitor-right = { }; };
 
     # Column navigation
     "Mod+Home".action.focus-column-first = { };
@@ -264,7 +274,11 @@ in
     "Mod+S".action.switch-preset-column-width = { };
     "Mod+F".action.maximize-column = { };
     "Mod+Shift+F".action.fullscreen-window = { };
-    "Mod+Ctrl+F".action.toggle-windowed-fullscreen = { };
+    "Mod+Ctrl+F".action.spawn = [
+      "sh"
+      "-c"
+      "niri msg action toggle-column-tabbed-display && niri msg action maximize-column"
+    ];
 
     "Mod+C".action.center-column = { };
     "Mod+Ctrl+C".action.center-visible-columns = { };
@@ -332,16 +346,28 @@ in
 
   outputs = lib.mkMerge [
     (lib.mkIf (host == "laptop") {
+      "DP-1" = {
+        mode = {
+          width = 3840;
+          height = 2160;
+          refresh = 60.0;
+        };
+        scale = 1.5;
+        position = {
+          x = 0;
+          y = 0;
+        };
+      };
       "eDP-1" = {
         mode = {
           width = 1920;
           height = 1080;
           refresh = 60.0;
         };
-        scale = 1;
+        scale = 1.25;
         position = {
-          x = 0;
-          y = 0;
+          x = 512;
+          y = 1440;
         };
       };
     })
@@ -355,7 +381,7 @@ in
         scale = 1.0;
         position = {
           x = 0;
-          y = 180;
+          y = 36;
         };
       };
       "DP-3" = {
