@@ -93,7 +93,11 @@ in
   spawn-at-startup = [
     { command = [ (lib.getExe pkgs.waybar) ]; }
     { command = [ (lib.getExe pkgs.xwayland-satellite) ]; }
-    { command = [ (lib.getExe inputs.matrix-wallpaper.packages.${pkgs.stdenv.hostPlatform.system}.default) ]; }
+    {
+      command = [
+        (lib.getExe inputs.matrix-wallpaper.packages.${pkgs.stdenv.hostPlatform.system}.default)
+      ];
+    }
     {
       command = [
         (toString (

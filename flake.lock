@@ -249,11 +249,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1773233603,
-        "narHash": "sha256-Uz/a+JwfsMkihip9P0P9TwCIvwakHf15FKfXy7/mpHc=",
+        "lastModified": 1773243920,
+        "narHash": "sha256-mw3tcyK80TrXXOc6L2ki7gvVdMlGlKAKUPcMuITroY4=",
         "owner": "vivax3794",
         "repo": "matrix_reactive_wallpaper",
-        "rev": "bb454306b25c770716d8cabc3eeaae65f487d9aa",
+        "rev": "81ef95aae5295a861633cc164fb7d351d0541908",
         "type": "github"
       },
       "original": {
