@@ -103,8 +103,14 @@ in
       pattern = "*";
       callback = {
         __raw = ''
-          function(event)
-              vim.lsp.buf.format()
+          function()
+            local clients = vim.lsp.get_clients({ bufnr = 0 })
+            for _, client in ipairs(clients) do
+              if client:supports_method("textDocument/formatting") then
+                vim.lsp.buf.format()
+                return
+              end
+            end
           end
         '';
       };
@@ -114,7 +120,7 @@ in
   plugins.copilot-lua = {
     enable = true;
     settings = {
-      panel.eanbled = false;
+      panel.enabled = false;
       suggestion = {
         auto_trigger = true;
       };
@@ -144,11 +150,19 @@ in
     settings = {
       auto_hide = 1;
       icons.button = "";
+      separator_at_end = false;
     };
   };
   plugins.nvim-autopairs.enable = true;
-  # plugins.hardtime.enable = true;
-  plugins.oil.enable = true;
+  plugins.colorizer.enable = true;
+  plugins.render-markdown.enable = true;
+  plugins.oil = {
+    enable = true;
+    settings.float = {
+      padding = 4;
+      border = "rounded";
+    };
+  };
   plugins.spider = {
     enable = true;
     keymaps = {
@@ -208,6 +222,8 @@ in
         ];
       };
       picker.enable = true;
+      notifier.enabled = true;
+      statuscolumn.enabled = true;
       scroll.enable = true;
       scope.enable = true;
       dim = {
@@ -222,7 +238,7 @@ in
         };
       };
       indent = {
-        enables = true;
+        enabled = true;
         scopes = {
           enabled = true;
           underline = true;
@@ -231,6 +247,19 @@ in
       };
     };
   };
+  plugins.mini.enable = true;
+  plugins.mini.modules.surround = {
+    mappings = {
+      add = "sa";
+      delete = "sd";
+      find = "sf";
+      find_left = "sF";
+      highlight = "sh";
+      replace = "sr";
+      update_n_lines = "sn";
+    };
+  };
+  plugins.mini.modules.ai = {};
   plugins.flash = {
     enable = true;
     settings.modes.char.enabled = false;
@@ -410,7 +439,6 @@ in
   };
   plugins.luasnip.enable = true;
 
-  # plugins.jdtls.enable = true;
   extraPlugins = [ pkgs.vimPlugins.nvim-jdtls ];
 
   plugins.hunk = {
@@ -427,7 +455,7 @@ in
   keymaps = [
     {
       action.__raw = "function() require('flash').jump() end";
-      key = "s";
+      key = "f";
       mode = [
         "n"
         "x"
@@ -440,7 +468,7 @@ in
     }
     {
       action.__raw = "function() require('flash').treesitter() end";
-      key = "S";
+      key = "F";
       mode = [
         "n"
         "x"
@@ -458,6 +486,18 @@ in
       options = {
         silent = true;
         desc = "Remote Flash";
+      };
+    }
+    {
+      action.__raw = "function() require('flash').treesitter_search() end";
+      key = "R";
+      mode = [
+        "o"
+        "x"
+      ];
+      options = {
+        silent = true;
+        desc = "Treesitter Search";
       };
     }
     {

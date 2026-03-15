@@ -199,13 +199,6 @@ in
   };
   services.swww.enable = true;
 
-  # Flatpak
-  # services.flatpak = {
-  #   enable = true;
-  #   packages = [ "net.waterfox.waterfox" ];
-  #   update.onActivation = true;
-  # };
-
   # Terminal
   programs.kitty = {
     enable = true;
@@ -294,11 +287,12 @@ in
   programs.swaylock = lib.mkIf isLaptop {
     enable = true;
     package = pkgs.swaylock-effects;
-    settings = {
+    settings = let
+      c = lib.mapAttrs (_: lib.removePrefix "#") theme.colors;
+    in {
       font = theme.font;
       font-size = 24;
 
-      #image = "${./wallpapers/laptop.jpeg}";
       screenshot = true;
       effect-blur = "20x3";
       effect-vignette = "0.8:0.8";
@@ -308,22 +302,22 @@ in
       timestr = "%H:%M";
       datestr = "%a, %b %d";
 
-      inside-color = "1a1b2600";
-      ring-color = "7aa2f7";
-      key-hl-color = "9ece6a";
-      bs-hl-color = "f7768e";
-      text-color = "c0caf5";
+      inside-color = "${c.background}00";
+      ring-color = c.blue;
+      key-hl-color = c.green;
+      bs-hl-color = c.red;
+      text-color = c.foreground;
       line-color = "00000000";
       separator-color = "00000000";
-      inside-clear-color = "1a1b2600";
-      ring-clear-color = "e0af68";
-      text-clear-color = "c0caf5";
-      inside-ver-color = "1a1b2600";
-      ring-ver-color = "9d7cd8";
-      text-ver-color = "c0caf5";
-      inside-wrong-color = "1a1b2600";
-      ring-wrong-color = "f7768e";
-      text-wrong-color = "f7768e";
+      inside-clear-color = "${c.background}00";
+      ring-clear-color = c.yellow;
+      text-clear-color = c.foreground;
+      inside-ver-color = "${c.background}00";
+      ring-ver-color = c.purple;
+      text-ver-color = c.foreground;
+      inside-wrong-color = "${c.background}00";
+      ring-wrong-color = c.red;
+      text-wrong-color = c.red;
 
       indicator = true;
       indicator-radius = 100;
@@ -339,17 +333,9 @@ in
     XDG_DATA_DIRS = "$XDG_DATA_DIRS:$HOME/.local/share/flatpak/exports/share";
   };
 
-  nix.settings.trusted-users = [
-    "viv"
-    "@wheel"
-  ];
-  nix.settings.experimental-features = [
-    "nix-command"
-    "flakes"
-  ];
-
   # Claude Code user-level config
-  home.file.".claude/CLAUDE.md".source = ./dotfiles/CLAUDE.md;
+  home.file.".claude/CLAUDE.md".source = ./dotfiles/claude-global.md;
+  home.file.".claude/commands/cleanup.md".source = ./dotfiles/claude_commands/cleanup.md;
 
   fonts.fontconfig.enable = true;
 

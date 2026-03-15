@@ -33,6 +33,5 @@ stdenv.mkDerivation rec {
     homepage = "https://github.com/frankcrawford/it87";
     license = licenses.gpl2Plus;
     platforms = platforms.linux;
-    broken = false;
-  };
+};
 }

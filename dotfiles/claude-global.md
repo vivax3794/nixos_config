@@ -19,3 +19,4 @@ Global instructions for Claude Code across all projects.
 ## Tool calling
 * Remember you have access to web searches — use them.
 * This is a NixOS system. If a tool isn't available on `$PATH`, use `nix-shell` to run it.
+* I use `jj` not `git` for 99% of repos, so prefer its commands over git.

@@ -227,7 +227,7 @@ in
       AllowUsers = [ "viv" ];
     };
   };
-  services.fail2ban.enable = lib.mkIf isDesktop true;
+  services.fail2ban.enable = isDesktop;
   services.pipewire = {
     enable = true;
     alsa.enable = true;
