@@ -41,3 +41,7 @@ nix flake check
 - use inline package reference (`${pkgs.python3} ...`) etc instead of installing packages globally if possible.
 - Use nix features to avoid magic numbers.
 - Use nixos/home-manager settings over manual setups for supports programs.
+
+## Rules
+* Search the internet instead of spending 10s of tool calls looking for stuff in the local store.
+* Dont feel scared to just try out a implementation and be guided by errors, you dont need to research every tiny option.

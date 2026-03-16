@@ -155,7 +155,10 @@ in
   };
   plugins.nvim-autopairs.enable = true;
   plugins.colorizer.enable = true;
-  plugins.render-markdown.enable = true;
+  plugins.render-markdown = {
+    enable = true;
+    settings.code.enabled = false;
+  };
   plugins.oil = {
     enable = true;
     settings.float = {
@@ -224,6 +227,15 @@ in
       picker.enable = true;
       notifier.enabled = true;
       statuscolumn.enabled = true;
+      image = {
+        enabled = true;
+        doc = {
+          enabled = true;
+          inline = true;
+          float = false;
+          conceal = false;
+        };
+      };
       scroll.enable = true;
       scope.enable = true;
       dim = {
@@ -259,7 +271,7 @@ in
       update_n_lines = "sn";
     };
   };
-  plugins.mini.modules.ai = {};
+  plugins.mini.modules.ai = { };
   plugins.flash = {
     enable = true;
     settings.modes.char.enabled = false;
@@ -440,6 +452,11 @@ in
   plugins.luasnip.enable = true;
 
   extraPlugins = [ pkgs.vimPlugins.nvim-jdtls ];
+
+  extraPackages = [
+    pkgs.imagemagick
+    pkgs.mermaid-cli
+  ];
 
   plugins.hunk = {
     enable = true;
