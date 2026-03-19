@@ -45,3 +45,12 @@ nix flake check
 ## Rules
 * Search the internet instead of spending 10s of tool calls looking for stuff in the local store.
 * Dont feel scared to just try out a implementation and be guided by errors, you dont need to research every tiny option.
+
+## Workflows
+This section details various habits/preferences/workflows of the user of the system, feel free to modify this section as you see fit.
+
+* User prefers os-level windows instead of terminal multiplexers as it collapses it all into one set of keybinds and abstractions.
+    * And it allows for moving non-terminal windows into the setup which is hard with stuff like termux.
+* User prefers external terminal tools over integrated nvim features for stuff that isnt directly code/file related.
+    * i.e they would prefer lazygit over lazygit.nvim (but prefers just the jj cli)
+* User likes stuff to be minimal / hidden until needed.

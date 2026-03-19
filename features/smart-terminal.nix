@@ -8,7 +8,7 @@ let
   kittySocket = "unix:/tmp/kitty-{kitty_pid}";
 
   smartTerminal = pkgs.writeShellScript "smart-terminal" ''
-    focused=$(${lib.getExe pkgs.niri} msg focused-window 2>/dev/null)
+    focused=$(${lib.getExe pkgs.niri-unstable} msg focused-window 2>/dev/null)
     if echo "$focused" | ${lib.getExe pkgs.ripgrep} -q 'App ID: "kitty"'; then
       kitty_pid=$(echo "$focused" | ${pkgs.gawk}/bin/awk '/PID:/ {print $2}')
       socket="unix:/tmp/kitty-$kitty_pid"
