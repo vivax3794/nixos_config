@@ -11,6 +11,10 @@ Global instructions for Claude Code across all projects.
     * For example, if you are tasked with moving some functions around, you can take the liberty to fix spelling/grammar mistakes.
 * Don't add inline comments unless asked. Code should be self-explanatory.
 
+### Research
+* Prefer web searches over inspecting local package installs.
+* If you get stuck doing many deep dives into the local package index to verify code exsists, just write the code and see if it compiles. You know whats faster than grepping for a method in a crates source? `cargo check`
+
 ### Rust
 * Read `Cargo.toml`/`lib.rs`/`main.rs` to see which lints are enforced for the project.
 * Run `cargo clippy` after changes to ensure the code follows style guidelines, and fix any violations.
