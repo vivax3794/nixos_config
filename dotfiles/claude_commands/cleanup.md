@@ -31,6 +31,9 @@ Beyond the general rules, apply these Rust-specific improvements:
 - Use `#[must_use]` on pure functions that return a value.
 - Prefer `impl Trait` in argument position where it simplifies generic bounds without hurting readability.
 
+### Efficency
+- If a async function doesnt use async (but needs to be async, due to trait bounds etc) prefer `fn` with `std::future::ready(...)` over `async fn`.
+
 ### After changes
 - Run `cargo clippy` and fix any new warnings.
 - Run the project's test suite (scoped to affected code where possible) and fix any regressions.

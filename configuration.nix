@@ -30,6 +30,9 @@ in
   boot.extraModprobeConfig = ''
     options btusb enable_autosuspend=n
   ''
+  + lib.optionalString isLaptop ''
+    options rtw89_core disable_ps_mode=Y
+  ''
   + lib.optionalString isDesktop ''
     options it87 force_id=0x8696 ignore_resource_conflict=1
   '';
@@ -46,6 +49,7 @@ in
 
   networking.hostName = host;
   networking.networkmanager.enable = true;
+  networking.networkmanager.wifi.powersave = lib.mkIf isLaptop false;
   networking.firewall.checkReversePath = "loose";
   networking.firewall.allowedTCPPorts = [
     5000

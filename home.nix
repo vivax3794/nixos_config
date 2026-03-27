@@ -197,7 +197,12 @@ in
 
   # Niri window manager
   programs.niri.settings = import ./dotfiles/niri.nix {
-    inherit host inputs lib pkgs;
+    inherit
+      host
+      inputs
+      lib
+      pkgs
+      ;
   };
   services.swww.enable = true;
 
@@ -276,57 +281,55 @@ in
         BetterGifPicker.enabled = true;
         ClearURLs.enabled = true;
         MentionAvatars.enabled = true;
-        # BetterFolders.enabled = true;
+        BetterFolders.enabled = true;
       };
     };
   };
-
-  warnings = [
-    "[REMINDER] Vesktop BetterFolders plugin broken - check if fixed in newer version (home.nix)"
-  ];
 
   # Laptop-specific
   programs.swaylock = lib.mkIf isLaptop {
     enable = true;
     package = pkgs.swaylock-effects;
-    settings = let
-      c = lib.mapAttrs (_: lib.removePrefix "#") theme.colors;
-    in {
-      font = theme.font;
-      font-size = 24;
+    settings =
+      let
+        c = lib.mapAttrs (_: lib.removePrefix "#") theme.colors;
+      in
+      {
+        font = theme.font;
+        font-size = 24;
 
-      screenshot = true;
-      effect-blur = "20x3";
-      effect-vignette = "0.8:0.8";
-      effect-greyscale = true;
+        screenshot = true;
+        effect-blur = "20x3";
+        effect-vignette = "0.8:0.8";
+        effect-greyscale = true;
 
-      clock = true;
-      timestr = "%H:%M";
-      datestr = "%a, %b %d";
+        clock = true;
+        timestr = "%H:%M";
+        datestr = "%a, %b %d";
 
-      inside-color = "${c.background}00";
-      ring-color = c.blue;
-      key-hl-color = c.green;
-      bs-hl-color = c.red;
-      text-color = c.foreground;
-      line-color = "00000000";
-      separator-color = "00000000";
-      inside-clear-color = "${c.background}00";
-      ring-clear-color = c.yellow;
-      text-clear-color = c.foreground;
-      inside-ver-color = "${c.background}00";
-      ring-ver-color = c.purple;
-      text-ver-color = c.foreground;
-      inside-wrong-color = "${c.background}00";
-      ring-wrong-color = c.red;
-      text-wrong-color = c.red;
+        inside-color = "${c.background}00";
+        ring-color = c.blue;
+        key-hl-color = c.green;
+        bs-hl-color = c.red;
+        text-color = c.foreground;
+        line-color = "00000000";
+        separator-color = "00000000";
+        inside-clear-color = "${c.background}00";
+        ring-clear-color = c.yellow;
+        text-clear-color = c.foreground;
+        inside-ver-color = "${c.background}00";
+        ring-ver-color = c.purple;
+        text-ver-color = c.foreground;
+        inside-wrong-color = "${c.background}00";
+        ring-wrong-color = c.red;
+        text-wrong-color = c.red;
 
-      indicator = true;
-      indicator-radius = 100;
-      indicator-thickness = 7;
-      ignore-empty-password = true;
-      show-failed-attempts = true;
-    };
+        indicator = true;
+        indicator-radius = 100;
+        indicator-thickness = 7;
+        ignore-empty-password = true;
+        show-failed-attempts = true;
+      };
   };
 
   programs.obs-studio.enable = true;
@@ -338,6 +341,12 @@ in
   # Claude Code user-level config
   home.file.".claude/CLAUDE.md".source = ./dotfiles/claude-global.md;
   home.file.".claude/commands/cleanup.md".source = ./dotfiles/claude_commands/cleanup.md;
+  home.file.".claude/settings.json".text = ''
+    {
+      "showThinkingSummaries": true,
+      "effortLevel": "high"
+    }
+  '';
 
   fonts.fontconfig.enable = true;
 
