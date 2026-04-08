@@ -218,7 +218,6 @@ in
   services.wivrn = lib.mkIf isDesktop {
     enable = true;
     openFirewall = true;
-    defaultRuntime = true;
     highPriority = true;
   };
   services.openssh = lib.mkIf isDesktop {
@@ -238,6 +237,8 @@ in
     alsa.support32Bit = true;
     pulse.enable = true;
     jack.enable = true;
+    extraLv2Packages = [ pkgs.ldacbt ];
+    wireplumber.extraLv2Packages = [ pkgs.ldacbt ];
   };
 
   services.jupyter = {

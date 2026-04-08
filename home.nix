@@ -58,7 +58,7 @@ in
       libresprite
       wineWow64Packages.stable
       winetricks
-      protonvpn-gui
+      proton-vpn
       openscad
     ]
     ++ lib.optionals isLaptop [
@@ -204,7 +204,7 @@ in
       pkgs
       ;
   };
-  services.swww.enable = true;
+  services.awww.enable = true;
 
   # Terminal
   programs.kitty = {
@@ -340,7 +340,7 @@ in
 
   # Claude Code user-level config
   home.file.".claude/CLAUDE.md".source = ./dotfiles/claude-global.md;
-  home.file.".claude/commands/cleanup.md".source = ./dotfiles/claude_commands/cleanup.md;
+  home.file.".claude/commands".source = ./dotfiles/claude_commands;
   home.file.".claude/settings.json".text = ''
     {
       "showThinkingSummaries": true,

@@ -14,7 +14,7 @@ let
       (toString (
         pkgs.writeShellScript "set-wallpaper" ''
           sleep 1
-          ${lib.getExe pkgs.swww} img ${args}
+          ${lib.getExe pkgs.awww} img ${args}
         ''
       ))
     ];
@@ -157,7 +157,7 @@ in
   ];
   layer-rules = [
     {
-      matches = [ { namespace = "^swww-daemon$"; } ];
+      matches = [ { namespace = "^awww-daemon$"; } ];
       place-within-backdrop = true;
     }
     {
