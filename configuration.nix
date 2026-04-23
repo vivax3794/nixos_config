@@ -34,14 +34,17 @@ in
     options rtw89_core disable_ps_mode=Y
   ''
   + lib.optionalString isDesktop ''
-    options it87 force_id=0x8696 ignore_resource_conflict=1
+    options it87 force_id=0x8696 ignore_resource_conflict=1 mmio=on
   '';
   boot.extraModulePackages = lib.mkIf isDesktop [ it87-patch ];
   boot.kernelModules = lib.mkIf isDesktop [
     "it87"
     "nvidia_uvm"
   ];
-  boot.binfmt.emulatedSystems = lib.mkIf isDesktop [ "aarch64-linux" ];
+
+  boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
+  boot.binfmt.preferStaticEmulators = true;
+
   boot.initrd.luks.devices = lib.mkIf isLaptop {
     "luks-25fa8b36-82c5-45bf-84b1-6dfc46042013".device =
       "/dev/disk/by-uuid/25fa8b36-82c5-45bf-84b1-6dfc46042013";
@@ -136,7 +139,7 @@ in
     open = true;
     modesetting.enable = true;
     nvidiaSettings = true;
-    package = config.boot.kernelPackages.nvidiaPackages.stable;
+    package = config.boot.kernelPackages.nvidiaPackages.beta;
   };
   hardware.graphics = lib.mkIf isDesktop {
     enable = true;
@@ -289,6 +292,8 @@ in
 
   security.rtkit.enable = true;
   security.pam.services.swaylock = lib.mkIf isLaptop { };
+
+  programs.coolercontrol.enable = isDesktop;
 
   powerManagement.cpuFreqGovernor = "performance";
 

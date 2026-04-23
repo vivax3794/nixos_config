@@ -19,6 +19,22 @@ let
       ))
     ];
   };
+
+  setWallpaperForModel = model: image: {
+    command = [
+      (toString (
+        pkgs.writeShellScript "set-wallpaper-by-model" ''
+          sleep 1
+          output=$(${lib.getExe pkgs.niri} msg --json outputs \
+            | ${lib.getExe pkgs.jq} -r --arg m ${lib.escapeShellArg model} \
+              'to_entries[] | select(.value.model == $m) | .key')
+          if [ -n "$output" ]; then
+            ${lib.getExe pkgs.awww} img -o "$output" ${image}
+          fi
+        ''
+      ))
+    ];
+  };
 in
 {
   input = {
@@ -113,8 +129,8 @@ in
     (setWallpaper "${../wallpapers/laptop.jpeg}")
   ]
   ++ lib.optionals (host == "desktop") [
-    (setWallpaper "-o HDMI-A-3 ${../wallpapers/laptop.jpeg}")
-    (setWallpaper "-o DP-3 ${../wallpapers/wide.jpeg}")
+    (setWallpaperForModel "HP E27 G4" "${../wallpapers/laptop.jpeg}")
+    (setWallpaperForModel "S34CG50" "${../wallpapers/wide.jpeg}")
   ];
 
   prefer-no-csd = true;
@@ -376,7 +392,7 @@ in
       };
     })
     (lib.mkIf (host == "desktop") {
-      "HDMI-A-3" = {
+      "HP Inc. HP E27 G4 CNK1451WNL" = {
         mode = {
           width = 1920;
           height = 1080;
@@ -388,7 +404,7 @@ in
           y = 36;
         };
       };
-      "DP-3" = {
+      "Samsung Electric Company S34CG50 HNBX701094" = {
         mode = {
           width = 3440;
           height = 1440;
