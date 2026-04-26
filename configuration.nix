@@ -50,6 +50,11 @@ in
       "/dev/disk/by-uuid/25fa8b36-82c5-45bf-84b1-6dfc46042013";
   };
 
+  zramSwap = {
+    enable = true;
+    memoryPercent = 25;
+  };
+
   networking.hostName = host;
   networking.networkmanager.enable = true;
   networking.networkmanager.wifi.powersave = lib.mkIf isLaptop false;
