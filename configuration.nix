@@ -23,6 +23,11 @@ in
   boot.kernelParams = [
     "nowatchdog"
     "modprobe.blacklist=sp5100_tco"
+  ]
+  ++ lib.optionals isLaptop [
+    "quiet"
+    "splash"
+    "udev.log_level=3"
   ];
 
   boot.loader.systemd-boot.enable = true;
@@ -49,6 +54,9 @@ in
     "luks-25fa8b36-82c5-45bf-84b1-6dfc46042013".device =
       "/dev/disk/by-uuid/25fa8b36-82c5-45bf-84b1-6dfc46042013";
   };
+
+  boot.plymouth.enable = lib.mkIf isLaptop true;
+  boot.initrd.systemd.enable = lib.mkIf isLaptop true;
 
   zramSwap = {
     enable = true;
