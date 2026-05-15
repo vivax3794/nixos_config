@@ -19,7 +19,6 @@ rm -rfv ~/.cargo/registry/src
 rm -rfv ~/.cargo/git
 
 rm -rfv ~/.cache
-rm -rfv /tmp
 
 sudo find /var/lib/systemd/coredump -name "*.xz" -delete
 sudo systemd-tmpfiles --clean

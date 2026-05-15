@@ -1,4 +1,4 @@
 jj new -m "UPDATE"
 nix flake update
-sudo nixos-rebuild boot --upgrade-all
+sudo nixos-rebuild boot 
 jj new

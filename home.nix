@@ -73,8 +73,19 @@ in
       lm_sensors
       rpi-imager
       dolphin-emu
+      eden
       qbittorrent
     ];
+
+  programs.vscode = {
+    enable = true;
+    package = pkgs.vscode.fhsWithPackages (
+      ps: with ps; [
+        dotnet-runtime_8
+      ]
+    );
+    mutableExtensionsDir = true; # lets you install CWTools from marketplace
+  };
 
   # Fastfetch
   programs.fastfetch = {
@@ -145,13 +156,15 @@ in
   };
 
   # Neovim
-  programs.nixvim = import ./dotfiles/nvim.nix {
+  programs.nixvim = (import ./dotfiles/nvim.nix {
     inherit
       host
       lib
       inputs
       pkgs
       ;
+  }) // {
+    nixpkgs.useGlobalPackages = true;
   };
 
   # Git

@@ -47,9 +47,6 @@ in
     "nvidia_uvm"
   ];
 
-  boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
-  boot.binfmt.preferStaticEmulators = true;
-
   boot.initrd.luks.devices = lib.mkIf isLaptop {
     "luks-25fa8b36-82c5-45bf-84b1-6dfc46042013".device =
       "/dev/disk/by-uuid/25fa8b36-82c5-45bf-84b1-6dfc46042013";
@@ -308,7 +305,7 @@ in
 
   programs.coolercontrol.enable = isDesktop;
 
-  powerManagement.cpuFreqGovernor = "performance";
+  powerManagement.cpuFreqGovernor = if isDesktop then "balance_performance" else "balance_power";
 
   programs.steam = {
     enable = true;
@@ -318,8 +315,11 @@ in
     gamescopeSession.enable = true;
     extraCompatPackages = [ pkgs.proton-ge-bin ];
   };
-  programs.appimage.enable = true;
+  programs.appimage.enable = false;
   programs.appimage.binfmt = true;
+  boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
+  boot.binfmt.preferStaticEmulators = true;
+
   programs.niri = {
     enable = true;
     package = pkgs.niri-unstable;
