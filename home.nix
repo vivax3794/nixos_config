@@ -59,7 +59,9 @@ in
       wineWow64Packages.stable
       winetricks
       proton-vpn
-      openscad
+      openscad-unstable
+
+      lutris
     ]
     ++ lib.optionals isLaptop [
       geteduroam
@@ -156,16 +158,18 @@ in
   };
 
   # Neovim
-  programs.nixvim = (import ./dotfiles/nvim.nix {
-    inherit
-      host
-      lib
-      inputs
-      pkgs
-      ;
-  }) // {
-    nixpkgs.useGlobalPackages = true;
-  };
+  programs.nixvim =
+    (import ./dotfiles/nvim.nix {
+      inherit
+        host
+        lib
+        inputs
+        pkgs
+        ;
+    })
+    // {
+      nixpkgs.useGlobalPackages = true;
+    };
 
   # Git
   programs.git.enable = true;

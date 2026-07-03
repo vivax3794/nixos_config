@@ -62,7 +62,7 @@ in
 
   layout = {
     gaps = 8;
-    center-focused-column = "on-overflow";
+    # center-focused-column = "on-overflow";
     background-color = "transparent";
     default-column-width = {
       proportion = 0.5;
@@ -366,13 +366,13 @@ in
 
   outputs = lib.mkMerge [
     (lib.mkIf (host == "laptop") {
-      "DP-1" = {
+      "HDMI-A-1" = {
         mode = {
-          width = 3840;
-          height = 2160;
+          width = 1920;
+          height = 1080;
           refresh = 60.0;
         };
-        scale = 1.5;
+        scale = 1.0;
         position = {
           x = 0;
           y = 0;
@@ -386,8 +386,8 @@ in
         };
         scale = 1.25;
         position = {
-          x = 512;
-          y = 1440;
+          x = 192;
+          y = 1080;
         };
       };
     })

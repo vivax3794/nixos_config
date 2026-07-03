@@ -28,6 +28,7 @@ in
     "quiet"
     "splash"
     "udev.log_level=3"
+    "pcie_aspm=off" # force-disable ASPM globally; rtw89 RTL8852BE firmware SER crashes
   ];
 
   boot.loader.systemd-boot.enable = true;
@@ -37,6 +38,7 @@ in
   ''
   + lib.optionalString isLaptop ''
     options rtw89_core disable_ps_mode=Y
+    options rtw89_pci disable_clkreq=Y disable_aspm_l1=Y disable_aspm_l1ss=Y
   ''
   + lib.optionalString isDesktop ''
     options it87 force_id=0x8696 ignore_resource_conflict=1 mmio=on
@@ -55,6 +57,11 @@ in
   boot.plymouth.enable = lib.mkIf isLaptop true;
   boot.initrd.systemd.enable = lib.mkIf isLaptop true;
 
+  boot.kernel.sysctl = {
+    "fs.inotify.max_user_watches" = 1048576;
+    "fs.inotify.max_user_instances" = 1048576;
+  };
+
   zramSwap = {
     enable = true;
     memoryPercent = 25;
@@ -63,6 +70,54 @@ in
   networking.hostName = host;
   networking.networkmanager.enable = true;
   networking.networkmanager.wifi.powersave = lib.mkIf isLaptop false;
+
+  # The laptop's RTL8852BE (rtw89) firmware occasionally crashes and self-recovers
+  # via SER, stalling all traffic for ~60s while NetworkManager still reports "up".
+  # This watchdog pings the gateway and force-reconnects on a sustained stall,
+  # turning the minute-long outage into a ~5s blip.
+  systemd.services.wifi-watchdog = lib.mkIf isLaptop {
+    description = "Recover rtw89 wifi from firmware SER stalls by reconnecting";
+    after = [ "NetworkManager.service" ];
+    wantedBy = [ "multi-user.target" ];
+    path = [
+      pkgs.iputils
+      pkgs.iproute2
+      pkgs.networkmanager
+      pkgs.gawk
+    ];
+    serviceConfig = {
+      Restart = "always";
+      RestartSec = 10;
+    };
+    script =
+      let
+        iface = "wlo1";
+        pollSeconds = 5;
+        failThreshold = 3;
+      in
+      ''
+        fails=0
+        while true; do
+          gw=$(ip -4 route show default dev ${iface} 2>/dev/null | awk '{print $3; exit}')
+          if [ -z "$gw" ]; then
+            fails=0
+          elif ping -c1 -W2 -I ${iface} "$gw" >/dev/null 2>&1; then
+            fails=0
+          else
+            fails=$((fails + 1))
+            if [ "$fails" -ge ${toString failThreshold} ]; then
+              echo "gateway $gw unreachable ${toString failThreshold}x; reconnecting ${iface}"
+              nmcli device disconnect ${iface} || true
+              nmcli device connect ${iface} || true
+              fails=0
+              sleep 8
+            fi
+          fi
+          sleep ${toString pollSeconds}
+        done
+      '';
+  };
+
   networking.firewall.checkReversePath = "loose";
   networking.firewall.allowedTCPPorts = [
     5000
@@ -256,10 +311,12 @@ in
 
   services.jupyter = {
     enable = true;
-    ip = if isDesktop then "0.0.0.0" else "localhost";
+    # ip = if isDesktop then "0.0.0.0" else "localhost";
+    ip = "0.0.0.0";
     password = "argon2:$argon2id$v=19$m=10240,t=10,p=8$rBuNjcP4ENi1sCPxjQYkXA$3x4Kv+KsLfTxaLldNs/olUtEt+nlDU6zhPML4BHGvI4";
-    extraPackages = with pkgs; [
-      pandoc
+    extraPackages = [
+      pkgs.pandoc
+      pkgs.python3Packages.jupyter-collaboration
     ];
     kernels.python3 =
       let
