@@ -231,9 +231,12 @@ in
     font.name = theme.font;
     settings = {
       font_size = 12;
-      background_opacity = 0.8;
+      background_opacity = 0.9;
       background_blur = 0;
       placement_strategy = "top-left";
+      # Bump ANSI "bright black" — the theme default (#414868) is too dim
+      # to read against the background at reduced opacity (fish autosuggestions, etc.)
+      color8 = theme.colors.comment;
     };
     themeFile = "tokyo_night_night";
   };

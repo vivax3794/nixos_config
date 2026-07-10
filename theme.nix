@@ -7,7 +7,7 @@
     foreground = "#c0caf5";
     background = "#1a1b26";
     selection = "#283457";
-    comment = "#565f89";
+    comment = "#737aa2";
 
     # Accents
     red = "#f7768e";
