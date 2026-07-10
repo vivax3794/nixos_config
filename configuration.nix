@@ -19,7 +19,12 @@ in
     inputs.niri.nixosModules.niri
   ];
 
-  boot.kernelPackages = pkgs.linuxPackages_latest;
+  # Pinned to 6.12 LTS — NVIDIA 595.x doesn't support kernel 7.x (missing of_gpio.h).
+  # Switch back to linuxPackages_latest once nixpkgs has NVIDIA 600+ packaged.
+  boot.kernelPackages = pkgs.linuxPackages_6_12;
+  warnings = lib.mkIf isDesktop [
+    "Kernel pinned to 6.12 LTS. Switch back to linuxPackages_latest once nixpkgs has NVIDIA 600+ (needs kernel 7.x support)."
+  ];
   boot.kernelParams = [
     "nowatchdog"
     "modprobe.blacklist=sp5100_tco"
@@ -153,6 +158,8 @@ in
   programs.fish.enable = true;
 
   nixpkgs.config.allowUnfree = true;
+  nixpkgs.config.cudaSupport = isDesktop;
+  nixpkgs.config.permittedInsecurePackages = [ "pnpm-10.29.2" ];
   nix.settings.experimental-features = [
     "nix-command"
     "flakes"
@@ -227,6 +234,11 @@ in
       ExecStop = "${pkgs.kmod}/bin/modprobe -r nvidia_drm nvidia_modeset nvidia_uvm nvidia";
     };
   };
+
+  # services.ollama = lib.mkIf isDesktop {
+  #   enable = true;
+  # package = pkgs.ollama-cuda;
+  # };
 
   services.flatpak.enable = true;
   services.avahi = {
@@ -309,7 +321,7 @@ in
     wireplumber.extraLv2Packages = [ pkgs.ldacbt ];
   };
 
-  services.jupyter = {
+  services.jupyter = lib.mkIf isLaptop {
     enable = true;
     # ip = if isDesktop then "0.0.0.0" else "localhost";
     ip = "0.0.0.0";

@@ -1,0 +1,29 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__claude_ai_Mermaid_Chart__validate_and_render_mermaid_diagram",
+      "Bash(nix flake check:*)",
+      "Bash(git add:*)",
+      "Bash(wc:*)",
+      "Bash(nix search:*)",
+      "Bash(python3:*)",
+      "WebSearch",
+      "WebFetch(domain:niri-wm.github.io)",
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "Bash(nix flake:*)",
+      "Bash(nix-env:*)",
+      "Bash(xargs ls:*)",
+      "WebFetch(domain:github.com)",
+      "Bash(nix-instantiate:*)",
+      "Bash(nixos-option:*)",
+      "Bash(head:*)",
+      "Bash(cat:*)",
+      "Read(//sys/module/it87/parameters/**)",
+      "Bash(modinfo it87:*)",
+      "Bash(journalctl --list-boots)",
+      "WebFetch(domain:www.gigabyte.com)",
+      "WebFetch(domain:www.aorus.com)",
+      "Bash(nix eval *)"
+    ]
+  }
+}
