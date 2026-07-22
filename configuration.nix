@@ -11,6 +11,11 @@ let
   isDesktop = host == "desktop";
   isLaptop = host == "laptop";
   it87-patch = config.boot.kernelPackages.callPackage ./it87-patch.nix { };
+
+  # pam_u2f mapping file (public key material, safe to commit). PAM 2FA below
+  # only turns on once this exists, so an un-enrolled checkout can't lock you out.
+  u2fMappings = ./u2f_mappings;
+  u2fEnrolled = builtins.pathExists u2fMappings;
 in
 {
   imports = [
@@ -169,6 +174,7 @@ in
     xdg-desktop-portal-gtk
     xwayland-satellite
     pavucontrol
+    pam_u2f # provides pamu2fcfg for enrolling the YubiKey into /etc/nixos/u2f_mappings
   ];
   environment.etc = lib.mkIf isDesktop {
     "nvidia/nvidia-application-profiles-rc.d/50-limit-free-buffer-pool-in-wayland-compositors.json".text =
@@ -289,12 +295,17 @@ in
         command = "${pkgs.tuigreet}/bin/tuigreet --time --cmd niri-session";
         user = "greeter";
       };
-      initial_session = {
-        command = "niri-session";
-        user = "viv";
-      };
+      # No initial_session: auto-login would bypass PAM entirely (no password,
+      # no key). Going through tuigreet means login enforces password + YubiKey.
     };
   };
+
+  # Auto-unlock the gnome-keyring at login. Its unlock dialog is gcr's own prompt,
+  # not PAM, so u2f can't gate it directly; instead we unlock it during the now
+  # 2FA-gated login so the secret store is protected by that login and the popup
+  # disappears. Requires the keyring password to equal the login password.
+  services.gnome.gnome-keyring.enable = true;
+  security.pam.services.greetd.enableGnomeKeyring = true;
   services.wivrn = lib.mkIf isDesktop {
     enable = true;
     openFirewall = true;
@@ -321,56 +332,28 @@ in
     wireplumber.extraLv2Packages = [ pkgs.ldacbt ];
   };
 
-  services.jupyter = lib.mkIf isLaptop {
-    enable = true;
-    # ip = if isDesktop then "0.0.0.0" else "localhost";
-    ip = "0.0.0.0";
-    password = "argon2:$argon2id$v=19$m=10240,t=10,p=8$rBuNjcP4ENi1sCPxjQYkXA$3x4Kv+KsLfTxaLldNs/olUtEt+nlDU6zhPML4BHGvI4";
-    extraPackages = [
-      pkgs.pandoc
-      pkgs.python3Packages.jupyter-collaboration
-    ];
-    kernels.python3 =
-      let
-        env = pkgs.python313.withPackages (
-          p: with p; [
-            ipykernel
-            ipython-sql
-            psycopg2
-            numpy
-            matplotlib
-          ]
-        );
-        wrappedPython =
-          pkgs.runCommand "jupyter-python"
-            {
-              nativeBuildInputs = [ pkgs.makeWrapper ];
-            }
-            ''
-              mkdir -p $out/bin
-              makeWrapper ${env.interpreter} $out/bin/python \
-                --prefix PATH : ${
-                  pkgs.lib.makeBinPath [
-                    pkgs.ffmpeg
-                    pkgs.pandoc
-                  ]
-                }
-            '';
-      in
-      {
-        language = "python3";
-        argv = [
-          "${wrappedPython}/bin/python"
-          "-m"
-          "ipykernel_launcher"
-          "-f"
-          "{connection_file}"
-        ];
-      };
-  };
-
   security.rtkit.enable = true;
   security.pam.services.swaylock = lib.mkIf isLaptop { };
+
+  # YubiKey FIDO2/U2F as a REQUIRED second factor for every PAM service on both
+  # hosts: login/greetd, sudo, su, polkit, swaylock, etc. (control = "required"
+  # → password AND a key touch). Guarded on the mapping file existing so a fresh
+  # checkout without ./u2f_mappings stays password-only and can't lock you out.
+  #
+  # origin/appid are pinned (instead of the default pam://$HOSTNAME) so a single
+  # enrollment works on both desktop and laptop.
+  security.pam.u2f = lib.mkIf u2fEnrolled {
+    enable = true;
+    control = "required";
+    settings = {
+      authfile = "${u2fMappings}";
+      cue = true;
+      origin = "pam://viv";
+      appid = "pam://viv";
+    };
+  };
+  # SSH can't prompt for an interactive touch — keep sshd on password auth only.
+  security.pam.services.sshd.u2fAuth = lib.mkIf isDesktop false;
 
   programs.coolercontrol.enable = isDesktop;
 

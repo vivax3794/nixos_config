@@ -27,6 +27,7 @@ in
 
   # Cursor (works across Wayland + XWayland)
   home.pointerCursor = {
+    enable = true;
     package = pkgs.graphite-cursors;
     name = "graphite-dark-nord";
     size = 24;
@@ -59,7 +60,7 @@ in
       wineWow64Packages.stable
       winetricks
       proton-vpn
-      openscad-unstable
+      # openscad-unstable
 
       lutris
     ]
