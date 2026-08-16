@@ -48,6 +48,13 @@
     }@inputs:
     let
       overlays = [
+        # niri-flake still requests `libdisplay-info_0_2` and asserts its version, but
+        # nixpkgs dropped that attribute and niri's libdisplay-info-sys is on 0.3.
+        (final: prev: {
+          libdisplay-info_0_2 = final.libdisplay-info_0_3 // {
+            version = "0.2.0";
+          };
+        })
         inputs.niri.overlays.niri
       ];
       mkSystem =

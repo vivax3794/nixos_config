@@ -31,7 +31,6 @@ in
     inputs.zen-browser.homeModules.twilight
     inputs.nix-flatpak.homeManagerModules.nix-flatpak
     ./features/smart-terminal.nix
-    ./features/niri-templates.nix
     ./features/command-notify.nix
   ];
 
