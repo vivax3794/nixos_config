@@ -101,14 +101,13 @@ in
   // lib.optionalAttrs (host == "desktop") {
     LIBVA_DRIVER_NAME = "nvidia";
     GBM_BACKEND = "nvidia-drm";
-    __GLX_VENDOR_LIBARY_NAME = "nvidia";
+    __GLX_VENDOR_LIBRARY_NAME = "nvidia";
     WLR_NO_HARDWARE_CURSORS = "1";
     NIXOS_OZONE_WL = "1";
   };
 
   spawn-at-startup = [
     { command = [ (lib.getExe pkgs.waybar) ]; }
-    { command = [ (lib.getExe pkgs.xwayland-satellite) ]; }
     {
       command = [
         (lib.getExe inputs.matrix-wallpaper.packages.${pkgs.stdenv.hostPlatform.system}.default)

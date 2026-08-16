@@ -12,6 +12,24 @@ let
   isLaptop = host == "laptop";
   it87-patch = config.boot.kernelPackages.callPackage ./it87-patch.nix { };
 
+  # Some Windows games (e.g. Space Engineers 2) hard-require nvml.dll on
+  # startup, which stock Proton doesn't ship. installPhase's
+  # `ln -s $src/* $steamcompattool` makes $steamcompattool/files a symlink
+  # into the read-only fetched release tree, so it needs to become a real
+  # copy before we can drop our own files into it. installPhase already ends
+  # with `runHook postInstall`, so hook in there rather than appending past
+  # it, which would run after preFixup's compatibilitytool.vdf rename.
+  wineNvml = pkgs.callPackage ./wine-nvml.nix { };
+  protonGeWithNvml = pkgs.proton-ge-bin.overrideAttrs (old: {
+    postInstall = (old.postInstall or "") + ''
+      rm "$steamcompattool/files"
+      cp -rL "$src/files" "$steamcompattool/files"
+      chmod -R u+w "$steamcompattool/files"
+      cp ${wineNvml}/lib64/wine/x86_64-windows/nvml.dll "$steamcompattool/files/lib/wine/x86_64-windows/nvml.dll"
+      cp ${wineNvml}/lib64/wine/x86_64-unix/nvml.so "$steamcompattool/files/lib/wine/x86_64-unix/nvml.so"
+    '';
+  });
+
   # pam_u2f mapping file (public key material, safe to commit). PAM 2FA below
   # only turns on once this exists, so an un-enrolled checkout can't lock you out.
   u2fMappings = ./u2f_mappings;
@@ -24,12 +42,7 @@ in
     inputs.niri.nixosModules.niri
   ];
 
-  # Pinned to 6.12 LTS — NVIDIA 595.x doesn't support kernel 7.x (missing of_gpio.h).
-  # Switch back to linuxPackages_latest once nixpkgs has NVIDIA 600+ packaged.
-  boot.kernelPackages = pkgs.linuxPackages_6_12;
-  warnings = lib.mkIf isDesktop [
-    "Kernel pinned to 6.12 LTS. Switch back to linuxPackages_latest once nixpkgs has NVIDIA 600+ (needs kernel 7.x support)."
-  ];
+  boot.kernelPackages = pkgs.linuxPackages_latest;
   boot.kernelParams = [
     "nowatchdog"
     "modprobe.blacklist=sp5100_tco"
@@ -200,6 +213,7 @@ in
   };
 
   hardware.keyboard.zsa.enable = true;
+  hardware.opentabletdriver.enable = true;
   hardware.bluetooth = {
     enable = true;
     powerOnBoot = true;
@@ -217,7 +231,7 @@ in
     open = true;
     modesetting.enable = true;
     nvidiaSettings = true;
-    package = config.boot.kernelPackages.nvidiaPackages.beta;
+    package = config.boot.kernelPackages.nvidiaPackages.latest;
   };
   hardware.graphics = lib.mkIf isDesktop {
     enable = true;
@@ -365,7 +379,7 @@ in
     localNetworkGameTransfers.openFirewall = true;
     protontricks.enable = true;
     gamescopeSession.enable = true;
-    extraCompatPackages = [ pkgs.proton-ge-bin ];
+    extraCompatPackages = [ protonGeWithNvml ];
   };
   programs.appimage.enable = false;
   programs.appimage.binfmt = true;
@@ -375,13 +389,6 @@ in
   programs.niri = {
     enable = true;
     package = pkgs.niri-unstable;
-    # package = pkgs.niri-unstable.overrideAttrs (old: {
-    #   postPatch = (old.postPatch or "") + ''
-    #     substituteInPlace src/layout/monitor.rs \
-    #       --replace-fail 'self.view_size.h * 0.1 * zoom' \
-    #                       'self.view_size.h * 0.0 * zoom'
-    #   '';
-    # });
   };
 
   virtualisation.podman = {

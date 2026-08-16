@@ -34,7 +34,10 @@
       "Bash(nmcli -f IN-USE,SSID,CHAN,FREQ,SIGNAL dev wifi)",
       "Bash(pactl list *)",
       "Bash(grep -iA2 -e \"bluez\" -e \"Active Profile\" -e codec)",
-      "WebFetch(domain:wiki.nixos.org)"
+      "WebFetch(domain:wiki.nixos.org)",
+      "Read(//home/viv/.local/share/Steam/steamapps/**)",
+      "Read(//home/viv/.local/share/Steam/steamapps/compatdata/1133870/pfx/drive_c/users/steamuser/AppData/Local/**)",
+      "WebFetch(domain:search.nixos.org)"
     ]
   }
 }
