@@ -4,7 +4,7 @@ This file passedrovides guidance to Claude Code (claude.ai/code) when working wi
 
 ## Overview
 
-Dual-machine NixOS flake configuration for user `viv`, managing a `desktop` (NVIDIA GPU, VR) and `laptop` (LUKS-encrypted, Jupyter). Runs Niri (Wayland tiling WM) with Tokyo Night theme throughout.
+Dual-machine NixOS flake configuration for user `viv`, managing a `desktop` (AMD GPU, VR) and `laptop` (LUKS-encrypted, Jupyter). Runs Niri (Wayland tiling WM) with Tokyo Night theme throughout.
 
 ## Common Commands
 

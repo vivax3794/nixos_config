@@ -56,21 +56,25 @@ OS: NixOS 26.05 "Yarara" — kernel 7.0.3
 
 | Field | Value |
 |---|---|
-| Model | **NVIDIA GeForce RTX 5060** (GB206, Blackwell, PCI `10de:2d05`) |
-| Board vendor | InnoVISION (Inno3D) |
-| VBIOS | `98.06.21.40.B8` |
-| VRAM | **8 GiB** (8151 MiB usable, GDDR7) |
-| BAR1 | 8 GiB |
-| Memory clock | up to **14 001 MHz** (effective 28 Gbps GDDR7); idle 7001 MHz |
-| GPU max clock | **3090 MHz** (SM/graphics/video) |
-| Power | default 145 W (123 W min, 145 W max) |
-| Driver | NVIDIA proprietary 595.45.04, CUDA 13.2 runtime |
-| Display | enabled, current temp ~40 °C, T.limit 50 °C |
-| PCIe link | Gen 5, currently **x8** (board/slot wired x8) |
+| Model | **AMD Radeon RX 9070** (Navi 48, RDNA4, PCI `1002:7550`, ASUS `1043:061a`) |
+| VBIOS | `115-G295BP00-100`, ver `023.008.000.068.000001` (2025/05/07) |
+| VRAM | **16304 MiB GDDR6**, 256-bit, mclk 1258 MHz (~20 Gbps, ~640 GB/s) |
+| Resizable BAR | enabled - visible VRAM == total VRAM |
+| GTT (system-memory spill) | 30940 MiB, half of RAM, reached over PCIe at ~64 GB/s |
+| GPU max clock | **2460 MHz** (top sclk DPM state) |
+| Power | 317 W cap, 340 W max settable; 3x 8-pin |
+| PCIe link | **Gen 5 x16** |
+| Dual BIOS switch | currently **P** (performance); Q is the quiet fan curve. Power off to change. |
+| Driver | `amdgpu` + Mesa RADV / radeonsi |
+
+> Firmware assigns `boot_vga` to whichever adapter has a display attached at POST.
+> With a monitor on the motherboard, the iGPU takes it and niri renders there;
+> keeping all displays on this card keeps `boot_vga` here. See the memory note
+> `project_gpu_swap_amd`.
 
 ## GPU (integrated)
 
-`AMD/ATI Granite Ridge Radeon Graphics` (`1002:13c0`), driver `amdgpu` — present but currently unused for output (NVIDIA drives the display).
+`AMD/ATI Granite Ridge Radeon Graphics` (`1002:13c0`), driver `amdgpu` — present but unused for output (the discrete card drives the display).
 
 ## Storage
 
@@ -110,7 +114,7 @@ nvme0n1     931.5 G
 
 | Slot | Type | Width | Bus addr | Occupant |
 |---|---|---|---|---|
-| PCIE1 | PCIe x16 | x16 mech / **x8 electrical now** | `0000:00:01.1` | RTX 5060 (Gen5 x8 link) |
+| PCIE1 | PCIe x16 | x16 mech / **x16 electrical** | `0000:00:01.1` | discrete GPU (Gen5 x16 link) |
 | J3502 | M.2 Socket 3 | x4 | `0000:00:01.2` | Samsung 9100 PRO NVMe (Gen5 x4) |
 | PCIE3 | PCIe x4 | x4 | `0000:00:02.2` | (occupied — likely chipset-attached) |
 
@@ -147,7 +151,7 @@ No wireless adapter present.
 ## Audio
 
 * **Realtek ALC1220** (HDA, board-tagged `1022:15e3`)
-* NVIDIA GB206 HDMI/DP audio (`10de:22eb`)
+* Discrete GPU HDMI/DP audio
 * AMD Radeon HD-audio on iGPU (`1002:1640`)
 
 ## Other on-board

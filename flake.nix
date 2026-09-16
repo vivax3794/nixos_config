@@ -27,6 +27,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     tree-sitter-serpentine.url = "github:Serpent-Tools/tree-sitter-serpentine";
+    tree-sitter-paradox = {
+      url = "github:Acture/tree-sitter-paradox";
+      flake = false;
+    };
     nix-flatpak.url = "github:gmodena/nix-flatpak/?ref=latest";
     jj-starship = {
       url = "github:dmmulroy/jj-starship";
@@ -54,6 +58,17 @@
           libdisplay-info_0_2 = final.libdisplay-info_0_3 // {
             version = "0.2.0";
           };
+        })
+        # libcap-ng 0.9.5's file_caps_test mocks fgetxattr and fsetxattr but still
+        # references fremovexattr. musl ships all three in one libc.a member, so
+        # resolving it drags in duplicate definitions of the mocks and the test
+        # fails to link. Fixed upstream after 0.9.5.
+        (final: prev: {
+          libcap_ng =
+            if prev.stdenv.hostPlatform.isStatic then
+              prev.libcap_ng.overrideAttrs { doCheck = false; }
+            else
+              prev.libcap_ng;
         })
         inputs.niri.overlays.niri
       ];

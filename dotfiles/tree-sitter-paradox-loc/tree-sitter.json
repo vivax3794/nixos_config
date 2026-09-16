@@ -1,0 +1,30 @@
+{
+	"$schema": "https://tree-sitter.github.io/tree-sitter/assets/schemas/config.schema.json",
+	"grammars": [
+		{
+			"name": "paradox_loc",
+			"camelcase": "ParadoxLoc",
+			"title": "Paradox Localisation",
+			"scope": "source.paradox_loc",
+			"file-types": [
+				"yml"
+			],
+			"highlights": "queries/highlights.scm",
+			"injection-regex": "^paradox_loc$"
+		}
+	],
+	"metadata": {
+		"version": "0.1.0",
+		"license": "MIT",
+		"description": "Paradox localisation grammar for tree-sitter"
+	},
+	"bindings": {
+		"c": false,
+		"go": false,
+		"node": false,
+		"python": false,
+		"rust": false,
+		"swift": false,
+		"zig": false
+	}
+}

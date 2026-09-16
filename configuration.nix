@@ -12,24 +12,6 @@ let
   isLaptop = host == "laptop";
   it87-patch = config.boot.kernelPackages.callPackage ./it87-patch.nix { };
 
-  # Some Windows games (e.g. Space Engineers 2) hard-require nvml.dll on
-  # startup, which stock Proton doesn't ship. installPhase's
-  # `ln -s $src/* $steamcompattool` makes $steamcompattool/files a symlink
-  # into the read-only fetched release tree, so it needs to become a real
-  # copy before we can drop our own files into it. installPhase already ends
-  # with `runHook postInstall`, so hook in there rather than appending past
-  # it, which would run after preFixup's compatibilitytool.vdf rename.
-  wineNvml = pkgs.callPackage ./wine-nvml.nix { };
-  protonGeWithNvml = pkgs.proton-ge-bin.overrideAttrs (old: {
-    postInstall = (old.postInstall or "") + ''
-      rm "$steamcompattool/files"
-      cp -rL "$src/files" "$steamcompattool/files"
-      chmod -R u+w "$steamcompattool/files"
-      cp ${wineNvml}/lib64/wine/x86_64-windows/nvml.dll "$steamcompattool/files/lib/wine/x86_64-windows/nvml.dll"
-      cp ${wineNvml}/lib64/wine/x86_64-unix/nvml.so "$steamcompattool/files/lib/wine/x86_64-unix/nvml.so"
-    '';
-  });
-
   # pam_u2f mapping file (public key material, safe to commit). PAM 2FA below
   # only turns on once this exists, so an un-enrolled checkout can't lock you out.
   u2fMappings = ./u2f_mappings;
@@ -41,6 +23,11 @@ in
     ./hardware/${host}.nix
     inputs.niri.nixosModules.niri
   ];
+
+  programs.obs-studio = {
+    enable = true;
+    enableVirtualCamera = true;
+  };
 
   boot.kernelPackages = pkgs.linuxPackages_latest;
   boot.kernelParams = [
@@ -67,10 +54,7 @@ in
     options it87 force_id=0x8696 ignore_resource_conflict=1 mmio=on
   '';
   boot.extraModulePackages = lib.mkIf isDesktop [ it87-patch ];
-  boot.kernelModules = lib.mkIf isDesktop [
-    "it87"
-    "nvidia_uvm"
-  ];
+  boot.kernelModules = lib.mkIf isDesktop [ "it87" ];
 
   boot.initrd.luks.devices = lib.mkIf isLaptop {
     "luks-25fa8b36-82c5-45bf-84b1-6dfc46042013".device =
@@ -176,7 +160,7 @@ in
   programs.fish.enable = true;
 
   nixpkgs.config.allowUnfree = true;
-  nixpkgs.config.cudaSupport = isDesktop;
+  nixpkgs.config.rocmSupport = isDesktop;
   nixpkgs.config.permittedInsecurePackages = [ "pnpm-10.29.2" ];
   nix.settings.experimental-features = [
     "nix-command"
@@ -189,28 +173,6 @@ in
     pavucontrol
     pam_u2f # provides pamu2fcfg for enrolling the YubiKey into /etc/nixos/u2f_mappings
   ];
-  environment.etc = lib.mkIf isDesktop {
-    "nvidia/nvidia-application-profiles-rc.d/50-limit-free-buffer-pool-in-wayland-compositors.json".text =
-      ''
-        {
-        	"rules": [{
-        		"pattern": {
-        			"feature": "procname",
-        			"matches": "niri"
-        		},
-        		"profile": "Limit Free Buffer Pool On Wayland Compositors"
-        	}],
-        	"profiles": [{
-        		"name": "Limit Free Buffer Pool On Wayland Compositors",
-        		"settings": [{
-        			"key": "GLVidHeapReuseRatio",
-        			"value": 0
-        		}]
-        	}]
-        }
-        }
-      '';
-  };
 
   hardware.keyboard.zsa.enable = true;
   hardware.opentabletdriver.enable = true;
@@ -227,38 +189,20 @@ in
   };
   hardware.enableRedistributableFirmware = true;
 
-  hardware.nvidia = lib.mkIf isDesktop {
-    open = true;
-    modesetting.enable = true;
-    nvidiaSettings = true;
-    package = config.boot.kernelPackages.nvidiaPackages.latest;
+  hardware.amdgpu = lib.mkIf isDesktop {
+    # Loading amdgpu in stage 1 hard-hangs this machine when a display is
+    # attached to HDMI-A-1 at boot: a few kernel lines, then black, then fans to
+    # 100% as the SMU falls back. Stage 2 has the firmware and udev it needs.
+    initrd.enable = false;
+    opencl.enable = true;
+    # Exposes pp_od_clk_voltage, without which LACT can only read clocks rather
+    # than set them. The module default masks the bits known to cause flicker.
+    overdrive.enable = true;
   };
   hardware.graphics = lib.mkIf isDesktop {
     enable = true;
     enable32Bit = true;
-    extraPackages = with pkgs; [
-      nvidia-vaapi-driver
-      egl-wayland
-      libvdpau-va-gl
-      libva-vdpau-driver
-      mesa
-    ];
   };
-  systemd.services."nvidia-shutdown" = lib.mkIf isDesktop {
-    description = "Unload NVIDIA modules before shutdown";
-    wantedBy = [ "shutdown.target" ];
-    before = [ "shutdown.target" ];
-    serviceConfig = {
-      Type = "oneshot";
-      RemainAfterExit = true;
-      ExecStop = "${pkgs.kmod}/bin/modprobe -r nvidia_drm nvidia_modeset nvidia_uvm nvidia";
-    };
-  };
-
-  # services.ollama = lib.mkIf isDesktop {
-  #   enable = true;
-  # package = pkgs.ollama-cuda;
-  # };
 
   services.flatpak.enable = true;
   services.avahi = {
@@ -301,7 +245,6 @@ in
     layout = if isLaptop then "en" else "us";
     variant = "";
   };
-  services.xserver.videoDrivers = lib.mkIf isDesktop [ "nvidia" ];
   services.greetd = {
     enable = true;
     settings = {
@@ -370,6 +313,9 @@ in
   security.pam.services.sshd.u2fAuth = lib.mkIf isDesktop false;
 
   programs.coolercontrol.enable = isDesktop;
+  # LACT drives clocks, power limit and undervolting. CoolerControl owns the fan
+  # curves; aiming both at the GPU's pwm1 makes them fight over the same knob.
+  services.lact.enable = isDesktop;
 
   powerManagement.cpuFreqGovernor = if isDesktop then "balance_performance" else "balance_power";
 
@@ -379,7 +325,7 @@ in
     localNetworkGameTransfers.openFirewall = true;
     protontricks.enable = true;
     gamescopeSession.enable = true;
-    extraCompatPackages = [ protonGeWithNvml ];
+    extraCompatPackages = [ pkgs.proton-ge-bin ];
   };
   programs.appimage.enable = false;
   programs.appimage.binfmt = true;

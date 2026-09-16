@@ -11,7 +11,6 @@ let
   isDesktop = host == "desktop";
   isLaptop = host == "laptop";
   theme = import ./theme.nix;
-  wineNvml = pkgs.callPackage ./wine-nvml.nix { };
 
   # Cura ships no in-app UI scale setting, so Qt has to be told out-of-band.
   curaScaled = pkgs.symlinkJoin {
@@ -84,7 +83,7 @@ in
       openjdk25
     ]
     ++ lib.optionals isDesktop [
-      nvtopPackages.nvidia
+      nvtopPackages.amd
       lm_sensors
       rpi-imager
       dolphin-emu
@@ -100,6 +99,10 @@ in
       ]
     );
     mutableExtensionsDir = true; # lets you install CWTools from marketplace
+  };
+
+  programs.opencode = {
+    enable = true;
   };
 
   # Fastfetch
@@ -365,8 +368,6 @@ in
       };
   };
 
-  programs.obs-studio.enable = true;
-
   home.sessionVariables = {
     XDG_DATA_DIRS = "$XDG_DATA_DIRS:$HOME/.local/share/flatpak/exports/share";
   };
@@ -382,29 +383,6 @@ in
   '';
 
   fonts.fontconfig.enable = true;
-
-  # Some Windows games (e.g. Space Engineers 2) hard-require nvml.dll on
-  # startup, which Proton doesn't ship. Drop in the wine-nvml wrapper so
-  # NVML calls get forwarded to the real driver instead of crashing.
-  home.activation.wineNvml = lib.mkIf isDesktop (
-    lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-      steamRoot="$HOME/.local/share/Steam"
-
-      for protonFiles in "$steamRoot"/steamapps/common/Proton*/files "$steamRoot"/compatibilitytools.d/*/files; do
-        [ -d "$protonFiles" ] || continue
-        for libdir in lib lib64; do
-          winDir="$protonFiles/$libdir/wine/x86_64-windows"
-          unixDir="$protonFiles/$libdir/wine/x86_64-unix"
-          [ -d "$winDir" ] && $DRY_RUN_CMD install -m644 "${wineNvml}/lib64/wine/x86_64-windows/nvml.dll" "$winDir/nvml.dll"
-          [ -d "$unixDir" ] && $DRY_RUN_CMD install -m644 "${wineNvml}/lib64/wine/x86_64-unix/nvml.so" "$unixDir/nvml.so"
-        done
-      done
-
-      for prefixSystem32 in "$steamRoot"/steamapps/compatdata/*/pfx/drive_c/windows/system32; do
-        [ -d "$prefixSystem32" ] && $DRY_RUN_CMD install -m644 "${wineNvml}/lib64/wine/x86_64-windows/nvml.dll" "$prefixSystem32/nvml.dll"
-      done
-    ''
-  );
 
   home.stateVersion = "25.05";
 }

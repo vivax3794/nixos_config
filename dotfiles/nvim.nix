@@ -10,6 +10,45 @@ let
     version = "0.1.0";
     src = inputs.tree-sitter-serpentine;
   };
+
+  # The queries shipped with the grammar are written for Helix and only cover a
+  # handful of nodes; ours replace them wholesale.
+  tree-sitter-paradox =
+    (pkgs.tree-sitter.buildGrammar {
+      language = "paradox";
+      version = "0.2.0";
+      src = inputs.tree-sitter-paradox;
+    }).overrideAttrs
+      (old: {
+        postInstall = (old.postInstall or "") + ''
+          rm -rf $out/queries
+          cp -r ${./queries/paradox} $out/queries
+        '';
+      });
+
+  # Localisation is a line-based format that only superficially resembles YAML;
+  # a real YAML parser derails on any value containing a colon followed by a
+  # space, so it gets a grammar of its own.
+  tree-sitter-paradox-loc = pkgs.tree-sitter.buildGrammar {
+    language = "paradox_loc";
+    version = "0.1.0";
+    src = ./tree-sitter-paradox-loc;
+    generate = true;
+  };
+
+  paradoxScriptDirs = [
+    "common"
+    "events"
+    "map"
+    "prescripted_countries"
+    "sound"
+  ];
+
+  paradoxLocalisationDirs = [
+    "localisation"
+    "localisation_synced"
+    "localization"
+  ];
 in
 {
   enable = true;
@@ -48,7 +87,7 @@ in
   };
 
   diagnostic.settings = {
-    underline = true;
+    underline = false;
     virtual_text = true;
     virtual_lines = {
       current_line = true;
@@ -117,15 +156,15 @@ in
     }
   ];
 
-  plugins.copilot-lua = {
-    enable = true;
-    settings = {
-      panel.enabled = false;
-      suggestion = {
-        auto_trigger = true;
-      };
-    };
-  };
+  # plugins.copilot-lua = {
+  #   enable = true;
+  #   settings = {
+  #     panel.enabled = false;
+  #     suggestion = {
+  #       auto_trigger = true;
+  #     };
+  #   };
+  # };
   plugins.treesitter = {
     enable = true;
     settings = {
@@ -134,11 +173,30 @@ in
     };
     grammarPackages = pkgs.vimPlugins.nvim-treesitter.passthru.allGrammars ++ [
       tree-sitter-serpentine
+      tree-sitter-paradox
+      tree-sitter-paradox-loc
     ];
-    languageRegister.snek = "snek";
+    languageRegister = {
+      snek = "snek";
+      paradox = "paradox";
+      paradox_loc = "paradox_loc";
+    };
   };
-  filetype.extension = {
-    snek = "snek";
+  filetype = {
+    extension = {
+      snek = "snek";
+      mod = "paradox";
+      asset = "paradox";
+      gui = "paradox";
+      gfx = "paradox";
+      dlc = "paradox";
+    };
+    # Clausewitz script is plain `.txt`, so it is only recognisable by the fixed
+    # directory layout every Paradox game and mod shares.
+    pattern = lib.listToAttrs (
+      map (dir: lib.nameValuePair ".*/${dir}/.*%.txt" "paradox") paradoxScriptDirs
+      ++ map (dir: lib.nameValuePair ".*/${dir}/.*%.yml" "paradox_loc") paradoxLocalisationDirs
+    );
   };
   plugins.noice = {
     enable = true;
