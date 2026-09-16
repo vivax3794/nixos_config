@@ -28,7 +28,6 @@ in
     enable = true;
     enableVirtualCamera = true;
   };
-
   boot.kernelPackages = pkgs.linuxPackages_latest;
   boot.kernelParams = [
     "nowatchdog"
@@ -149,6 +148,7 @@ in
       "wheel"
       "remotebuilder"
       "audio"
+      "wireshark"
     ];
     shell = pkgs.fish;
   };

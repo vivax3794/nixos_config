@@ -9,6 +9,30 @@ let
   theme = import ../theme.nix;
   isLaptop = host == "laptop";
 
+  laptopExternal = {
+    mode = {
+      width = 3840;
+      height = 2160;
+      refresh = 60.0;
+    };
+    scale = 1.5;
+  };
+
+  laptopBuiltin = {
+    mode = {
+      width = 1920;
+      height = 1080;
+      refresh = 60.0;
+    };
+    scale = 1.25;
+  };
+
+  # Niri positions outputs in logical (post-scale) pixels, not native ones.
+  logical = output: {
+    width = builtins.floor (output.mode.width / output.scale);
+    height = builtins.floor (output.mode.height / output.scale);
+  };
+
   setWallpaper = args: {
     command = [
       (toString (
@@ -362,28 +386,16 @@ in
 
   outputs = lib.mkMerge [
     (lib.mkIf (host == "laptop") {
-      "HDMI-A-1" = {
-        mode = {
-          width = 1920;
-          height = 1080;
-          refresh = 60.0;
-        };
-        scale = 1.0;
+      "HDMI-A-1" = laptopExternal // {
         position = {
           x = 0;
           y = 0;
         };
       };
-      "eDP-1" = {
-        mode = {
-          width = 1920;
-          height = 1080;
-          refresh = 60.0;
-        };
-        scale = 1.25;
+      "eDP-1" = laptopBuiltin // {
         position = {
-          x = 192;
-          y = 1080;
+          x = ((logical laptopExternal).width - (logical laptopBuiltin).width) / 2;
+          y = (logical laptopExternal).height;
         };
       };
     })
