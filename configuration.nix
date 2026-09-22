@@ -152,6 +152,7 @@ in
     ];
     shell = pkgs.fish;
   };
+  programs.wireshark.enable = true;
   nix.settings.trusted-users = [
     "viv"
     "@wheel"
