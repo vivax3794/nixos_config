@@ -36,6 +36,16 @@ in
   home.username = "viv";
   home.homeDirectory = "/home/viv";
 
+  services.syncthing = {
+    enable = true;
+    overrideDevices = false;
+    overrideFolders = false;
+    settings.devices.rpi = {
+      id = "2LCIZEN-JBMQFCJ-LBWY22Z-GHY267K-ZB3XCLI-OXZYUQE-VJ2XCWA-ZS6DQA3";
+      introducer = true;
+    };
+  };
+
   # Cursor (works across Wayland + XWayland)
   home.pointerCursor = {
     enable = true;
