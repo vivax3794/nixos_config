@@ -261,6 +261,8 @@ in
       background_opacity = 0.9;
       background_blur = 0;
       placement_strategy = "top-left";
+      cursor_trail = 3;
+      cursor_trail_decays = "0.1 0.4";
       # Bump ANSI "bright black" — the theme default (#414868) is too dim
       # to read against the background at reduced opacity (fish autosuggestions, etc.)
       color8 = theme.colors.comment;
