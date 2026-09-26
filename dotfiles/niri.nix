@@ -168,13 +168,22 @@ in
       ];
       open-floating = true;
     }
+    # {
+    #   matches = [
+    #     {
+    #       title = "^$";
+    #     }
+    #   ];
+    #   open-floating = true;
+    # }
     {
       matches = [
         {
-          title = "^$";
+          app-id = "^stellaris$";
         }
       ];
-      open-floating = true;
+      open-on-output = "DP-3";
+      open-fullscreen = true;
     }
     {
       geometry-corner-radius =

@@ -81,6 +81,7 @@ in
       wineWow64Packages.stable
       winetricks
       proton-vpn
+      trayscale
       # openscad-unstable
 
       lutris
@@ -388,12 +389,15 @@ in
   # Claude Code user-level config
   home.file.".claude/CLAUDE.md".source = ./dotfiles/claude-global.md;
   home.file.".claude/commands".source = ./dotfiles/claude_commands;
-  home.file.".claude/settings.json".text = ''
-    {
-      "showThinkingSummaries": true,
-      "effortLevel": "high"
-    }
-  '';
+  home.file.".claude/settings.json".text = builtins.toJSON {
+    showThinkingSummaries = true;
+    effortLevel = "high";
+    permissions.ask = [ "Edit" ];
+    autoMode.soft_deny = [
+      "$defaults"
+      "Unreviewed File Rewrite [named+specifics — **must name:** the file and the command]: Rewriting a file in the working tree with shell text processing instead of the Edit/Write tools — `sed -i`, `perl -pi`, in-place `awk`, `python`/`node` one-liners that open a file for writing, `tee` or `>`/`>>` redirection onto an existing file, or a throwaway script whose purpose is to patch files. The user reviews every file change as a diff and these rewrites bypass that review. Does not cover formatters and fix-mode linters (`cargo fmt`, `nixfmt`, `ruff --fix`), code generators, version-control commands, package managers writing their own lockfiles, or writes to scratch, cache, and build-output paths. Clears when the user asked for that specific command."
+    ];
+  };
 
   fonts.fontconfig.enable = true;
 

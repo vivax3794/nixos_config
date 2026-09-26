@@ -33,3 +33,4 @@ Write every comment and doc for a future reader who has never seen this chat. If
 * Remember you have access to web searches — use them.
 * This is a NixOS system. If a tool isn't available on `$PATH`, use `nix-shell` to run it.
 * I use `jj` not `git` for 99% of repos, so prefer its commands over git.
+* Always modify files with the Edit/Write tools, never through `sed -i`, `perl -pi`, shell redirection, or a throwaway python script. This holds for repetitive multi-file edits too, where a script would be cheaper: I review every diff, and in-place shell edits hide it.

@@ -77,6 +77,16 @@ in
   networking.networkmanager.enable = true;
   networking.networkmanager.wifi.powersave = lib.mkIf isLaptop false;
 
+  services.tailscale.enable = true;
+  services.tailscale.openFirewall = true;
+
+  services.sunshine = lib.mkIf isDesktop {
+    enable = true;
+    autoStart = true;
+    capSysAdmin = true;
+    openFirewall = true;
+  };
+
   # The laptop's RTL8852BE (rtw89) firmware occasionally crashes and self-recovers
   # via SER, stalling all traffic for ~60s while NetworkManager still reports "up".
   # This watchdog pings the gateway and force-reconnects on a sustained stall,
@@ -133,7 +143,7 @@ in
     5353
     1900
   ];
-  networking.firewall.trustedInterfaces = [ "CloudflareWARP" ];
+  networking.firewall.trustedInterfaces = [ "tailscale0" ];
 
   time.timeZone = "Europe/Oslo";
   i18n.defaultLocale = "en_US.UTF-8";
@@ -213,35 +223,7 @@ in
     openFirewall = true;
   };
   services.blueman.enable = true;
-  services.cloudflare-warp.enable = true;
-  # Upstream NixOS module is missing capabilities and tools in PATH.
-  # nftables: tunnel firewall rules; iproute2: TUN device routing.
-  systemd.services.cloudflare-warp = {
-    path = with pkgs; [
-      nftables
-      iproute2
-    ];
-    serviceConfig = {
-      CapabilityBoundingSet = lib.mkForce [
-        "CAP_NET_ADMIN"
-        "CAP_NET_BIND_SERVICE"
-        "CAP_SYS_PTRACE"
-        "CAP_DAC_READ_SEARCH"
-        "CAP_NET_RAW"
-        "CAP_SETUID"
-        "CAP_SETGID"
-      ];
-      AmbientCapabilities = lib.mkForce [
-        "CAP_NET_ADMIN"
-        "CAP_NET_BIND_SERVICE"
-        "CAP_SYS_PTRACE"
-        "CAP_DAC_READ_SEARCH"
-        "CAP_NET_RAW"
-        "CAP_SETUID"
-        "CAP_SETGID"
-      ];
-    };
-  };
+
   services.xserver.xkb = {
     layout = if isLaptop then "en" else "us";
     variant = "";
