@@ -93,6 +93,7 @@ in
       maven
       openjdk25
       (pkgs.callPackage ./packet-tracer.nix { })
+      moonlight-qt
     ]
     ++ lib.optionals isDesktop [
       nvtopPackages.amd
