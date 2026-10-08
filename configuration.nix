@@ -85,6 +85,10 @@ in
     autoStart = true;
     capSysAdmin = true;
     openFirewall = true;
+    settings = {
+      capture = "kms";
+      output_name = 0;
+    };
   };
 
   # The laptop's RTL8852BE (rtw89) firmware occasionally crashes and self-recovers
