@@ -384,6 +384,28 @@ in
       enable = true;
       settings.formatting.command = [ "${pkgs.nixfmt}/bin/nixfmt" ];
     };
+    servers.basedpyright = {
+      enable = true;
+      settings.basedpyright.disableOrganizeImports = true;
+      # uv workspace members each have their own pyproject.toml, but the venv
+      # and type-checker config live at the workspace root next to uv.lock.
+      rootMarkers = [
+        "uv.lock"
+        "pyrightconfig.json"
+        "pyproject.toml"
+        "setup.py"
+        "setup.cfg"
+        "requirements.txt"
+        "Pipfile"
+        ".git"
+      ];
+    };
+    servers.ruff = {
+      enable = true;
+      onAttach.function = ''
+        client.server_capabilities.hoverProvider = false
+      '';
+    };
   };
 
   plugins.rustaceanvim = {

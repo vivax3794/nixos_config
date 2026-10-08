@@ -92,7 +92,7 @@ in
       # JAVA BS
       maven
       openjdk25
-      # (pkgs.callPackage ./packet-tracer.nix { })
+      (pkgs.callPackage ./packet-tracer.nix { })
     ]
     ++ lib.optionals isDesktop [
       nvtopPackages.amd

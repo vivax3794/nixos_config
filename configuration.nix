@@ -304,7 +304,7 @@ in
   # curves; aiming both at the GPU's pwm1 makes them fight over the same knob.
   services.lact.enable = isDesktop;
 
-  powerManagement.cpuFreqGovernor = if isDesktop then "balance_performance" else "balance_power";
+  services.power-profiles-daemon.enable = isLaptop;
 
   programs.steam = {
     enable = true;
