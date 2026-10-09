@@ -270,6 +270,17 @@ in
     jack.enable = true;
     extraLv2Packages = [ pkgs.ldacbt ];
     wireplumber.extraLv2Packages = [ pkgs.ldacbt ];
+    # The RTL8852BE shares one antenna between wifi and bluetooth, and its coex
+    # firmware starves A2DP of airtime under wifi load. VBR AAC shrinks packets
+    # enough to fit the bluetooth slots instead of AAC's default max-bitrate CBR.
+    wireplumber.extraConfig."51-bluez-coex" = lib.mkIf isLaptop {
+      "monitor.bluez.rules" = [
+        {
+          matches = [ { "device.name" = "~bluez_card.*"; } ];
+          actions.update-props."bluez5.a2dp.aac.bitratemode" = 3;
+        }
+      ];
+    };
   };
 
   security.rtkit.enable = true;
