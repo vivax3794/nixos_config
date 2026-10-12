@@ -21,6 +21,9 @@ in
   imports = [
     ./cachix.nix
     ./hardware/${host}.nix
+    ./features/immich-machine-learning.nix
+    ./features/immich-offload.nix
+    ./features/beszel-agent.nix
     inputs.niri.nixosModules.niri
   ];
 
@@ -82,9 +85,9 @@ in
 
   services.sunshine = lib.mkIf isDesktop {
     enable = true;
+    package = pkgs.callPackage "${inputs.nixpkgs-sunshine}/pkgs/by-name/su/sunshine/package.nix" { };
     autoStart = true;
     capSysAdmin = true;
-    openFirewall = true;
     settings = {
       capture = "kms";
       output_name = 0;
@@ -139,14 +142,6 @@ in
   };
 
   networking.firewall.checkReversePath = "loose";
-  networking.firewall.allowedTCPPorts = [
-    5000
-    8888
-  ];
-  networking.firewall.allowedUDPPorts = [
-    5353
-    1900
-  ];
   networking.firewall.trustedInterfaces = [ "tailscale0" ];
 
   time.timeZone = "Europe/Oslo";
@@ -257,6 +252,7 @@ in
   };
   services.openssh = lib.mkIf isDesktop {
     enable = true;
+    openFirewall = false;
     ports = [ 22 ];
     settings = {
       PasswordAuthentication = true;

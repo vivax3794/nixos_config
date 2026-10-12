@@ -213,6 +213,7 @@ in
   };
   plugins.nvim-autopairs.enable = true;
   plugins.colorizer.enable = true;
+  plugins.cord.enable = true;
   plugins.render-markdown = {
     enable = true;
     settings.code.enabled = false;

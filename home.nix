@@ -314,9 +314,11 @@ in
   # Discord
   programs.vesktop = {
     enable = true;
+    vencord.useSystem = true;
     settings = {
       transperencyOption = "acrylic";
       audio.onlySpeakers = true;
+      arRPC = true;
     };
     vencord.settings = {
       autoUpdate = false;

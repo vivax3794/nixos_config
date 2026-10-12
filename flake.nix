@@ -1,6 +1,14 @@
 {
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    # Sunshine 2026.914 drops CAP_SYS_ADMIN and can't regain it through the
+    # NixOS security.wrappers setup (the wrapper only leaves it inheritable),
+    # breaking KMS capture. The 2026.516 recipe from this revision is built
+    # against current nixpkgs so it links the same graphics stack as the system.
+    nixpkgs-sunshine = {
+      url = "github:NixOS/nixpkgs/6774f7bc253789b113a4f39285dc0fa100abeacc";
+      flake = false;
+    };
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
