@@ -31,7 +31,21 @@ in
     enable = true;
     enableVirtualCamera = true;
   };
-  boot.kernelPackages = pkgs.linuxPackages_latest;
+  boot.kernelPackages = pkgs.linuxPackages_latest.extend (
+    _: prev: {
+      # Kernel >= 7.3 runs depmod during modules_install, whose index files collide with the kernel's own.
+      v4l2loopback =
+        lib.warnIf (prev.v4l2loopback.version != "0.15.4")
+          "v4l2loopback was updated to ${prev.v4l2loopback.version}; check whether the depmod workaround in configuration.nix is still needed."
+          (
+            prev.v4l2loopback.overrideAttrs (old: {
+              postInstall = (old.postInstall or "") + ''
+                rm -f $out/lib/modules/*/modules.*
+              '';
+            })
+          );
+    }
+  );
   boot.kernelParams = [
     "nowatchdog"
     "modprobe.blacklist=sp5100_tco"
