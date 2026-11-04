@@ -78,7 +78,6 @@ in
   };
 
   boot.plymouth.enable = lib.mkIf isLaptop true;
-  boot.initrd.systemd.enable = lib.mkIf isLaptop true;
 
   boot.kernel.sysctl = {
     "fs.inotify.max_user_watches" = 1048576;

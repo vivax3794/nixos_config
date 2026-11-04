@@ -19,6 +19,7 @@ Write every comment and doc for a future reader who has never seen this chat. If
 * Never write comments that argue against a misunderstanding — the contrastive "X works like A, not B" / "note: this is NOT the Z you'd expect" framing. That's you resolving your own confusion out loud. If you were confused, fix your understanding; don't leave a rebuttal in the code where a reader who was never confused now has to parse it.
 * When a comment is genuinely warranted, explain *why* something non-obvious is done (constraint, gotcha, external requirement), never narrate *what* the line plainly already says.
 * State things affirmatively about how the code is, not defensively about how it isn't.
+* Load the `writing-for-readers` skill before writing comments, docs, READMEs, commit messages or UI text.
 
 ### Research
 * Prefer web searches over inspecting local package installs.

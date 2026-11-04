@@ -12,6 +12,15 @@ let
   isLaptop = host == "laptop";
   theme = import ./theme.nix;
 
+  # Layered on via `--settings` by the `claude` fish wrapper; `vibe` launches without it.
+  claudeReviewSettings = (pkgs.formats.json { }).generate "claude-review-settings.json" {
+    permissions.ask = [ "Edit" ];
+    autoMode.soft_deny = [
+      "$defaults"
+      "Unreviewed File Rewrite [named+specifics — **must name:** the file and the command]: Rewriting a file in the working tree with shell text processing instead of the Edit/Write tools — `sed -i`, `perl -pi`, in-place `awk`, `python`/`node` one-liners that open a file for writing, `tee` or `>`/`>>` redirection onto an existing file, or a throwaway script whose purpose is to patch files. The user reviews every file change as a diff and these rewrites bypass that review. Does not cover formatters and fix-mode linters (`cargo fmt`, `nixfmt`, `ruff --fix`), code generators, version-control commands, package managers writing their own lockfiles, or writes to scratch, cache, and build-output paths. Clears when the user asked for that specific command."
+    ];
+  };
+
   # Cura ships no in-app UI scale setting, so Qt has to be told out-of-band.
   curaScaled = pkgs.symlinkJoin {
     name = "cura-appimage-scaled";
@@ -144,7 +153,11 @@ in
       ls = "eza -lh --total-size";
       grep = "rg";
     };
-    functions.nsr = "nix-shell -p $argv[1] --run $argv[1]";
+    functions = {
+      nsr = "nix-shell -p $argv[1] --run $argv[1]";
+      claude = "command claude --settings ${claudeReviewSettings} $argv";
+      vibe = "command claude --permission-mode auto $argv";
+    };
   };
   home.shell.enableFishIntegration = true;
 
@@ -334,7 +347,7 @@ in
         BetterGifPicker.enabled = true;
         ClearURLs.enabled = true;
         MentionAvatars.enabled = true;
-        BetterFolders.enabled = true;
+        # BetterFolders.enabled = true;
       };
     };
   };
@@ -392,14 +405,13 @@ in
   # Claude Code user-level config
   home.file.".claude/CLAUDE.md".source = ./dotfiles/claude-global.md;
   home.file.".claude/commands".source = ./dotfiles/claude_commands;
+  home.file.".claude/skills/writing-for-readers".source =
+    ./dotfiles/claude_skills/writing-for-readers;
+  home.file.".claude/skills/greenfield-interview".source =
+    ./dotfiles/claude_skills/greenfield-interview;
   home.file.".claude/settings.json".text = builtins.toJSON {
     showThinkingSummaries = true;
     effortLevel = "high";
-    permissions.ask = [ "Edit" ];
-    autoMode.soft_deny = [
-      "$defaults"
-      "Unreviewed File Rewrite [named+specifics — **must name:** the file and the command]: Rewriting a file in the working tree with shell text processing instead of the Edit/Write tools — `sed -i`, `perl -pi`, in-place `awk`, `python`/`node` one-liners that open a file for writing, `tee` or `>`/`>>` redirection onto an existing file, or a throwaway script whose purpose is to patch files. The user reviews every file change as a diff and these rewrites bypass that review. Does not cover formatters and fix-mode linters (`cargo fmt`, `nixfmt`, `ruff --fix`), code generators, version-control commands, package managers writing their own lockfiles, or writes to scratch, cache, and build-output paths. Clears when the user asked for that specific command."
-    ];
   };
 
   fonts.fontconfig.enable = true;
