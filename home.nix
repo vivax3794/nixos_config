@@ -92,8 +92,6 @@ in
       proton-vpn
       trayscale
       # openscad-unstable
-
-      lutris
     ]
     ++ lib.optionals isLaptop [
       geteduroam

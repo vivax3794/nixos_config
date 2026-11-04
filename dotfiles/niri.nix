@@ -395,7 +395,7 @@ in
 
   outputs = lib.mkMerge [
     (lib.mkIf (host == "laptop") {
-      "HDMI-A-1" = laptopExternal // {
+      "DP-1" = laptopExternal // {
         position = {
           x = 0;
           y = 0;
