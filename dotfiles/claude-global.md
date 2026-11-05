@@ -34,4 +34,8 @@ Write every comment and doc for a future reader who has never seen this chat. If
 * Remember you have access to web searches — use them.
 * This is a NixOS system. If a tool isn't available on `$PATH`, use `nix-shell` to run it.
 * I use `jj` not `git` for 99% of repos, so prefer its commands over git.
+* Whenever you modify files in a jj repo, make sure the working-copy change (`@`) carries your `Co-Authored-By` trailer, even if you never commit yourself. I often finish a change by just starting a new one, so the trailer has to be in `@` before that happens.
+    * Read the current description with `jj log -r @ --no-graph -T description`. If the trailer is missing, rewrite it with `jj describe -r @ -m "<existing description>\n\nCo-Authored-By: ..."`, keeping the existing text intact. An empty description gets just the trailer.
+    * Take the trailer text from the attribution line in the system prompt so the model name stays current.
+    * In git repos, there is no uncommitted change to tag, so remind me to add the trailer when you hand back uncommitted changes.
 * Always modify files with the Edit/Write tools, never through `sed -i`, `perl -pi`, shell redirection, or a throwaway python script. This holds for repetitive multi-file edits too, where a script would be cheaper: I review every diff, and in-place shell edits hide it.
