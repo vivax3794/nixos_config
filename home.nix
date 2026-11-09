@@ -121,10 +121,6 @@ in
     mutableExtensionsDir = true; # lets you install CWTools from marketplace
   };
 
-  programs.opencode = {
-    enable = true;
-  };
-
   # Fastfetch
   programs.fastfetch = {
     enable = true;
